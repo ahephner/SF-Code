@@ -1,0 +1,10 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" controller = "CustomerProducts" access="global" >
+  <!--  <aura:handler name="init" action="{!c.getProductList}" value="{!this}"/>--> 
+    <!--<aura:attribute name="productList" type="List"/>--> 
+     <lightning:input aura:id="lookUp" name="who" label="Search By Customer Number" placeholder="type here..."
+                      required = "true"/>
+    <lightning:button label="Search" 
+                                      class="slds-m-top--medium"
+                                      variant="brand"
+                                      onclick="{!c.getProductList }"/>
+</aura:component>
