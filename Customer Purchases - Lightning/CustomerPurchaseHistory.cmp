@@ -1,10 +1,87 @@
-<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" controller = "CustomerProducts" access="global" >
-  <!--  <aura:handler name="init" action="{!c.getProductList}" value="{!this}"/>--> 
-    <!--<aura:attribute name="productList" type="List"/>--> 
-     <lightning:input aura:id="lookUp" name="who" label="Search By Customer Number" placeholder="type here..."
-                      required = "true"/>
-    <lightning:button label="Search" 
+<aura:component controller = "CustomerProducts" access="global" >
+   
+    <aura:attribute name="productList" type="List" description="use for store and display customer list return from server"/>
+    <aura:attribute name="customer" type="String" description="use for store user search"/>
+    <aura:attribute name="message" type="boolean" default="0" description="use for display no record"/>
+    <aura:attribute name = "totals" type="integer" default="0" description="display record returned total"/> 
+    
+    <div class="slds-m-around_medium">
+    <!--Search-->
+        <lightning:layout>
+          <lightning:layoutItem size="3" padding="around-small">
+            <lightning:input value="{!v.customer}" name="who"  
+                             required = "true"
+                             placeholder="type here..."
+                             aura:id="lookUp"
+                             label="Search By Customer Number"/>
+            </lightning:layoutItem>
+            
+            <lightning:layoutItem size="2" padding="around-small">
+            	<lightning:button label="Search" 
                                       class="slds-m-top--medium"
                                       variant="brand"
-                                      onclick="{!c.getProductList }"/>
+                                      onclick="{!c.Search }"/>
+            </lightning:layoutItem>
+        </lightning:layout>
+   
+    
+   <!--Total Record here
+    <div class="slds-m-around_x-small"> 
+        <lightning:badge label="{!totals}" />
+    </div> -->
+    
+    <!-- error-->
+    <aura:if isTrue="{!v.message}">
+    	<div class="slds-notify_container slds-is-relative">
+        	<div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                <div class="slds-notify__content">
+                <h2 class="slds-text-heading_small">No Records Found...</h2>
+                    </div>
+                </div>
+        </div>
+    </aura:if>
+    
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Doc Date">Doc Date</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Prod name">Product Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="QTY">QTY</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Price">Extended Price</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody> 
+                <!--### display all records of searchResult attribute by aura:iteration ###-->
+                <aura:iteration items="{!v.productList}" var="acc" indexVar="count">
+                    <tr>
+                        <td>
+                            <div class="slds-truncate">{!count + 1}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!acc.Product_Name__c}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!acc.doc_date__c}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!acc.Qty__c}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!acc.Extended_Price__c}</div>
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+ 
+    </div>
+    
 </aura:component>
