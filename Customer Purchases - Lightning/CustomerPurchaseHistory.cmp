@@ -25,10 +25,18 @@
         </lightning:layout>
    
     
-   <!--Total Record here
-    <div class="slds-m-around_x-small"> 
-        <lightning:badge label="{!totals}" />
-    </div> -->
+        <lightning:layout>
+            <div class="slds-m-around_x-small"> 
+            
+            <h4>Total Records:</h4>
+        </div> 
+        
+       <!--Total Record here--> 
+        <div class="slds-m-around_x-small"> 
+            
+            <lightning:badge label="{!v.totals}" />
+        </div> 
+        </lightning:layout>
     
     <!-- error-->
     <aura:if isTrue="{!v.message}">
