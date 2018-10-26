@@ -1,10 +1,17 @@
 ({
-	getProductList : function(component, event, helper) {
-        var input = component.find('lookUp').get('v.value');
-        //console.log("before " + input);
-        //if i stringify it wont run through apex class
-        //var input = JSON.stringify(input);
-        //console.log(input);
-        helper.fetchProducts(component, input);
-	}
-})
+        Search: function(component, event, helper) {
+            var input = component.find('lookUp');
+           //appears .focus() not working at this time there is a ticket in SF for it 
+           //  input.focus();
+            var isValueMissing = input.get('v.validity').valueMissing;
+            // if value is missing show error message and focus on field
+            if(isValueMissing) {
+                input.showHelpMessageIfInvalid();
+                input.focus();
+            }else{
+              // else call helper function 
+                helper.fetchProducts(component, event);
+                component.find("lookUp").set("v.value", '')
+            }
+        },
+    })
