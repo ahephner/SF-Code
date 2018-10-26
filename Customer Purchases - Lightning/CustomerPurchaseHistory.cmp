@@ -4,7 +4,9 @@
     <aura:attribute name="customer" type="String" description="use for store user search"/>
     <aura:attribute name="message" type="boolean" default="0" description="use for display no record"/>
     <aura:attribute name = "totals" type="integer" default="0" description="display record returned total"/> 
-    
+    <!--second call-->
+    <aura:attribute name="oldList" type="list" description="use for store and display 2 years ago"/>
+    <aura:attribute name = "totalTwo" type="integer" default="0" description="display record returned total"/> 
     <div class="slds-m-around_medium">
     <!--Search-->
         <lightning:layout>
@@ -25,18 +27,16 @@
         </lightning:layout>
    
     
-        <lightning:layout>
-            <div class="slds-m-around_x-small"> 
-            
-            <h4>Total Records:</h4>
-        </div> 
         
        <!--Total Record here--> 
-        <div class="slds-m-around_x-small"> 
-            
-            <lightning:badge label="{!v.totals}" />
+       <lightning:layout>
+            <!--Total Record here--> 
+    <div class="slds-m-around_x-small"> 
+            <h1 class="slds-m-vertical_small">Last Fiscal Year</h1>               
+            <h4>Total Records:</h4>
+            <lightning:badge label="{!v.totalTwo}" />
         </div> 
-        </lightning:layout>
+    </lightning:layout>
     
     <!-- error-->
     <aura:if isTrue="{!v.message}">
@@ -48,10 +48,14 @@
                 </div>
         </div>
     </aura:if>
-    
+    <lightning:layout>
     <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            
             <thead>
                 <tr class="slds-text-title_caps">
+                        <th scope="col">
+                                <div class="slds-truncate" title="count">*</div>
+                        </th>
                     <th scope="col">
                         <div class="slds-truncate" title="Doc Date">Doc Date</div>
                     </th>
@@ -74,22 +78,81 @@
                             <div class="slds-truncate">{!count + 1}</div>
                         </td>
                         <td>
-                            <div class="slds-truncate">{!acc.Product_Name__c}</div>
+                                <div class="slds-truncate">{!acc.doc_date__c + 1}</div>
                         </td>
                         <td>
-                            <div class="slds-truncate">{!acc.doc_date__c}</div>
+                            <div class="slds-truncate">{!acc.Product_Name__c}</div>
                         </td>
                         <td>
                             <div class="slds-truncate">{!acc.Qty__c}</div>
                         </td>
                         <td>
-                            <div class="slds-truncate">{!acc.Extended_Price__c}</div>
+                            <div class="slds-truncate">${!acc.Extended_Price__c}</div>
                         </td>
                     </tr>
                 </aura:iteration>
             </tbody>
         </table>
- 
+    </lightning:layout>
+    <!--Table Two for 2 years ago-->
+
+    <lightning:layout>
+            <!--Total Record here--> 
+    <div class="slds-m-around_x-small"> 
+            <h1 class="slds-m-vertical_small">2 Fiscal Years Ago</h1>               
+            <h4>Total Records:</h4>
+            <lightning:badge label="{!v.totalTwo}" />
+        </div> 
+    </lightning:layout>
+
+
+    <lightning:layout>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+               
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="count">*</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Doc Date">Doc Date</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Prod name">Product Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="QTY">QTY</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Price">Extended Price</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody> 
+                <!--### display all records of searchResult attribute by aura:iteration ###-->
+                <aura:iteration items="{!v.oldList}" var="ol" indexVar="count">
+                    <tr>
+                        <td>
+                            <div class="slds-truncate">{!count + 1}</div>
+                        </td>
+                        <td>
+                                <div class="slds-truncate">{!ol.doc_date__c + 1}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">{!ol.Product_Name__c}</div>
+                        </td>
+                        
+                        <td>
+                            <div class="slds-truncate">{!ol.Qty__c}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate">${!ol.Extended_Price__c}</div>
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </lightning:layout>
     </div>
     
 </aura:component>
