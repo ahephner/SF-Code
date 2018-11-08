@@ -1,0 +1,5 @@
+<apex:page standardController="Application__c"  
+     extensions="ApplicationCloneWithProducts_Controller"
+     action="{!cloneWithItems}">
+     <apex:pageMessages />
+</apex:page>

@@ -1,0 +1,257 @@
+<!--
+    /****************************************************************************************************
+    ** Page Name   : ApplicationProduct
+    ** Created By  : Revelant Technologies
+    *                    Sai Prakash - sai.prakash@revelanttech.com
+    ** Created Date: 06/23/2017
+    ** Description : This page handles adding an Application and Produts to an Area in a single flow
+    ** Change Log  : 1/4/17 TLP - Start with Other/None field displaying
+    ****************************************************************************************************/
+-->
+<apex:page standardController="Area__c" extensions="ApplicationProductController" showQuickActionVfHeader="false" showHeader="false" docType="HTML-5.0">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.DataTables, '/datatables.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.DataTables, '/datatables.min.css')}"/>
+        <apex:slds />
+        <style>
+            /* Alignment styles for search and length of datatable */
+            .dataTables_filter {
+               float: left !important;
+            }
+
+            .dataTables_length {
+               float: right !important;
+               margin-top: 7px;
+            }
+        </style>
+    </head>
+
+    <apex:form styleClass="slds">
+        <!-- Add Application Section -->
+        <div id="applicationDiv">
+            <div class="modal-header slds-modal__header">
+                <h2 class="title slds-text-heading--medium">Add An Application</h2>
+            </div>
+            <br/>
+            <div class="slds-grid">
+                <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
+                    <label>Application Name</label><br/>
+                    <apex:inputText value="{!newApp.Name}"/>
+                </div>
+                <!--cannot pull in a true/false val. may need to drop and go with lightningstyle sheets instead--> 
+                <!--without this telling true false the apex class will not fire clones--> 
+                <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
+                    <label class="slds-checkbox_toggle slds-grid">
+                        <span class="slds-form-element__label slds-m-bottom_none">Repeat</span>
+                            <input name="checkbox-toggle-4" type="checkbox" id='checkBox' aria-describedby="checkbox-toggle-4" onchange="t(this)" value="checkbox-toggle-4" />
+                                <span id="checkbox-toggle-4" class="slds-checkbox_faux_container" aria-live="assertive">
+                                    <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-checkbox_on">
+                                            
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label" for="text-input-id-1">Total Number of Applications:</label>
+                                                <input id="text-input-id-1" class="slds-input" type="number" value="" />
+                                             </div>
+
+                                                <div class="slds-form-element__control">
+                                                    <label class="slds-form-element__label" for="text-input-id-1">Number of days apart:</label>
+                                                      <input id="text-input-id-1" class="slds-input" type="number" value="" />
+                                                </div>
+                                            </span>
+                                
+                                    <span class="slds-checkbox_off"></span>
+                                </span>
+                    </label>
+                </div>
+                
+               <!-- <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
+                    <label>Month </label><br/>
+                    <apex:inputText value="{!newApp.Month__c}"/>
+                </div>
+                <div class="slds-has-flexi-truncate slds-p-horizontal_medium" role="listitem">
+                    <label>Week </label><br/>
+                    <apex:inputText value="{!newApp.Week__c}"/>
+                </div>-->
+            </div>
+            <br/>
+            <div class="slds-grid">
+                <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
+                    <label>Date <sup><i>Required</i></sup> </label><br/>
+                    <apex:inputField value="{!newApp.Date__c}" onchange="isValidDate(this);console.log('changed');"/>
+                </div>
+                <div class="slds-has-flexi-truncate slds-p-horizontal_medium" role="listitem">
+                    <label>Note </label><br/>
+                    <apex:inputText value="{!newApp.Note__c}"/>
+                </div>
+            </div>
+            <br/>
+            <div class="slds-grid">
+                <div class="slds-has-flexi-truncate slds-p-horizontal_medium" role="listitem">
+                    <label>Area </label><br/>
+                    <apex:outputText value="{!Area__c.Name}"></apex:outputText>
+                </div>
+            </div>
+            <br/>
+            <div align="center">
+                <apex:commandButton styleClass="slds-button slds-button_neutral addApp" action="{!addApplication}"  value="Add Application" oncomplete="if (!{!displayMessage}) { toProducts('applicationDiv', 'productDiv'); }" reRender="appMessage"/>
+            </div>                                                                   
+            <br/><br/>
+            <apex:outputPanel id="appMessage">
+                <apex:outputPanel rendered="{!displayMessage}">
+                    <div style="width: 100%; height: 30px; padding-top: 5px; text-align: center; border-radius: 10px; background-color: yellow">{!pageMessage}</div>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </div>
+
+
+        <!-- Product Selection Section -->
+        <div id="productDiv">
+            <div class="modal-header slds-modal__header">
+                <h2 class="title slds-text-heading--medium">Add Product(s)</h2>
+            </div>
+            <table id="productsTable" class="display" width="100%"></table>
+            <div align="center">
+                <button class="slds-button slds-button_neutral" onclick="toProducts('productDiv', 'prodDetails');productDetails();return false;">Add Product(s)</button>
+            </div>
+        </div>
+
+
+        <!-- Product Details Section -->
+        <div id="prodDetails">
+            <div class="modal-header slds-modal__header">
+                <h2 class="title slds-text-heading--medium">Product(s) Details</h2>
+            </div>
+            <br/>
+            <div id="displayDetails"></div>
+            <div align="center">
+                <button class="slds-button slds-button_neutral" onclick="toProducts('prodDetails', 'productDiv');return false;">Previous</button>
+                &nbsp;&nbsp;
+                <button class="slds-button slds-button_neutral" onclick="parseProducts();return false;">Finish</button>
+            </div>
+            <br/><br/>
+            <apex:outputPanel id="messagePanel">
+                <apex:outputPanel rendered="{!displayMessage}">
+                    <div style="width: 100%; height: 30px; padding-top: 5px; text-align: center; border-radius: 10px; background-color: {!IF(contains(pageMessage, 'successfully'), 'green', 'yellow')}">{!pageMessage}</div>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </div>
+        <apex:actionFunction name="saveProducts" action="{!addProducts}" reRender="messagePanel" oncomplete="closeWindow();">
+            <apex:param name="addedProducts" value=""/>
+        </apex:actionFunction>
+
+    </apex:form>
+
+    <script>
+
+        // Function to handle the switch between divs
+        function toProducts(from, to) {
+            document.getElementById(from).style.display = 'none';
+            document.getElementById(to).style.display = 'block';
+        }
+
+        var tell = document.getElementById('checkBox'); 
+        
+        
+
+        let selectedProds = new Map();
+
+        // Display datatable on document ready
+        $(document).ready(function() {
+            document.getElementById('productDiv').style.display = 'none';
+            document.getElementById('prodDetails').style.display = 'none';
+            $('.addApp').attr('disabled', 'true');
+            $('#productsTable').DataTable({
+                data: {!productStr},
+                columns: [
+                    { title: "Action" },
+                    { title: "Name" }
+                ]
+            });
+        });
+
+        // On checkbox click
+        function rowSelect(rowCell) {
+            if( $(rowCell).is(':checked') ) {
+                $(rowCell).closest('tr').children().attr('style', 'background-color: lightgreen');
+                selectedProds.set($(rowCell).attr('id'), $(rowCell).closest('td').siblings().text());
+            } else {
+                $(rowCell).closest('tr').children().attr('style', '');
+                selectedProds.delete($(rowCell).attr('id'));
+            }
+        }
+
+        // Details for each of the selected products
+        function productDetails() {
+            console.log('productDetails');
+            var htmlString = '';
+            for (var [key, value] of selectedProds) {
+                //htmlString += '<div class="slds-grid" id="' + key + '"><div class="slds-has-flexi-truncate slds-p-horizontal_medium"><label style="background:burlywood;">' + value + '</label><br/><label style="margin-left:25px;">LBS/ACRE </label><input type="text" id="lbs' + key + '"/><label style="margin-left:15px;">OZ/M </label><input type="text" id="oz' + key + '"/><label style="margin-left:15px;">Note </label><input type="text" id="note' + key + '"/></div></div><br/>';
+				htmlString += '<div class="slds-p-bottom_medium slds-p-left_medium">'
+				htmlString += '  <div class="slds-grid slds-has-flexi-truncate slds-p-bottom_x-small">';
+				htmlString += '    <label style="background:burlywood;">' + value + '</label>';
+				htmlString += '  </div>';
+				htmlString += '  <div class="slds-grid slds-has-flexi-truncate" id="' + key + '">';
+				htmlString += '    <label class="slds-p-left_medium slds-p-right_small" for="lbs' + key + '">LBS/ACRE </label>';
+				htmlString += '    <input type="number" style="width:4em" id="lbs' + key + '"/>';
+				htmlString += '    <label class="slds-p-left_medium slds-p-right_small" for="oz' + key + '">OZ/M </label>';
+				htmlString += '    <input type="number" style="width:4em" id="oz' + key + '"/>';
+				htmlString += '    <label class="slds-p-left_medium slds-p-right_small" for="note' + key + '">Note </label>';
+				htmlString += '    <select id="note' + key + '" onchange="noteSelectChange(this)">';
+				<apex:repeat value="{!NotePickListValues}" var="option" id="theRepeat">
+                var value = '{!option}'.split(':');
+				htmlString += '      <option value="' + value[0] + '"><apex:outputText value="' + value[1] + '"/></option>';
+				</apex:repeat>
+				htmlString += '    </select>';
+				htmlString += '  </div>';
+				htmlString += '  <div class="slds-grid slds-has-flexi-truncate slds-p-top_x-small" style="display:block" id="noteothercontainer' + key + '">';
+				htmlString += '    <label class="slds-p-left_medium slds-p-right_small" for="noteother' + key + '">Note Other</label>';
+				htmlString += '    <input type="text" id="noteother' + key + '">';
+				htmlString += '  </div>';
+				htmlString += '</div>';
+            }
+            $('#displayDetails').html(htmlString);
+        }
+
+        // Parse and save products by calling to controller
+    	function parseProducts() {
+            var products = [];
+            window.selectedProds = selectedProds;
+            for (var [key, value] of selectedProds) {
+                products.push({
+                    id: key,
+                    lbs: $('#lbs' + key).val(),
+                    oz: $('#oz' + key).val(),
+                    note: sanitizeString($('#note' + key).val()),
+                    noteother: sanitizeString($('#noteother' + key).val()),
+                });
+            }
+            saveProducts(JSON.stringify({ products: products }));
+        }
+
+    	//Show noteother input textbox if the related note select option == 'Other'
+    	function noteSelectChange(sel) {
+            console.log('noteSelectChange', sel);
+            var noteOtherContainer = document.getElementById('noteothercontainer' + sel.id.substring(4));
+            noteOtherContainer.style.display = sel.selectedOptions[0].value == 'Other' ? 'block' : 'none';
+        }
+
+	    function sanitizeString(unsanitized){
+    		return unsanitized.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/"/g,"\\\"").replace(/'/g,"\\\'").replace(/\&/g, "\\&");
+		}
+
+        function isValidDate(field) {
+            var date_regex = /^(0[1-9]|[1-9]|1[0-2])\/(0[1-9]|[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+            if((date_regex.test($(field).val()))) {
+                $('.addApp').removeAttr('disabled');
+                console.log('Valid Date');
+            } else {
+                $('.addApp').attr('disabled', 'true');
+                console.log('Not a Valid Date');
+            }
+        }
+
+        function closeWindow() {
+            window.top.location.href = '{!redirectUrl}';
+        }
+    </script>
+</apex:page>
