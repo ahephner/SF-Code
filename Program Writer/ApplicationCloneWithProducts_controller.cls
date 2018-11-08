@@ -6,7 +6,7 @@ public class ApplicationCloneWithProducts_Controller {
     private Application__c app {get;set;}
     // set the id of the record that is created -- ONLY USED BY THE TEST CLASS
     public ID newRecordId {get;set;}
-
+    
     // initialize the controller
     public ApplicationCloneWithProducts_Controller(ApexPages.StandardController controller) {
 
@@ -27,29 +27,58 @@ public class ApplicationCloneWithProducts_Controller {
          try {
 
               //copy the purchase order - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
-             app = [select Id, Name, Area__c, Month__c , Week__c , Note__c , Date__c from Application__c where id = :app.id];
+             app = [select Id, Name, Area__c, Month__c , Week__c , Note__c , 
+             Date__c, repeat__c, Weeks_Apart__c, Number_of_Apps__c
+             from Application__c where id = :app.id];
+             if(app.repeat__c == true){
+                    Integer days = Integer.valueOf(app.Weeks_Apart__c) * 7;
+                    for(Decimal i=0; i<app.Number_of_Apps__c; i++){
+                            app.Date__c = app.Date__c.addDays(days);
+                            newApp = app.clone(false);
+                            insert newApp;
+                    }
+             // set the id of the new po created for testing
+             //outside of my for loop not good 
+               newRecordId = newApp.id;
+
+             // copy over the line items - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
+             List<Application_Product__c> items = new List<Application_Product__c>();
+             for (Application_Product__c ap1 : [Select ap.Id, ap.Product__c, ap.Note__c, ap.Note_Other__c, 
+                ap.OZ_M__c, ap.LBS_ACRE__c From Application_Product__c ap where Application__c = :app.id]) {                 
+                      
+                                    Application_Product__c newAP = ap1.clone(false);
+                                    newAP.Application__c = newApp.id;
+                                    items.add(newAP);
+                            }
+             insert items;
+            }else{
+                app = [select Id, Name, Area__c, Month__c , Week__c , Note__c , Date__c from Application__c where id = :app.id];
+           //this may need to go to true
              newApp = app.clone(false);
              insert newApp;
 
              // set the id of the new po created for testing
                newRecordId = newApp.id;
 
-             // copy over the line items - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
              List<Application_Product__c> items = new List<Application_Product__c>();
-             for (Application_Product__c ap1 : [Select ap.Id, ap.Product__c, ap.Note__c, ap.Note_Other__c, ap.OZ_M__c, ap.LBS_ACRE__c From Application_Product__c ap where Application__c = :app.id]) {
+             for (Application_Product__c ap1 : [Select ap.Id, ap.Product__c, ap.Note__c, ap.Note_Other__c, 
+                                                ap.OZ_M__c, ap.LBS_ACRE__c From Application_Product__c ap 
+                                                where Application__c = :app.id]) {
                   Application_Product__c newAP = ap1.clone(false);
                   newAP.Application__c = newApp.id;
                   items.add(newAP);
              }
              insert items;
-
+            }
          } catch (Exception e){
              // roll everything back in case of error
             Database.rollback(sp);
             ApexPages.addMessages(e);
             return null;
          }
-
         return new PageReference('/'+newApp.id+'/e?retURL=%2F'+newApp.id);
+        //return to new record was not me 
+        //return new PageReference('/'+newApp.id+'/e?retURL=%2F'+newApp.id);
     }
 }
+
