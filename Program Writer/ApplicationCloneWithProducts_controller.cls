@@ -27,7 +27,7 @@ public class ApplicationCloneWithProducts_Controller {
          try {
 
               //copy the purchase order - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
-             app = [select Id, Name, Area__c, Month__c , Week__c , Note__c , 
+             app = [select Id, Name, Area__c, Program_ID__c, Month__c , Week__c , Note__c , 
              Date__c,  Weeks_Apart__c, Number_of_Apps__c
              from Application__c where id = :app.id];
             
@@ -62,9 +62,9 @@ public class ApplicationCloneWithProducts_Controller {
             ApexPages.addMessages(e);
             return null;
          }
-            //redirect to where i want to go after click clone
-            //this is in prod now and pulls up the product card
-            //return new PageReference('/'+newApp.id+'/e?retURL=%2F'+newApp.id);
-       return new PageReference('/apex/Clone_Confirm');
+
+       // return new PageReference('/apex/Clone_Confirm');
+        //return new PageReference('Area__c/' + app.area__c + '/view?ws=%2Flightning%2Fr%2FProgram__c%2F'+app.Program_ID__c+'%2Fview'); 
+       return new PageReference('/lightning/r/Area__c/'+app.Area__c+'/view?ws=%2Flightning%2Fr%2FProgram__c%2F'+app.Program_ID__c+'%2Fview'); 
     }
 }
