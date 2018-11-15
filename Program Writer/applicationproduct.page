@@ -26,6 +26,7 @@
             #repeatLabel{
             	margin-right: 5px;
             }
+         
         </style>
     </head>
  <apex:pageBlock >
@@ -58,7 +59,7 @@
               
                   <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
                       <label id='repeatLabel'>Repeat Application?</label>
-                    <apex:inputCheckbox id='cBox' onclick="test" value="{!newApp.Repeat__c}"></apex:inputCheckbox>
+                    <apex:inputCheckbox id="cBox"  value="{!newApp.Repeat__c}"></apex:inputCheckbox>
                 </div>
 
             </div>
@@ -70,7 +71,7 @@
                     <apex:outputText value="{!Area__c.Name}"></apex:outputText>
                 </div>
                 
-                <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
+                <div id="repeats" class="slds-has-flexi-truncate slds-p-horizontal_medium ">
                     <label>Additional Applications</label><br/>
                     <apex:inputText value="{!newApp.Number_of_Apps__c}"/>
                 </div>
@@ -78,7 +79,7 @@
             <br/>
            <div class="slds-grid">
                <div class="slds-has-flexi-truncate slds-p-horizontal_medium"></div>
-                <div class="slds-has-flexi-truncate slds-p-horizontal_medium">
+                <div  id="repeats" class="slds-has-flexi-truncate slds-p-horizontal_medium repeats">
                         <label>Weeks Apart: </label><br/>
                         <apex:inputText value="{!newApp.Weeks_Apart__c}"/>
                 </div>
@@ -142,15 +143,15 @@
             document.getElementById(to).style.display = 'block';
         }
 
+    		
     
-
         let selectedProds = new Map();
 
         // Display datatable on document ready
         $(document).ready(function() {
             document.getElementById('productDiv').style.display = 'none';
             document.getElementById('prodDetails').style.display = 'none';
-            var test = document.getElementById('cBox').checked;
+            
             console.log(test, 1); 
             $('.addApp').attr('disabled', 'true');
             $('#productsTable').DataTable({
@@ -241,10 +242,13 @@
                 $('.addApp').attr('disabled', 'true');
                 console.log('Not a Valid Date');
             }
+ 
         }
 
         function closeWindow() {
             window.top.location.href = '{!redirectUrl}';
         }
+    
+    	
     </script>
 </apex:page>
