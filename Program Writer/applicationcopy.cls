@@ -7,10 +7,10 @@ List<sObject> apps = new List<sObject>();
 if(newApp.repeat__c == True){
     
     Integer days = Integer.valueOf(newApp.Weeks_Apart__c) * 7;
-    for(Decimal i=0; i<newApp.Number_of_Apps__c -1; i++){
+    for(Decimal i=0; i<newApp.Number_of_Apps__c; i++){
         system.debug(days);
         newApp.date__c = newApp.date__c.addDays(days); 
-        newApp.Number_of_Apps__c += -1; 
+        //newApp.Number_of_Apps__c += -1; 
         sobject cloned = newApp.clone(true);
         apps.add(cloned);
          
