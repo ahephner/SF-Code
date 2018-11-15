@@ -27,16 +27,17 @@ public class ApplicationCloneWithProducts_Controller {
          try {
 
               //copy the purchase order - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
-             app = [select Id, Name, Area__c, Program_ID__c, Month__c , Week__c , Note__c , 
+             app = [select Id, Name, Area__c, Program_ID__c, repeat__c, Note__c , 
              Date__c,  Weeks_Apart__c, Number_of_Apps__c
              from Application__c where id = :app.id];
             
-            // if(app.repeat__c == true){
+             if(app.repeat__c == true){
                     Integer days = Integer.valueOf(app.Weeks_Apart__c) * 7;
              		decimal run = 1; 
                     for(Decimal i=0; i<app.Number_of_Apps__c; i++){
                             app.Date__c = app.Date__c.addDays(days);
-                        	run += i; 
+                        	run += 1; 
+                        	app.repeat__c = true; 
                         	app.Name = app.Name + ' ' + run;
                             newApp = app.clone(false);
                             insert newApp;
@@ -55,7 +56,7 @@ public class ApplicationCloneWithProducts_Controller {
                                     items.add(newAP);
                             }
              insert items;
-                    }
+                    }}
          } catch (Exception e){
              // roll everything back in case of error
             Database.rollback(sp);
