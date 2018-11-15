@@ -18,6 +18,6 @@ public class ProgramCloneWithApps_Controller {
         }
     
     public PageReference cloneProgram() {
-    	return null; 
+    	return new PageReference('/lightning/r/Program__c/a0J3C000000SydqUAC/view'); 
     }
 }
