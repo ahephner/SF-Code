@@ -18,6 +18,24 @@ public class ProgramCloneWithApps_Controller {
         }
     
     public PageReference cloneProgram() {
-    	return new PageReference('/lightning/r/Program__c/a0J3C000000SydqUAC/view'); 
+        
+        Savepoint sp = Database.setSavepoint();
+        //new program base
+        Program__c newPro; 
+       
+        try{
+            pro = [select id, name, Account__c, CreatedById, year__c 
+                from Program__c where id = :pro.Id]; 
+            newPro = pro.clone(false);
+            insert newPro; 
+            
+            
+        }catch(Exception e){
+            Database.rollback(sp);
+            ApexPages.addMessages(e);
+            return null;
+            
+        }
+    	return new PageReference('/lightning/r/Program__c/'+newPro.id+'/view'); 
     }
 }

@@ -1,3 +1,5 @@
+//for reference only this is current production code on 11/16/18
+
 public class ApplicationCloneWithProducts_Controller {
 
     //added an instance variable for the standard controller
