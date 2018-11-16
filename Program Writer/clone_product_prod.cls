@@ -1,62 +1,55 @@
-public class ProgramCloneWithApps_Controller {
-     //added an instance variable for the standard controller
-        private ApexPages.StandardController controller {get; set;}
-    
-         // add the instance for the variables being passed by id on the url
-        private Program__c pro {get;set;}
-    	private Area__c area{get;set;}
-    	private Application__c apps {get;set;}
-        // set the id of the record that is created -- ONLY USED BY THE TEST CLASS
-        public ID newProgramId {get;set;}
-    
-        // initialize the controller
-        public ProgramCloneWithApps_Controller(ApexPages.StandardController controller) {
-    
-            //initialize the stanrdard controller
-            this.controller = controller;
-            // load the current record
-            pro = (Program__c)controller.getRecord();
-    		//apps = (Application__c)controller.getRecord();
-        }
-    
-    public PageReference cloneProgram() {
-        
-        Savepoint sp = Database.setSavepoint();
-        //new program base
-        Program__c newPro; 
-       
-        try{
-            //find and insert new program
-            pro = [select id, name, Account__c, CreatedById, year__c 
-                from Program__c where id = :pro.Id]; 
-            newPro = pro.clone(false);
-            //just to check if it's an actual copy
-            //newPro.Name = 'Cloned'; 
-            insert newPro; 
-            system.debug(newPro.id);
-            //grab area 
-            if(newPro.id != null){
-            	List<Area__c> areaCopy = new List<Area__c>(); 
-                for(Area__c a1 : [Select x.id, x.name, x.Area_Acres__c, x.Area_K_Total__c,x.Area_N_Total__c,  
-                                  x.Area_P_Total__c,x.Area_Sq_Feet__c,x.Date__c, x.Type__c  
-                                  from area__c x where program__c = :pro.id]){
-                                    Area__c na = a1.clone(false);
-                                    na.Program__c  = newPro.id;
-                                      areaCopy.add(na);
-                }system.debug(areaCopy); 
-                insert areaCopy; 
-            }else{ 
-                return null;
-            }
-        
-            newProgramId = newPro.id; 
-            
-        }catch(Exception e){
+public class ApplicationCloneWithProducts_Controller {
+
+    //added an instance variable for the standard controller
+    private ApexPages.StandardController controller {get; set;}
+     // add the instance for the variables being passed by id on the url
+    private Application__c app {get;set;}
+    // set the id of the record that is created -- ONLY USED BY THE TEST CLASS
+    public ID newRecordId {get;set;}
+
+    // initialize the controller
+    public ApplicationCloneWithProducts_Controller(ApexPages.StandardController controller) {
+
+        //initialize the stanrdard controller
+        this.controller = controller;
+        // load the current record
+        app = (Application__c)controller.getRecord();
+
+    }
+
+    // method called from the VF's action attribute to clone the application
+    public PageReference cloneWithItems() {
+
+         // setup the save point for rollback
+         Savepoint sp = Database.setSavepoint();
+         Application__c newApp;
+
+         try {
+
+              //copy the purchase order - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
+             app = [select Id, Name, Area__c, Month__c , Week__c , Note__c , Date__c from Application__c where id = :app.id];
+             newApp = app.clone(false);
+             insert newApp;
+
+             // set the id of the new po created for testing
+               newRecordId = newApp.id;
+
+             // copy over the line items - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
+             List<Application_Product__c> items = new List<Application_Product__c>();
+             for (Application_Product__c ap1 : [Select ap.Id, ap.Product__c, ap.Note__c, ap.Note_Other__c, ap.OZ_M__c, ap.LBS_ACRE__c From Application_Product__c ap where Application__c = :app.id]) {
+                  Application_Product__c newAP = ap1.clone(false);
+                  newAP.Application__c = newApp.id;
+                  items.add(newAP);
+             }
+             insert items;
+
+         } catch (Exception e){
+             // roll everything back in case of error
             Database.rollback(sp);
             ApexPages.addMessages(e);
             return null;
-            
-        }
-    	return new PageReference('/lightning/r/Program__c/'+newPro.id+'/view'); 
+         }
+
+        return new PageReference('/'+newApp.id+'/e?retURL=%2F'+newApp.id);
     }
 }
