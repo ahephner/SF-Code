@@ -28,7 +28,6 @@ public class ProgramCloneWithApps_Controller {
         try{
             //flow control 
             //Hoisting out of if's not like js 
-            //drop controled with loop 
             boolean grabApps = false; 
             
             //find and insert new program
@@ -42,30 +41,29 @@ public class ProgramCloneWithApps_Controller {
             
             //grab area 
             if(newPro.id != null){
-                //this var holds the orginal area id to be overwrote
                 id holdOver; 
             	List<Area__c> areaCopy = new List<Area__c>(); 
                 List<Application__c> apps =new List<Application__c>();
                 for(Area__c a1 : [Select x.id, x.name, x.Area_Acres__c, x.Area_K_Total__c,x.Area_N_Total__c,  
-                                  x.Area_P_Total__c,x.Area_Sq_Feet__c,x.Date__c, x.Type__c  
+                                  x.Area_P_Total__c,x.Area_Sq_Feet__c,x.Date__c, x.Type__c, x.PrevID__c 
                                   from area__c x where program__c = :pro.id]){
                                     holdOver = a1.id; 
                                     Area__c na = a1.clone(false);
                                     na.Program__c  = newPro.id;
+                                    na.PrevID__c = a1.id; 
                                     areaCopy.add(na);
-                                  } insert areaCopy; 
-                system.debug('holdOver ->  '+holdOver); 
-               
-               //go through the cloned areas and grabs their id's 
+                                  }insert areaCopy; system.debug('areaCopy ->  ' + areaCopy);
+
                 for(area__c j: areaCopy){
                 for(application__c ap :[select a.Id, a.Name, a.Area__c, a.repeat__c, a.Note__c , 
              							a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c
-                                        from Application__c a where a.area__c = :holdOver] ){
+                                        from Application__c a where a.area__c = :j.previd__c] ){
                                             system.debug('stored ID--> '+j.Id);
                                             Application__c newApp = ap.clone(false); 
                                             newApp.area__c = j.Id;
+
                                             apps.add(newApp);
-                                            //multiple clones now
+                                            system.debug('newApp ->  ' +newApp);
                                         }upsert apps; 
                                      }
                                }
