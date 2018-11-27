@@ -1,0 +1,16 @@
+if(newPro.id != null){
+               List<Application__c> copyApp = new List<Application__c>(); 
+                for(Application__c x : [select a.Id, a.Name, a.Area__c, a.Program_ID__c, a.repeat__c, a.Note__c , 
+             							a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c
+                                        from Application__c a where Program_ID__c = :pro.id ]){
+                                          
+                                            Application__c app = x.clone(false);
+                                            //x.Program__c = newPro.id; 
+                                            copyApp.add(app); 
+                                           
+                                        } insert copyApp; 
+                    }else{
+                        return null; 
+                    }
+
+                                            
