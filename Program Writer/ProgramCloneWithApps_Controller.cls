@@ -35,50 +35,46 @@ public class ProgramCloneWithApps_Controller {
                 from Program__c where id = :pro.Id]; 
             newPro = pro.clone(false);
             //just to check if it's an actual copy
-            //newPro.Name = 'Cloned'; 
+
+            newPro.Name += ' Cloned'; 
+
             insert newPro; 
             system.debug(newPro.id);
             
             //grab area 
             if(newPro.id != null){
+
+                id holdOver; 
             	List<Area__c> areaCopy = new List<Area__c>(); 
+                List<Application__c> apps =new List<Application__c>();
                 for(Area__c a1 : [Select x.id, x.name, x.Area_Acres__c, x.Area_K_Total__c,x.Area_N_Total__c,  
-                                  x.Area_P_Total__c,x.Area_Sq_Feet__c,x.Date__c, x.Type__c  
+                                  x.Area_P_Total__c,x.Area_Sq_Feet__c,x.Date__c, x.Type__c, x.PrevID__c 
                                   from area__c x where program__c = :pro.id]){
+                                    holdOver = a1.id; 
                                     Area__c na = a1.clone(false);
                                     na.Program__c  = newPro.id;
-                                      areaCopy.add(na);
-                }
-                insert areaCopy;
-                if(areaCopy.size() > 0){
-                    grabApps = true; 
-                    system.debug('area copy'+ areaCopy.size()); 
-                }
-            }else {
-                return null; 
-            }
-            //apps 
-            system.debug(grabApps + ' grabApps Value');
-            //=true not correct maybe ==
-            if(grabApps = true){
-                List<Application__c> appCopy = new List<Application__c>(); 
-                for(Application__c ap :[select a.Id, a.Name, a.Area__c, a.repeat__c, a.Note__c , 
+                                    na.PrevID__c = a1.id; 
+                                    areaCopy.add(na);
+                                  }insert areaCopy; system.debug('areaCopy ->  ' + areaCopy);
+
+                for(area__c j: areaCopy){
+                for(application__c ap :[select a.Id, a.Name, a.Area__c, a.repeat__c, a.Note__c , 
              							a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c
-                                        from Application__c a where a.Program_ID__c = :pro.Id] ){
-                                            Application__c work = ap.clone(false);
-                                            system.debug(ap.Area__c + ' AP Area C');
-                                            work.Area__c = ap.Area__c; 
-                                            system.debug(work.Area__c + ' Work Area C');
-                                            appcopy.add(work); 
-                }insert appCopy;
-                system.debug(appCopy.size() + ' appCopy Size');
-            }else{return null;}
-            
-            
-            //appProducts here 
+                                        from Application__c a where a.area__c = :j.previd__c] ){
+                                            system.debug('stored ID--> '+j.Id);
+                                            Application__c newApp = ap.clone(false); 
+                                            newApp.area__c = j.Id;
+
+                                            apps.add(newApp);
+                                            system.debug('newApp ->  ' +newApp);
+                                        }upsert apps; 
+                                     }
+                               }
+                
             newProgramId = newPro.id; 
-            
-        }catch(Exception e){
+        }
+        catch(Exception e){
+
             Database.rollback(sp);
             ApexPages.addMessages(e);
             return null;
