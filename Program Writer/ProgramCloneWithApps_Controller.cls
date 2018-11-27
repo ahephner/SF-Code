@@ -35,12 +35,15 @@ public class ProgramCloneWithApps_Controller {
                 from Program__c where id = :pro.Id]; 
             newPro = pro.clone(false);
             //just to check if it's an actual copy
+
             newPro.Name += ' Cloned'; 
+
             insert newPro; 
             system.debug(newPro.id);
             
             //grab area 
             if(newPro.id != null){
+
                 id holdOver; 
             	List<Area__c> areaCopy = new List<Area__c>(); 
                 List<Application__c> apps =new List<Application__c>();
@@ -71,6 +74,7 @@ public class ProgramCloneWithApps_Controller {
             newProgramId = newPro.id; 
         }
         catch(Exception e){
+
             Database.rollback(sp);
             ApexPages.addMessages(e);
             return null;

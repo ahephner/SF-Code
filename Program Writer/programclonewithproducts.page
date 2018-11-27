@@ -1,0 +1,4 @@
+<apex:page standardController="Program__c"
+           extensions="ProgramCloneWithApps_Controller"
+           action="{!cloneProgram}">
+</apex:page>

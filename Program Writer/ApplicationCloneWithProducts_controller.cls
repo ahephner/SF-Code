@@ -56,7 +56,8 @@ public class ApplicationCloneWithProducts_Controller {
                                     items.add(newAP);
                             }
              insert items;
-                    }}
+                    }
+                }
          } catch (Exception e){
              // roll everything back in case of error
             Database.rollback(sp);
@@ -69,3 +70,5 @@ public class ApplicationCloneWithProducts_Controller {
        return new PageReference('/lightning/r/Area__c/'+app.Area__c+'/view?ws=%2Flightning%2Fr%2FProgram__c%2F'+app.Program_ID__c+'%2Fview'); 
     }
 }
+
+
