@@ -51,18 +51,22 @@ if(newPro.id != null){
 Select name, date__c, (select Product_Name__c from Application_Products__r) from application__c limit 30
 
 //testing inner selecting of products from application and sitting them into a list 
-List<Application_Products__c> prod = new List<Application_Products__c>();
+
 Application__c app = [Select a.Id, a.Name, a.Area__c, a.repeat__c, a.Note__c , 
-             		  a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c
-                      (select Application__c, Area_Square_Feet_M__c,
+             		  a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c, 
+                      (select  Area_Square_Feet_M__c,
                       Product_Name__c, Categories__c, K__c, K_Calc__c, 
                       K_Val__c,LBS_ACRE__c, N__c,N_Val__c, Note__c, OZ_M__c, 
                       P__c, P_Calc__c, P_Val__c,Product_Category__c, Product_Size__c, 
                       Product_Sub_Category__c, Rate__c, Total_Used_f__c, Units_Required__c
                       from Application_Products__r)
-                      from Application__c a where id = 'a0H3C000004GTGxUAO' ];
-for(Application_Products__c p : app){
-    prod.add(p); 
+                      from Application__c a  where a.id = 'a0H3C000004GTGxUAO'];
+//system.debug(app);
+//notice how to declare list from inner query and set values from that query
+List<Application_Product__c> prod = app.application_products__r; 
+
+//loop through list here
+for(Application_product__c p : prod){
+    system.debug(p); 
 }
 
-System.debug(prod); 
