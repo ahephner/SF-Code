@@ -61,38 +61,23 @@ public class ProgramCloneWithApps_Controller {
                 				   //system.debug('areaCopy ->  ' + areaCopy);
 
                 for(area__c j: areaCopy){
-                    for(application__c ap :[select a.Id, a.Name, a.Area__c, a.repeat__c, a.Note__c , 
-                                            a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c,
-                                    //inner query here:
-                                            (select Application__c, Area_Square_Feet_M__c,  Product_Name__c,
-                                            Categories__c, K__c, K_Calc__c, K_Val__c,LBS_ACRE__c,
-                                            N__c,N_Val__c, Note__c, OZ_M__c,P__c, P_Calc__c,
-                                            P_Val__c,Product_Category__c, Product_Size__c, name, 
-                                            Product_Sub_Category__c, Rate__c, Total_Used_f__c, Units_Required__c
-                                            from Application_Products__r) 
+                    for(application__c ap :[select a.Id, a.Name, a.Area__c, a.repeat__c, a.Note__c , a.Clone__c, 
+                                            a.Date__c,  a.Weeks_Apart__c, a.Number_of_Apps__c, a.Prev_App_Id__c
                                             from Application__c a where a.area__c = :j.previd__c] ){
                                         //new app info here
                                                // system.debug('stored ID--> '+j.Id);
                                                 Application__c newApp = ap.clone(false); 
                                                 newApp.area__c = j.Id;
+                                                newApp.Prev_App_Id__c = ap.Id; 
+                                                newApp.Clone__c = True; 
                                                 apps.add(newApp);
-                                     			//system.debug(newApp);
-                                       //new products here
-                                            List<Application_Product__c> duct = ap.application_products__r;
-                                    
-                                    //loop through update then send out
-                                            for(Application_Product__c p : duct){
-                                                   Application_Product__c np = p.clone(false);
-                                                    np.Application__c = newApp.id; 
-                                                    //system.debug('new product id -> ' + np.Application__c);
-                                                    prods.add(np);
-                                            }
-                                    //Upsert apps        
+                                     			//system.debug(newApp);      
                                             } 
+                    					 //upsert apps 
                                          }upsert apps;
                                           system.debug('apps ->  ' +apps);  
                                }
-                
+            //testing purposes    
             newProgramId = newPro.id; 
         }
         catch(Exception e){
