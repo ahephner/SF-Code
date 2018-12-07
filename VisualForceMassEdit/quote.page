@@ -1,0 +1,22 @@
+<apex:page standardController="Quote" recordSetVar="q"  tabStyle="Quote" lightningStylesheets="true" >
+   <apex:form >
+      <apex:pageBlock title="Edit Budget Amount" mode="maindetail">
+         <apex:pageMessages />
+         <!--<apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+         </apex:pageBlockButtons>--> 
+         <apex:pageBlockTable value="{!selected}" var="x">
+            <apex:column value="{!x.name}"/>
+            <apex:outputLink value="/{!x.Customer__r.ID}" >
+               <apex:outputText value="{!x.Customer_Name__c}"/>
+            </apex:outputLink>
+            <apex:column value="{!x.Sales_2_Years_Ago__c}"/>
+            <apex:column value="{!x.Previous_Years_Sales__c}"/>
+            <apex:column headerValue="Budget">
+               <apex:inputField value="{!x.Total_Budget_Amount__c}"/>
+            </apex:column>
+         </apex:pageBlockTable>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
