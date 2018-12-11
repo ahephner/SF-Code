@@ -1,5 +1,5 @@
 //trigger to add products to apps on clones.....
-//should be bulkified 
+//needs to be bulkified 
 trigger addProdsToApps on Application__c ( after insert) {
     string prevID;
     set<Id> appId = new set<ID>(); 
@@ -43,3 +43,6 @@ trigger addProdsToApps on Application__c ( after insert) {
     }
   }
 }
+
+//put on the apex class when using id to look up @future date sf not passing lst 3 characters to product program id
+///newApp.Prev_Program_ID__c = j.Program_Prev_Id__c.substring(0,j.program_Prev_Id__c.length()-3); 
