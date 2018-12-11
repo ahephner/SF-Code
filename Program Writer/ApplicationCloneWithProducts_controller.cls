@@ -36,7 +36,7 @@ public class ApplicationCloneWithProducts_Controller {
              		decimal run = 1; 
                     for(Decimal i=0; i<app.Number_of_Apps__c; i++){
                             app.Date__c = app.Date__c.addDays(days);
-                        	run += 1; 
+                        	run = run + 1; 
                         	app.repeat__c = true; 
                         	app.Name = app.Name + ' ' + run;
                             newApp = app.clone(false);
@@ -45,7 +45,7 @@ public class ApplicationCloneWithProducts_Controller {
              // set the id of the new po created for testing
              //outside of my for loop not good 
                newRecordId = newApp.id;
-
+					system.debug('NewRecordID ######### ' + newRecordID); 
              // copy over the line items - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
              List<Application_Product__c> items = new List<Application_Product__c>();
              for (Application_Product__c ap1 : [Select ap.Id, ap.Product__c, ap.Note__c, ap.Note_Other__c, 
@@ -56,8 +56,7 @@ public class ApplicationCloneWithProducts_Controller {
                                     items.add(newAP);
                             }
              insert items;
-                    }
-                }
+                    }}
          } catch (Exception e){
              // roll everything back in case of error
             Database.rollback(sp);
@@ -70,5 +69,3 @@ public class ApplicationCloneWithProducts_Controller {
        return new PageReference('/lightning/r/Area__c/'+app.Area__c+'/view?ws=%2Flightning%2Fr%2FProgram__c%2F'+app.Program_ID__c+'%2Fview'); 
     }
 }
-
-
