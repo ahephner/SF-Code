@@ -1,0 +1,39 @@
+<apex:page standardController="Program__c" extensions="ProgramCloneWithApps_Controller" showQuickActionVfHeader="false" showHeader="false" docType="HTML-5.0">
+   
+    <head>
+          <apex:slds />    
+    </head>
+ 
+    <div class='slds-page-header'>
+         Clone Program 
+    </div>
+       
+		<apex:form styleClass="slds">
+            <div class="slds-hasflexi-truncate slds-p-horizontal_medium">
+                <label>Program Name:</label><br/>
+                <apex:inputText value="{!program__c.name}"/>	
+            </div> 
+            
+           <!--S <div class="slds-hasflexi-truncate slds-p-horizontal_medium">
+                <label>Account:</label><br/>
+                <apex:inputText value="{!Program__c.Account__c}" />	
+            </div>-->
+             </apex:form>  
+   
+        <br/>
+      <apex:form>
+        <div class="slds-grid" style='padding: 4px;'>
+            <apex:commandButton value="Create New Record" action="{!cloneProgram}"/>
+            <button class="slds-button slds-button_destructive" onclick="kill()">Cancel</button>
+        </div>
+      </apex:form>
+        
+  <script>
+    
+    function kill(){
+    	    window.history.back(); 
+    
+    }
+    </script> 
+        
+</apex:page>
