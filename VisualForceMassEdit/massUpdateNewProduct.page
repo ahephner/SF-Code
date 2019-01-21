@@ -1,0 +1,27 @@
+<apex:page standardController="Product__c" recordSetVar="unused"  lightningStylesheets="true" >
+   <apex:includeScript value="{!$Resource.UtilJS}" />
+   <apex:form >
+      <apex:pageBlock title="Edit Primary Category" mode="edit">
+         <apex:pageMessages />
+         <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+         </apex:pageBlockButtons>
+         <apex:pageBlockTable value="{!selected}" var="prod">
+            <apex:column headervalue="Product #">
+             <apex:outputText value="{!prod.name}" />
+             </apex:column>
+          	<apex:column headerValue="Product Name">
+               <apex:outputText value="{!prod.Product_Name__c}"/>
+          </apex:column>
+            <apex:column value="{!prod.GP_Item_Class__c}"/>
+            <apex:column headerValue="Primary Cat.">
+               <apex:inputField value="{!prod.Primary_Category__c}"/>
+            </apex:column>
+            <apex:column headerValue="Sub Cat.">
+               <apex:inputField value="{!prod.Subcategory__c}"/>
+            </apex:column>
+         </apex:pageBlockTable>
+      </apex:pageBlock>
+   </apex:form>
+</apex:page>
