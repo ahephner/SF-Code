@@ -1,0 +1,29 @@
+<apex:page standardController="Product__c" recordSetVar="unused" sidebar="false" lightningStylesheets="true">
+<apex:includeScript value="{!$Resource.UtilJS}" />
+<apex:form >
+    <apex:pageBlock >
+        <apex:pageMessages />
+            <apex:pageBlock >
+            Note: All modifications made on the page will be lost if Return button is clicked without clicking the Save button first. 
+            </apex:pageBlock>
+                <apex:pageBlockButtons >
+                        <apex:commandButton value="Save" action="{!save}"/>
+                        <apex:commandButton value="Return" action="{!cancel}"/>
+                        </apex:pageBlockButtons>
+                        <apex:pageBlockTable value="{!selected}" var="prod" id="table">
+                        <apex:column headerValue="Name">
+                        <apex:outputText value="{!prod.Product_Name__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Product #">
+                        <apex:outputText value="{!prod.Product_Code__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="Category">
+                        <apex:outputText value="{!prod.Primary_Category__c}"/>
+                        </apex:column>
+                        <apex:column headerValue="JDT Product">
+                        <apex:inputField value="{!prod.JDT_Product__c}"/>
+                        </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:form>
+</apex:page>
