@@ -1,36 +1,43 @@
 trigger updateProducts2 on Product__c (before insert, before update) {
     
-    Product2 npt = new Product2(); 
-    List<Product2> p =[select name, id, ATS_Product_ID__c, 
-                  Average_Cost__c, ProductCode,Description
-                  from product2 where ATS_Product_ID__c != Null]; 
-   system.debug('list Product2 ==>> ' + p);
+     
+    List<Product2> p = [select name, id, Average_Cost__c, 
+                       Productcode, Description from product2
+                       where From_ATS_Product__c = True]; 
+	
+    system.debug('product2 list ------> '+ p);
+    //list to update or insert new entry
+    List<Product2> newProdList = new List<Product2>(); 
+    List<Product2> updateList = new List<Product2>();
+    
     for(Product__c prods: Trigger.new){
         for(product2 pt: p){
-            //GP does not allow product code to be changed once set. So we can treat it as if it is an ID. 
             if(prods.Name == pt.ProductCode && prods.JDT_Product__c == True){
-                pt.Description = prods.Description__c; 
+                pt.Description = prods.Description__c;
                 pt.Average_Cost__c = prods.Average_Cost__c;
                 pt.Name = prods.Product_Name__c;
-                pt.productcode = prods.Name; 
-                prods.In_JDT_Price_Book1__c = True; 
-                upsert pt; 
-            } else if(prods.JDT_Product__c == True && prods.In_JDT_Price_Book1__c == False ){
-                npt.Description = prods.Description__c; 
+                pt.IsActive = prods.Active__c; 
+                //prods.In_JDT_Service_Book__c = True;
+                updateList.add(pt); 
+            } else if(prods.JDT_Product__c == True && prods.In_JDT_Service_Book__c == False){
+                Product2 npt = new Product2();
+                npt.Description = prods.Description__c;
                 npt.Average_Cost__c = prods.Average_Cost__c;
                 npt.Name = prods.Product_Name__c;
-                npt.productcode = prods.Name; 
-                npt.from_ats_product__c = True; 
-                prods.In_JDT_Price_Book1__c = True; 
-                //maybe do a formula field on the object vs. upsert 
-                  
-                system.debug(npt + ' new prod');
+                npt.ProductCode = prods.Name;
+                npt.IsActive = prods.Active__c; 
+                npt.From_ATS_Product__c = True;
+                prods.In_JDT_Service_Book__c = True; 
+                //system.debug('new prod ---> '+ npt);
+                newProdList.add(npt);
+                system.debug('list in loop --> '+newProdList);
             }
-           
         }
-        
+        system.debug('newProdList out---> ' +newProdList); 
     }
-            if(npt.name != null){
-                insert npt; 
+    
+    if(!newProdList.isEmpty() || !updateList.isEmpty()){
+                insert newProdList; 
+                upsert updateList; 
             }
 }
