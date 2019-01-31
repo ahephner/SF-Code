@@ -1,0 +1,6 @@
+IF(AND(Current_Year_CY_Sales__c > 1,
+Current_Year_FY_Sales__c > 1), (Current_Year_CY_Sales__c + Current_Year_FY_Sales__c) - 
+(Last_Year_CY_Sales__c + Last_Year_FY_Sales__c ),
+IF(ISPICKVAL(Sales_Rep__r.Fiscal_Year__c, 'Calendar'), Current_Year_CY_Sales__c - Last_Year_CY_Sales__c ,
+IF(ISPICKVAL(Sales_Rep__r.Fiscal_Year__c, 'Sales'), Current_Year_FY_Sales__c - Last_Year_FY_Sales__c , 
+0)))
