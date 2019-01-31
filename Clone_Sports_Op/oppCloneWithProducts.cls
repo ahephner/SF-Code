@@ -39,9 +39,10 @@ public class oppCloneWithProducts {
             Quote q = new Quote(); 
             
             q.name = newOp.Name;
-            q.OpportunityId = newOp.Id;
-            q.IsSyncing = True; 
+            q.OpportunityId = newOp.Id; 
             insert q; 
+            newOp.SyncedQuoteId = q.Id; 
+            update newOp; 
         }catch(exception e){
             Database.rollback(sp);
             ApexPages.addMessages(e);
