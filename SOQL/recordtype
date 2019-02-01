@@ -1,0 +1,3 @@
+find record type name 
+SELECT Id, Name from recordtype where id = '01241000001MClTAAW' 
+SELECT Id, Name from recordtype where id = 'typeid'

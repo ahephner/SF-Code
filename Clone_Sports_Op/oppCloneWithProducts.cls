@@ -3,8 +3,8 @@ public class oppCloneWithProducts {
     private ApexPages.StandardController controller {get; set;}
     
     private Opportunity opp {get; set;}
-    private Product2 prods {get; set;}
-    
+    //private Product2 prods {get; set;}
+    //set the id of the record that is created --Only used by Test Class
     public ID newOppID {get; set;}
     
     //start the controller
@@ -43,6 +43,7 @@ public class oppCloneWithProducts {
             insert q; 
             newOp.SyncedQuoteId = q.Id; 
             update newOp; 
+
         }catch(exception e){
             Database.rollback(sp);
             ApexPages.addMessages(e);
@@ -60,9 +61,11 @@ public class oppCloneWithProducts {
                 
             }
             system.debug(opli);
-            if(!opli.isempty()){
+            if(opli.size()>1){
                 insert opli; 
             }
+            //test
+            newOppID = newOp.Id;
         }catch(exception i){
             Database.rollback(sp);
             ApexPages.addMessages(i); 
