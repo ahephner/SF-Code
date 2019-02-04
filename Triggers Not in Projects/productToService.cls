@@ -7,7 +7,7 @@ trigger updateProducts2 on Product__c (before insert, before update) {
 	
     system.debug('product2 list ------> '+ p);
     //list to update or insert new entry
-    List<Product2> newProdList = new List<Product2>(); 
+    List<Product2> newProdList = new List<Product2>();
     List<Product2> updateList = new List<Product2>();
     
     for(Product__c prods: Trigger.new){
