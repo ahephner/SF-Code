@@ -1,39 +1,33 @@
 @isTest
 private class Test_ATSProduct_to_Product2_Trigger {
-    @isTest static void TestMovingProducts(){
-        product__c notinjdt = new product__c(name='123', Product_Name__c = 'not in',In_JDT_Service_Book__c= false,  JDT_Product__c = false,
+   static testMethod void testInsertRecords(){
+    
+       List<Product__c> products = new List<Product__c>(); 
+	 List<Product2> prod2 = new List<Product2>(); 
+
+     
+        Product__c p1 = new Product__c(name='123', Product_Name__c = 'not in',In_JDT_Service_Book__c= false,  JDT_Product__c = false,
                                             description__c ='description', average_cost__c = 1, active__c = True);
-        insert notinjdt;
-        product__c injdt = new product__c(name='456', Product_Name__c = 'in',In_JDT_Service_Book__c= true,  JDT_Product__c = true,
-                                            description__c ='hello', average_cost__c = 1, active__c = True);
-        insert injdt; 
-        list<product__c> atp = [select name, Description__c, jdt_product__c, average_cost__c, 
-                               product_name__c, active__c, In_JDT_Service_Book__c from product__c]; 
-        product2 npt = new product2(name='new', productcode = '789', From_ATS_Product__c = false );
-        product2 pt = new product2(name='in', From_ATS_Product__c= true );
+        product__c p2 = new Product__c(name='456', Product_Name__c = 'in',In_JDT_Service_Book__c= false,  JDT_Product__c = true,
+                                            description__c ='hello', average_cost__c = 1, active__c = true); 
+        products.add(p1);
+       
+       
         
-        test.startTest();
-        database.insert(pt); 
-        insert npt;
-        product2 testnpt =[select name, description, productcode from product2 where id in :pt];
+        product2 a1 = new product2(name='new', productcode = '789', description='', From_ATS_Product__c = false );
+        product2 a2 = new product2(name='in', productcode = '', description = '', From_ATS_Product__c= true );
         
-        list<product2> inl = new list<product2>();
-		list<product2> updateList = new list<product2>();
+        prod2.add(a1);
+        prod2.add(a2);
+        insert prod2; 
+    system.debug('before test prod2 '+prod2);    
+    
+    
+       Test.startTest();
+      insert p2;
+       Test.stopTest();
+       
+       system.assertEquals(p2.In_JDT_Service_Book__c, false);
         
-        
-        for(product__c prods: atp){
-            if(testnpt.ProductCode == prods.Name && prods.JDT_Product__c == true){
-                testnpt.Description = injdt.Description__c;
-                inl.add(testnpt);
-            }
-        }
-        if(!inl.isEmpty() || !updateList.isEmpty()){
-            insert inl;
-            upsert updateList;
-        }
-        system.debug(inl.size());
-        test.stopTest();
-        system.assertEquals('hello', testnpt.Description);
-        
-    }
+   }
 }
