@@ -1,16 +1,14 @@
-trigger updateProducts2 on Product__c (before insert, before update) {
-    
-     
-    List<Product2> p = [select name, id, Average_Cost__c, 
+    Test.startTest();
+        List<Product2> p = [select name, id, Average_Cost__c, 
                        Productcode, Description from product2
                        where From_ATS_Product__c = True]; 
 	
     system.debug('product2 list ------> '+ p);
     //list to update or insert new entry
-    List<Product2> newProdList = new List<Product2>();
+    List<Product2> newProdList = new List<Product2>(); 
     List<Product2> updateList = new List<Product2>();
     
-    for(Product__c prods: Trigger.new){
+    //for(Product__c prods: Trigger.new){
         for(product2 pt: p){
             if(prods.Name == pt.ProductCode && prods.JDT_Product__c == True){
                 pt.Description = prods.Description__c;
@@ -32,7 +30,7 @@ trigger updateProducts2 on Product__c (before insert, before update) {
                 newProdList.add(npt);
                 system.debug('list in loop --> '+newProdList);
             }
-        }
+//        }
         system.debug('newProdList out---> ' +newProdList); 
     }
     
@@ -40,4 +38,12 @@ trigger updateProducts2 on Product__c (before insert, before update) {
                 insert newProdList; 
                 upsert updateList; 
             }
-}
+        test.stopTest();
+        system.debug('prod2 list '+updatelist);
+        List<Product2> updatedProd = [select id, name, Description, Average_Cost__c,
+                                      IsActive, From_ATS_Product__c
+                                      from Product2 where id IN :prod2 ];
+       system.debug(updatedProd);
+        system.assertEquals(true, updatedProd.get(1).from_ats_product__c); 
+        //system.assertEquals(products.get(1).description__c, updatedProd.get(1).description); 
+    }

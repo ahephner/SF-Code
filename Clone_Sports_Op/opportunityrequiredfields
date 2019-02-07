@@ -1,0 +1,33 @@
+opportunity name --> Name
+account name  --> AccountId
+stage --> StageName
+close date --> CloseDate
+job type --> Job_Type__c
+record type --> recordtypeid '01241000001MClTAAW'
+syncid --> SyncedQuoteId
+
+product2 requirments
+price book name --> Name
+
+pricebook2
+pricebook name
+
+pricebookentry
+product --> Product2Id
+pricebook --> Pricebook2Id
+list price --> UnitPrice
+
+opportunitylineitem
+opportunity --> OpportunityId lookup(opportunity)
+Product --> Product2Id lookup(Product)
+sales price --> UnitPrice
+Quantity --> Quantity
+
+quote requirments
+
+quote name  --> name
+opportunity name --> opportunityid Master-detail(opportunity)
+
+opp. line item -> 006n0000008JqPdAAK
+cloned opp -> Opportunity:{Id=006n0000008JqPeAAK}
+second try newopID ----> 006n0000008JqPeAAK
