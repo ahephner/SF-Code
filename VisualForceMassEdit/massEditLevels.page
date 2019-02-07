@@ -19,6 +19,9 @@ Note: All modifications made on the page will be lost if Return button is clicke
 <apex:column headerValue="Athletic Level">
 <apex:inputField value="{!acc.Level__c}"/>
 </apex:column>
+<apex:column headerValue="Dura Edge Level">
+<apex:inputField value="{!acc.Zone__c}"/>
+</apex:column>
 </apex:pageBlockTable>
 </apex:pageBlock>
 </apex:form>
