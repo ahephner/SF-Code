@@ -8,3 +8,7 @@ WHERE Sales_Rep__r.Salesforce_User__c != null AND Owner_Not_Rep__c = true and ow
 SELECT Id, OwnerId, Sales_Rep__r.Salesforce_User__c  FROM Account 
 WHERE Sales_Rep__r.Salesforce_User__c != null 
 AND Owner_Not_Rep__c = true and ownerid != '00541000006o7BzAAI' and ownerid != '00541000001kAQpAAM'
+
+//accounts with no contacts
+select id, name from accounts where id not in (select accountid from contact)
+

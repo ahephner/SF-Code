@@ -1,0 +1,5 @@
+<apex:page showHeader="false"  StandardController="Quote"
+           extensions="lineItem" action="{!li}">
+   <apex:pageMessages />
+    
+</apex:page>
