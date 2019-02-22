@@ -6,19 +6,33 @@
         </head>	        
     	<body>
    			<div class='container'>
-                <div class='row logo'><apex:image style="width:75%;height:75%; border-bottom:2px;" url="{!$Resource.ATSJDTLogo}"/><br/></div>
+                <div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/></div>
                 <div class='row'>
-                        <h2>{!x.name}</h2>
-                                <apex:repeat value="{!product}" var="p">
-                                    {!p.Product2.Name}{!p.UnitPrice}
-                                </apex:repeat>
+                    <apex:pageBlock>
+                           
+                        <h6>Company Address:{!x.BillingStreet}</h6> 
+                        <h6>{!x.name}</h6>
+                                <apex:pageBlockTable value="{!product}" var="p">
+                                    <apex:column value= "{!p.Product2.Name}"/>
+                                    <apex:column value="{!p.quantity}"/>
+                                    <apex:column value= "{!p.UnitPrice}"/> 
+                                    <apex:column value="{!p.TotalPrice}"/> 
+                                    <apex:column value="{!p.Description}"/> 
+                                </apex:pageBlockTable>
+                   </apex:pageBlock>
                 </div>
-            </div>
-      <footer>
-           <h6>
-                I am in the footer! 
-           </h6> 
-       </footer>
+            
+                
+                <div class='row' style='background-color:#d4d5d8' ><h6>Quote Acceptance Information</h6></div>
+                    <div class='row'>
+						<div class='form'>
+                            <label><b>Signature:_________________________________</b></label><br/>
+                            <label><b>Name: _____________________________________</b></label><br/>
+                            <label><b>Title:_______________________________________</b></label><br/>
+                            <label><b>Date: _______________________________________</b></label>
+                        </div>
+                    </div>
+      </div>
      </body>   
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
