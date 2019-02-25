@@ -20,8 +20,9 @@ public with sharing class lineItemController {
         }
         
     public quote getx(){ 
-           		   x= [select createddate, name, ExpirationDate,QuoteNumber, CreatedById, 
-                     GrandTotal, BillingName, BillingStreet from quote where id ='0Q0n00000006Ts8CAE'];
+           		   x= [select createddate, name, ExpirationDate,QuoteNumber, CreatedBy.Name,CreatedBy.Email,
+                       GrandTotal, BillingName,shippingname,shippingstreet, shippingstate,  
+                       BillingStreet, billingstate from quote where id ='0Q0n00000006Ts8CAE'];
         	
         return x; 
                          }

@@ -3,22 +3,53 @@
  		<head>
             <meta charset="utf-8"/> 
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+       	<style>
+            .info{margin-top: 4%;}
+            </style>
         </head>	        
     	<body>
    			<div class='container'>
                 <div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/></div>
                 <div class='row'>
-                    <apex:pageBlock>
-                           
-                        <h6>Company Address:{!x.BillingStreet}</h6> 
-                        <h6>{!x.name}</h6>
+                    <apex:pageBlock >
+                              <div class='row info'>
+                               <div class='col-md-5'>
+                               	<h6>Company Address:{!x.BillingStreet}</h6>
+                               	<!--<h6>{!x.name}</h6>--> 
+                               </div> 
+                               <div class='col-md-5'>
+                                   <h6>Created Date:{!x.createddate}</h6><br/> 
+                                   <h6>Expiration Date:{!x.ExpirationDate}</h6><br/>
+                                <h6>Quote Number: {!x.QuoteNumber}</h6>   
+                               </div>
+                        </div>
+                        <div class='row'>
+                            <h6>Prepared By: {!x.CreatedBy.name}</h6><br /> 
+                            <h6>Email: {!x.createdby.email}</h6>
+                        </div> 
+                        <div class='row'>
+                            <div class='col-md-5'>
+                                <h6>Bill to Name:{!x.BillingName}</h6><br/> 
+                                <h6>Bill to:{!x.billingstreet}{!x.billingstate}</h6>
+                            </div>
+                            <div class='col-md-5'>
+                                <h6>Ship to Name:{!x.shippingname}</h6><br/> 
+                                <h6>Ship to:{!x.shippingstreet}{!x.shippingstate}</h6>
+                            </div>
+ 
+                        </div>
+						
+                        
+                        <div class='row'>
                                 <apex:pageBlockTable value="{!product}" var="p">
-                                    <apex:column value= "{!p.Product2.Name}"/>
+                                    <apex:column value="{!p.Product2.Name}"/>
                                     <apex:column value="{!p.quantity}"/>
-                                    <apex:column value= "{!p.UnitPrice}"/> 
+                                    <apex:column value="{!p.UnitPrice}"/> 
                                     <apex:column value="{!p.TotalPrice}"/> 
                                     <apex:column value="{!p.Description}"/> 
                                 </apex:pageBlockTable>
+                            </div>
+                         
                    </apex:pageBlock>
                 </div>
             
