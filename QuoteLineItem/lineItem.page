@@ -1,62 +1,56 @@
-<apex:page showHeader="false"  controller="lineItemController">
-	<html lang="en">
+<apex:page showHeader="false" renderAs="pdf" controller="lineItemController">
+
  		<head>
-            <meta charset="utf-8"/> 
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
-       	<style>
+            <style>
             .info{margin-bottom: 2%;}
             </style>
         </head>	        
-    	<body>
-   			<div class='container'>
-                <div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/></div>
-                <div class='row'>
-                    <apex:pageBlock >
-                              <div class='row'>
-                               <div class='col-md-5 info'>
-                               	<h6>Company Address:{!x.BillingStreet}</h6>
-                               	<!--<h6>{!x.name}</h6>--> 
-                               </div> 
-                                  <div class='col-md-2'></div>
-                               <div class='col-md-5 info'>
-                                   <h6>Created Date:</h6><apex:outputText value="{0, date,dd MMMM yyyy}"><apex:param value="{!x.createddate}" /></apex:outputText><br/> 
-                                   <h6>Expiration Date:</h6><apex:outputText value="{0, date,dd MMMM yyyy}"><apex:param value="{!x.ExpirationDate}" /></apex:outputText><br/>
-                                <h6>Quote Number: {!x.QuoteNumber}</h6>   
-                               </div>
-                        </div>
-                        <div class='row'>
-                            <div class='col-md-5 info'>
-                               <h6>Prepared By: {!x.CreatedBy.name}</h6><br /> 
-                               <h6>Email: {!x.createdby.email}</h6> 
-                            </div>
-                        </div> 
-                        <div class='row'>
-                            <div class='col-md-5 info'>
-                                <h6>Bill to Name:{!x.BillingName}</h6><br/> 
-                                <h6>Bill to:{!x.billingstreet}{!x.billingstate}</h6>
-                            </div>
-                            <div class='col-md-2'></div>
-                            <div class='col-md-5 info'>
-                                <h6>Ship to Name:{!x.shippingname}</h6><br/> 
-                                <h6>Ship to:{!x.shippingstreet}{!x.shippingstate}</h6>
-                            </div>
- 
-                        </div>
-						
+    		<table width="100%">
+                <col width='50%'/>
+                <col width='25%'/>
+                <col width='25%'/> 
+                <c:dynapdfcomponent type="header">
+                	<div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
+                </c:dynapdfcomponent>
+                
+   				<tbody>
+    				<tr>
+                    	<td>
+                            <p>Company Address: 12955 Ford Dr.</p> 
+ 							<p style="margin-left: 127px;margin-top:-20px;">Fishers, IN 46038</p>	                   
+                    	</td>
+                        <td colspan='2'> Created Date:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!x.createddate}" /></apex:outputText></td>
+                    </tr>
+                    <tr>
+                        <td colspan='1'><p>Prepared By: {!x.CreatedBy.name}</p></td>
+                    	<td>Expiration Date:<apex:outputText value="{0, date,MMMM dd yyyy}"><apex:param value="{!x.ExpirationDate}" /></apex:outputText></td>    
+                    </tr>
+                    <tr>
+                        <td colspan='1'><p>Email: {!x.createdby.email}</p></td>
+                        <td><p>Quote Number: {!x.QuoteNumber}</p></td>
+                    </tr>
+                    <tr>
+                    	<td><p>Bill to Name:{!x.BillingName}</p></td>
+                        <td><p>Ship to Name:{!x.shippingname}</p></td>
+                    </tr>
+                    <tr>
+                    	<td><p>Bill to:{!x.billingstreet}{!x.billingstate}</p></td>
+                        <td><p>Ship to:{!x.shippingstreet}{!x.shippingstate}</p></td>
+                    </tr>
+    			</tbody>
+            </table>
                         
-                        <div class='row'>
-                                <apex:pageBlockTable value="{!product}" var="p">
-                                    <apex:column value="{!p.Product2.Name}"/>
-                                    <apex:column value="{!p.quantity}"/>
-                                    <apex:column value="{!p.UnitPrice}"/> 
-                                    <apex:column value="{!p.TotalPrice}"/> 
-                                    <apex:column value="{!p.Description}"/> 
-                                </apex:pageBlockTable>
-                            </div>
-                         
-                   </apex:pageBlock>
-                </div>
-            
+                        	<tbody>
+                                <apex:repeat value="{!product}" var="p">
+                                  <tr> 
+                                    <td>{!p.Product2.Name}"</td>
+                                    <td>{!p.quantity}</td>
+                                    <td>{!p.UnitPrice}</td> 
+                                    <td>{!p.TotalPrice}</td> 
+                                    <td>{!p.Description}</td>
+                                 </tr>   
+                                </apex:repeat>
+            				</tbody>
                 
                 <div class='row' style='background-color:#d4d5d8' ><h6>Quote Acceptance Information</h6></div>
                     <div class='row'>
@@ -67,10 +61,7 @@
                             <label><b>Date: _______________________________________</b></label>
                         </div>
                     </div>
-      </div>
-     </body>   
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-   </html>
+      
+   
+
 </apex:page>
