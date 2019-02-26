@@ -4,7 +4,7 @@
             <meta charset="utf-8"/> 
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
        	<style>
-            .info{margin-top: 4%;}
+            .info{margin-bottom: 2%;}
             </style>
         </head>	        
     	<body>
@@ -12,27 +12,31 @@
                 <div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/></div>
                 <div class='row'>
                     <apex:pageBlock >
-                              <div class='row info'>
-                               <div class='col-md-5'>
+                              <div class='row'>
+                               <div class='col-md-5 info'>
                                	<h6>Company Address:{!x.BillingStreet}</h6>
                                	<!--<h6>{!x.name}</h6>--> 
                                </div> 
-                               <div class='col-md-5'>
-                                   <h6>Created Date:{!x.createddate}</h6><br/> 
-                                   <h6>Expiration Date:{!x.ExpirationDate}</h6><br/>
+                                  <div class='col-md-2'></div>
+                               <div class='col-md-5 info'>
+                                   <h6>Created Date:</h6><apex:outputText value="{0, date,dd MMMM yyyy}"><apex:param value="{!x.createddate}" /></apex:outputText><br/> 
+                                   <h6>Expiration Date:</h6><apex:outputText value="{0, date,dd MMMM yyyy}"><apex:param value="{!x.ExpirationDate}" /></apex:outputText><br/>
                                 <h6>Quote Number: {!x.QuoteNumber}</h6>   
                                </div>
                         </div>
                         <div class='row'>
-                            <h6>Prepared By: {!x.CreatedBy.name}</h6><br /> 
-                            <h6>Email: {!x.createdby.email}</h6>
+                            <div class='col-md-5 info'>
+                               <h6>Prepared By: {!x.CreatedBy.name}</h6><br /> 
+                               <h6>Email: {!x.createdby.email}</h6> 
+                            </div>
                         </div> 
                         <div class='row'>
-                            <div class='col-md-5'>
+                            <div class='col-md-5 info'>
                                 <h6>Bill to Name:{!x.BillingName}</h6><br/> 
                                 <h6>Bill to:{!x.billingstreet}{!x.billingstate}</h6>
                             </div>
-                            <div class='col-md-5'>
+                            <div class='col-md-2'></div>
+                            <div class='col-md-5 info'>
                                 <h6>Ship to Name:{!x.shippingname}</h6><br/> 
                                 <h6>Ship to:{!x.shippingstreet}{!x.shippingstate}</h6>
                             </div>
