@@ -44,6 +44,8 @@ private class Test_lineItemController {
         list<quotelineitem> product = con.getproduct(); 
         system.debug('product list-> ' +product);
         system.assertNotEquals(product, null);
+
+        //error here saying no rows to assign a list ??/
        // quote x =  con.getx();
         //system.assertNotEquals(x, null);
         Test.stopTest();
