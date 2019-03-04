@@ -12,3 +12,10 @@ AND Owner_Not_Rep__c = true and ownerid != '00541000006o7BzAAI' and ownerid != '
 //accounts with no contacts
 select id, name from accounts where id not in (select accountid from contact)
 
+//get sum and group by rep...cant run in dataloader
+SELECT SUM(Extended_Price__c), Sales_Rep__c FROM Sales_Doc_Detail__c 
+WHERE Doc_Date__c >= 2018-10-01 AND Golf_Focus_Product_Category__c LIKE '%Bentgrass%' Group by Sales_Rep__c
+
+//cross reference to quote using accountid from opportunity
+select id, name,TotalPrice, description from quote
+where AccountId in (select accountid from opportunity where id =:id)];

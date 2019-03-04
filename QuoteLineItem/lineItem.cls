@@ -1,7 +1,7 @@
 public with sharing class lineItemController {    
     
     //private ApexPages.StandardController sc {get; set;}
-    public quote x;
+    public list<quote> x;
     public List<QuoteLineItem> product;
     //public opportunity opp {get;set;}
     //public String preparedBy {get;set;}
@@ -20,11 +20,12 @@ public with sharing class lineItemController {
             }return product; 
         }
         
-    public quote getx(){ 
+    public list<quote> getx(){ 
+        //without this it will not recognize in the test class of returning a value
            		   x= [select createddate, name, ExpirationDate,QuoteNumber, CreatedBy.Name,CreatedBy.Email,
                        GrandTotal, BillingName,shippingname,shippingstreet, shippingstate,  
-                       BillingStreet, billingstate from quote where id = :id];
-        	
+                       BillingStreet, billingstate from quote where id = :id limit 1];
+        
         return x; 
                          }
 
