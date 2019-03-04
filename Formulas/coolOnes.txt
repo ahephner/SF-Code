@@ -4,3 +4,15 @@ Current_Year_FY_Sales__c > 1), (Current_Year_CY_Sales__c + Current_Year_FY_Sales
 IF(ISPICKVAL(Sales_Rep__r.Fiscal_Year__c, 'Calendar'), Current_Year_CY_Sales__c - Last_Year_CY_Sales__c ,
 IF(ISPICKVAL(Sales_Rep__r.Fiscal_Year__c, 'Sales'), Current_Year_FY_Sales__c - Last_Year_FY_Sales__c , 
 0)))
+
+Picklist value on opp
+IF( $RecordType.Name = 'Sports Opp - Maintenance', 'Maintenance', 
+IF( $RecordType.Name = 'Sports Opp - Construction', 'Construction', 
+null 
+))
+
+Validate agency product not in use process builder was nicer
+AND( 
+CONTAINS( Product2.Name , 'AGENCY'), 
+UnitPrice != PricebookEntry.UnitPrice 
+)

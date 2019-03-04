@@ -1,0 +1,17 @@
+<apex:page controller="manContact" lightningStylesheets="true" >
+    <apex:form title="Add Contact">	
+    <apex:pageBlock >
+            <apex:inputText label="First name" value="{!fName}"/>
+            <apex:inputText label="Last name" value="{!lName}"/>
+            <apex:inputText label="Dept name" value="{!dept}"/>
+        	<apex:commandButton action="{!save}" value="save"/>
+        
+   
+   <apex:pageBlockSection >
+	<apex:Pageblocktable value="{!cons}" var="c" >
+        <apex:column value="{!c.name}"/>
+    </apex:Pageblocktable>
+        </apex:pageBlockSection>/>
+ </apex:pageBlock>
+        </apex:form>
+        </apex:page>
