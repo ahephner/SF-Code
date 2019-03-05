@@ -1,0 +1,21 @@
+<apex:page standardController="Quote" extensions="multiQuote" lightningStylesheets="true" >
+    <!--bootstrap needs to go in here-->
+    <table>
+        <tr>Hey here is a table</tr>
+        
+           <apex:repeat value="{!quotes}" var="q">
+            <tr> 
+               <td style="border: 1px solid black;">{!q.name}</td>
+               <td style="border: 1px solid black; text-align:center;">{!q.description}</td>
+               <td style="border: 1px solid black; text-align:center;">{!q.totalprice}</td> 
+            </tr>
+    
+    </apex:repeat>
+        <div>
+           <p>
+               just quote {!quotes} here
+            </p> 
+        </div>
+    </table>
+
+</apex:page>
