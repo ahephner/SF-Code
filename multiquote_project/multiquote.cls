@@ -13,7 +13,7 @@ public class multiquote {
         system.debug('here is the id ' + id);
         system.debug('here is opp id ' );
         //select info to store on the screen 
-        quotes = [select id, name,TotalPrice, description, opportunityID from quote
+        quotes = [select id, name,TotalPrice, description,Start_Date__c, opportunityID from quote
 				 where AccountId in (select accountid from opportunity where id =:id)];//[0].opportunityid)]; 
         system.debug('here is the array ' +quotes);
         return quotes; 

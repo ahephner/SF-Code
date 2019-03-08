@@ -22,18 +22,18 @@ public class oppCloneWithProducts {
         //new Opportunity Var
         Opportunity newOp;
         List<OpportunityLineItem> opli = new List<OpportunityLineItem>(); 
-        Date cd = System.today() + 7; 
+       // Date cd = System.today() + 30; 
         
         try{
-         opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName, RecordType.Id, 
-                pricebook2.id  
-                FROM Opportunity where id = :opp.Id]; 
+         opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName,
+                RecordType.Id, Contact__c, pricebook2.id,Type, Target_Area__c,
+                Target_Start_Date__c, description FROM Opportunity where id = :opp.Id]; 
             
             newOp = opp.clone(false);
             
             newOp.Name += ' Cloned';
             newOp.StageName = 'Estimate(10%)';
-            newOp.CloseDate = cd;  
+         //   newOp.CloseDate = cd;  
             insert newOp; 
             system.debug('here new opp -> ' +newOp);
             Quote q = new Quote(); 
@@ -44,16 +44,12 @@ public class oppCloneWithProducts {
             newOp.SyncedQuoteId = q.Id; 
             update newOp; 
 
-        }catch(exception e){
-            Database.rollback(sp);
-            ApexPages.addMessages(e);
-            return null;
+       
             
-        }try{
-            system.debug('second try newopID ----> '+newop.ID);
+       
             List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity,
-                                  				   rate__c, listprice
-                                  				   from opportunitylineitem where opportunityid = :opp.Id];
+                                                   rate__c, listprice, Description, Per_1_000__c, Per_Acre__c
+                                                   from opportunitylineitem where opportunityid = :opp.Id];
             for(OpportunityLineItem x : lineItems){
                 opportunitylineitem oppLine = x.clone(false);
                 oppLine.OpportunityId = newOp.Id;
@@ -61,7 +57,7 @@ public class oppCloneWithProducts {
                 
             }
             system.debug(opli);
-            if(opli.size()>1){
+            if(!opli.isempty()){
                 insert opli; 
             }
             //test

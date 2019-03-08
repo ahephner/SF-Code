@@ -12,34 +12,41 @@
         </head>
         	<body>
    			<div class='container'>
+                <apex:form >
+
         		<table data-toggle='table'
                        data-search='true'
                        data-filter-control='true'
-                       data-click-to-select='true'>
+                       data-click-to-select='true'
+                       data-maintain-selected='true'>
         		<thead>
                 	<tr>
                     	<th data-field='state' data-checkbox='true'></th>
-                        <th data-field='name' data-filter-control='select' data-sortable='true'>Name</th>
+                        <th data-field='name' data-filter-control='input' data-sortable='true'>Name</th>
+                        <th data-field ='start' data-filter-control='select' data-sortable='true'>Start Date</th>
                     	<th data-field='description' data-sortable='true'>Description</th>
                         <th data-field='totalprice' data-sortable='true'>Total Price</th>
                     </tr>    
                 </thead>
-        
+        	<tbody>
            <apex:repeat value="{!quotes}" var="q">
             <tr> 
+                <apex:commandLink value="{!q.name}">
+                    <apex:param name="x" value="{!q.id}"/>
+                </apex:commandLink>
                <td>stuff</td>
                <td style="border: 1px solid black;">{!q.name}</td>
+               <td style="border: 1px solid black;">{!q.Start_Date__c}</td>
                <td style="border: 1px solid black; text-align:center;">{!q.description}</td>
                <td style="border: 1px solid black; text-align:center;">{!q.totalprice}</td> 
             </tr>
-    
+    			
     </apex:repeat>
-        <div>
-           <p>
-               just quote {!quotes} here
-            </p> 
-        </div>
+                
+    </tbody>
     </table>
+                    </apex:form>
+                
         </div>
         </body>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
