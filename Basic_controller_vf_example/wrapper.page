@@ -1,26 +1,42 @@
-<apex:page controller="Checkbox_Class" Tabstyle="Account">
-  <apex:form >
-   <apex:pageBlock Title="List of Accounts" >
-    <apex:pageBlockButtons >
-     <apex:commandButton value="Display the selected Records" action="{!GetSelected}" rerender="Selected_PBS"/>
-       </apex:pageBlockButtons>
-         <apex:pageblockSection >
-            <apex:pageBlockSection Title="List of Available Accounts" columns="2" >
-                <apex:pageblockTable value="{!accounts}" var="a" >
-                    <apex:column headerValue="Select" width="60">
-                      <apex:inputCheckbox value="{!a.selected}" id="checkedone" />
+<apex:page controller="AccountSelectClassController" sidebar="false">
+    <script type="text/javascript">
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+    </script>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Show Selected Accounts" action="{!processSelected}" rerender="table2"/>
+            </apex:pageBlockButtons>
+             
+            <apex:pageblockSection title="All Accounts" collapsible="false" columns="2">
+             
+                <apex:pageBlockTable value="{!wrapAccountList}" var="accWrap" id="table" title="All Accounts">
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!accWrap.selected}" id="inputId"/>
                     </apex:column>
-                    <apex:column headervalue="Account Name" value="{!a.acc.Name}" width="200"/>
-                    <apex:column headervalue="Phone" value="{!a.acc.Phone}" width="300"/>
-                </apex:pageblocktable>
-            </apex:pageBlockSection>
-            <apex:pageBlockSection Title="Selected Accounts" id="Selected_PBS">
-                <apex:pageblockTable value="{!SelectedAccounts}" var="s"  >
-                      <apex:column headervalue="Account Name" value="{!s.Name}" width="30"/>
-                      <apex:column headervalue="Phone" value="{!s.Phone}" width="30"/>
-                </apex:pageblockTable>
-            </apex:pageBlockSection>
-        </apex:pageblockSection>
-     </apex:pageBlock>
-  </apex:form>
-</apex:page>
+                    <apex:column value="{!accWrap.acc.Name}" />
+                    <apex:column value="{!accWrap.acc.BillingState}" />
+                    <apex:column value="{!accWrap.acc.Phone}" />
+                </apex:pageBlockTable>          
+                       
+                <apex:pageBlockTable value="{!selectedAccounts}" var="c" id="table2" title="Selected Accounts">
+                    <apex:column value="{!c.Name}" headerValue="Account Name"/>
+                    <apex:column value="{!c.BillingState}" headerValue="Billing State"/>
+                    <apex:column value="{!c.Phone}" headerValue="Phone"/>
+                </apex:pageBlockTable>
+             
+            </apex:pageblockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page> 
+   
