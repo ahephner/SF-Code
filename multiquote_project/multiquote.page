@@ -1,28 +1,45 @@
-<apex:page controller="multiquoteController"  lightningStylesheets="true" >
+<apex:page controller="multiquoteController" lightningStylesheets="true" >
     <script type="text/javascript">
+    	const coins =[];
         function selectAllCheckboxes(obj,receivedInputID){
             var inputCheckBox = document.getElementsByTagName("input");                  
-            for(var i=0; i<inputCheckBox.length; i++){          
+            for(var i=0; i<inputCheckBox.length; i++){   
+                console.log('select ' +inputCheckBox.length)
                 if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
                     inputCheckBox[i].checked = obj.checked;
+
                 }
             }
         }
+    function hey(x){
+        var inputCheckBox = document.getElementById("input");
+        console.log('select')
+        var t = document.getElementById('total');
+        var d = document.getElementById('money');
+        t.innerHTML = 'hello i am a js function';
+    	console.log(x.value)
+        
+    }
+   
     </script>
    <apex:form >
        <apex:pageBlock >
             <apex:pageBlockButtons >
                 <apex:commandButton value="Select Quotes" action="{!getSelected}" rerender="table2"/>
             </apex:pageBlockButtons>
-             
-            <apex:pageblockSection title="All Quotes" collapsible="false" >
+           
+           <apex:pageBlockButtons >
+                <apex:commandButton value="Save Pdf" action="{!savePDF_File}" />
+            </apex:pageBlockButtons>
+           
+            <apex:pageblockSection title="All Quotes" collapsible="false" columns="2" >
              
                 <apex:pageBlockTable value="{!wrapQuoteList}" var="qWrap" id="table" title="All Quotes">
                     <apex:column >
                         <apex:facet name="header">
                             <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
                         </apex:facet>
-                        <apex:inputCheckbox value="{!qWrap.selected}" id="inputId"/>
+                        <apex:inputCheckbox value="{!qWrap.selected}" id="input"/>
                     </apex:column>
                     <apex:column value="{!qWrap.qu.Name}" />
                     <apex:column value="{!qWrap.qu.description}" />
@@ -30,9 +47,9 @@
                 </apex:pageBlockTable> 
               <apex:pageBlock >
 			<apex:pageBlockTable value="{!selectedQuotes}" var="c" id="table2" title="Selected Accounts">
-                    <apex:column value="{!c.Name}" headerValue="Account Name"/>
+                    <apex:column value="{!c.Name}" headerValue="Quote Name"/>
                     <apex:column value="{!c.description}" headerValue="description"/>
-                    <apex:column value="{!c.TotalPrice}" headerValue="TotalPrice"/>
+                    <apex:column value="{!c.TotalPrice}" id="money" headerValue="TotalPrice"/>
                 </apex:pageBlockTable>
                 </apex:pageBlock>
         
