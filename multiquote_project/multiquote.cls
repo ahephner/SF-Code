@@ -7,6 +7,7 @@ public class multiquoteController {
     //here is how we get the correct way to pass the additional fields
     //quote[] id = [select opportunityid from quote where id= :apexpages.currentpage().getparameters().get('id')];
     
+    //front end testing 
    String id = '006n0000008K07EAAS';
 
     public multiquoteController(){

@@ -51,8 +51,9 @@ public class oppCloneWithProducts {
             update newOp; 
 			
             q.BillingName = quote.BillingName;
-            q.BillingCity = quote.BillingName;
+            q.BillingCity = quote.BillingCity;
             q.billingstate = quote.BillingState;
+            q.billingstreet = quote.BillingStreet; 
             q.BillingPostalCode = quote.BillingPostalCode;
             q.Description= quote.Description;
             q.ContactId = quote.ContactId; 
@@ -61,14 +62,14 @@ public class oppCloneWithProducts {
             q.Phone = quote.phone;
             q.QuoteToCity = quote.QuoteToCity;
             q.QuoteToCountry = q.QuoteToCountry;
-            q.quotetoname =quote.quotetoname;
-            q.QuoteToState =quote.QuoteToState;
-            q.QuoteToStreet=quote.QuoteToStreet;
-            q.QuoteToPostalCode =quote.QuoteToPostalCode;
-            q.ShippingStreet = quote.ShippingStreet; 
-            q.ShippingState = quote.Shippingstate; 
-            q.ShippingCity =quote.ShippingCity;
-            q.ShippingName = quote.ShippingName;
+            q.quotetoname = quote.quotetoname;
+           // q.QuoteToState = quote.QuoteToState;
+            //q.QuoteToStreet= quote.QuoteToStreet;
+            //q.QuoteToPostalCode = quote.QuoteToPostalCode;
+            //q.ShippingStreet = quote.ShippingStreet; 
+            //q.ShippingState = quote.Shippingstate; 
+            //q.ShippingCity = quote.ShippingCity;
+            //q.ShippingName = quote.ShippingName;
             q.Start_Date__c = quote.Start_Date__c;
             update q; 
        
