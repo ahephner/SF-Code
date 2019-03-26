@@ -1,4 +1,5 @@
-<apex:page controller="multiquoteController" lightningStylesheets="true" >
+<apex:page standardController="quote" extensions="multiquoteController" lightningStylesheets="true" >
+    
     <script type="text/javascript">
     	const coins =[];
         function selectAllCheckboxes(obj,receivedInputID){
@@ -23,17 +24,16 @@
    
     </script>
    <apex:form >
+
        <apex:pageBlock >
+
             <apex:pageBlockButtons >
                 <apex:commandButton value="Select Quotes" action="{!getSelected}" rerender="table2"/>
-            </apex:pageBlockButtons>
-           
-           <apex:pageBlockButtons >
                 <apex:commandButton value="Save Pdf" action="{!savePDF_File}" />
             </apex:pageBlockButtons>
            
+
             <apex:pageblockSection title="All Quotes" collapsible="false" columns="2" >
-             
                 <apex:pageBlockTable value="{!wrapQuoteList}" var="qWrap" id="table" title="All Quotes">
                     <apex:column >
                         <apex:facet name="header">
@@ -45,15 +45,20 @@
                     <apex:column value="{!qWrap.qu.description}" />
                     <apex:column value="{!qWrap.qu.totalprice}" />
                 </apex:pageBlockTable> 
-              <apex:pageBlock >
+   
 			<apex:pageBlockTable value="{!selectedQuotes}" var="c" id="table2" title="Selected Accounts">
                     <apex:column value="{!c.Name}" headerValue="Quote Name"/>
                     <apex:column value="{!c.description}" headerValue="description"/>
                     <apex:column value="{!c.TotalPrice}" id="money" headerValue="TotalPrice"/>
                 </apex:pageBlockTable>
-                </apex:pageBlock>
-        
+                
       </apex:pageblockSection>
-           </apex:pageBlock>
+   </apex:pageBlock>
+       <apex:pageBlock >
+       	<apex:repeat value="{!selected}" var="x">
+            {!x.name}
+           </apex:repeat>
+       </apex:pageBlock>
+
     </apex:form>
 </apex:page>
