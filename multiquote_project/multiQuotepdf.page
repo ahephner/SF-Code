@@ -1,0 +1,75 @@
+<apex:page standardController="quote" extensions="multiquoteController" showHeader="false"  renderAs="pdf"  >
+<head>
+            <style type="text/css">
+            	.info{height:250px;}
+                
+            </style>
+        </head>	  
+     			<c:dynapdfcomponent type="header">
+                	<div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
+                </c:dynapdfcomponent>
+
+    		<div class='info'>
+              <table  width="100%" >
+                <col width='50%'/>
+                <col width='25%'/>
+                <col width='25%'/>
+    				<tr>
+                    	<td>
+                            <p>Company Address: 12955 Ford Dr.</p> 
+ 							<p style="margin-left: 127px;margin-top:-20px;">Fishers, IN 46038</p>	                   
+                    	</td>
+                        <td colspan='2' style='text-align:left;'> Created Date:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!wrapQuoteList[0].qu.createddate}" /></apex:outputText></td>
+                    </tr>
+                    <tr>
+                        <td colspan='1'><p style="margin:0%;">Prepared By: {!wrapQuoteList[0].qu.CreatedBy.name}</p></td>
+                    	<td colspan='2' style='text-align:left;'>Expiration Date:<apex:outputText value="{0, date,MMMM dd yyyy}"><apex:param value="{!wrapQuoteList[0].qu.ExpirationDate}" /></apex:outputText></td>    
+                    </tr>
+                    <tr>
+                        <td colspan='1'><p style="margin:0%;">Email: {!wrapQuoteList[0].qu.createdby.email}</p></td>
+                        <td><p style="margin:0%;">Quote Number: {!wrapQuoteList[0].qu.QuoteNumber}</p></td>
+                    </tr>
+                    <tr>
+                    	<td><p style="margin:0%;">Bill to Name:{!wrapQuoteList[0].qu.BillingName}</p></td>
+                        <td colspan='2' style='text-align:left;'><p>Ship to Name:{!wrapQuoteList[0].qu.shippingname}</p></td>
+                    </tr>
+                    <tr>
+                    	<td><p>Bill to:{!wrapQuoteList[0].qu.billingstreet}{!wrapQuoteList[0].qu.billingstate}</p></td>
+                        <td><p>Ship to:{!wrapQuoteList[0].qu.shippingstreet}{!wrapQuoteList[0].qu.shippingstate}</p></td>
+                    </tr>
+            </table>
+    </div>
+        <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+                            <col width='20%'/>
+                            <col width='5%'/>
+                            <col width='65%'/>        
+                            <col width='10%'/>
+                                    <tr>
+                                      <th style="border: 1px solid black;">Name</th>
+                                      <th style="border: 1px solid black;">Start Date</th>
+                                      <th style="border: 1px solid black;">Description</th>
+                                      <th style="border: 1px solid black;">Total Price</th>
+                                    </tr>	
+                                    	<apex:repeat value="{!wrapQuoteList}" var="sq">
+    										<apex:outputText rendered="{!sq.selected}">
+                                  <tr> 
+                                    <td style="border: 1px solid black;">{!sq.qu.name}</td>
+                                    <td style="border: 1px solid black; text-align:center;">{!sq.qu.Start_Date__c}</td>
+                                    <td style="border: 1px solid black; text-align:center;">{!sq.qu.description}</td> 
+                                    <td style="border: 1px solid black; text-align:center;">{!sq.qu.totalprice}</td> 
+                                 </tr>   
+
+		 						</apex:outputText>
+    						 </apex:repeat>
+                           </table>
+                
+                <div class='row' style='background-color:#d4d5d8' ><h6>Quote Acceptance Information</h6></div>
+                    <div class='row'>
+						<div class='form'>
+                            <label><b>Signature:_________________________________</b></label><br/>
+                            <label><b>Name: _____________________________________</b></label><br/>
+                            <label><b>Title:______________________________________</b></label><br/>
+                            <label><b>Date: ______________________________________</b></label>
+                        </div>
+                    </div>
+</apex:page>

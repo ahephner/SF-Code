@@ -25,21 +25,22 @@ public class ApplicationCloneWithProducts_Controller {
          Application__c newApp;
 
          try {
-
+			
               //copy the purchase order - ONLY INCLUDE THE FIELDS YOU WANT TO CLONE
              app = [select Id, Name, Area__c, Program_ID__c, repeat__c, Note__c , 
              Date__c,  Weeks_Apart__c, Number_of_Apps__c
              from Application__c where id = :app.id];
+             
             
              if(app.repeat__c == true){
                     Integer days = Integer.valueOf(app.Weeks_Apart__c) * 7;
              		decimal run = 1; 
                     for(Decimal i=0; i<app.Number_of_Apps__c; i++){
                             app.Date__c = app.Date__c.addDays(days);
-                        	run = run + 1; 
+                        	run++; 
                         	app.repeat__c = true; 
-                        	app.Name = app.Name + ' ' + run;
                             newApp = app.clone(false);
+                            newApp.Name = newApp.Name + ' ' + run;
                             insert newApp;
                     
              // set the id of the new po created for testing

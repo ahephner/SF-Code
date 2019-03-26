@@ -18,4 +18,4 @@ WHERE Doc_Date__c >= 2018-10-01 AND Golf_Focus_Product_Category__c LIKE '%Bentgr
 
 //cross reference to quote using accountid from opportunity
 select id, name,TotalPrice, description from quote
-where AccountId in (select accountid from opportunity where id =:id)];
+where AccountId in (select accountid from opportunity where id =:id);

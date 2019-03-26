@@ -22,20 +22,26 @@ public class oppCloneWithProducts {
         //new Opportunity Var
         Opportunity newOp;
         List<OpportunityLineItem> opli = new List<OpportunityLineItem>(); 
-        Date cd = System.today() + 7; 
-        
+       // Date cd = System.today() + 30; 
+        quote quote; 
         try{
-         opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName, RecordType.Id, 
-                pricebook2.id  
-                FROM Opportunity where id = :opp.Id]; 
-            
+         opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName,
+                RecordType.Id, Contact__c, pricebook2.id,Type, Target_Area__c,
+                Target_Start_Date__c, description FROM Opportunity where id = :opp.Id]; 
+          
+            quote = [select BillingCity, BillingCountry, BillingName, BillingState, 
+                   BillingStreet, BillingPostalCode, ContactId, Description, Email, ExpirationDate, 
+                   Phone, QuoteToCity, QuoteToCountry, QuoteToName, QuoteToState, QuoteToStreet,
+                   QuoteToPostalCode, ShippingCity, ShippingCountry, ShippingName, ShippingState, 
+                   ShippingStreet, ShippingPostalCode, Start_Date__c  from quote where opportunityid = :opp.ID and IsSyncing = true];  
             newOp = opp.clone(false);
             
             newOp.Name += ' Cloned';
             newOp.StageName = 'Estimate(10%)';
-            newOp.CloseDate = cd;  
+         //   newOp.CloseDate = cd;  
             insert newOp; 
             system.debug('here new opp -> ' +newOp);
+            system.debug('here is that quote ' +quote.BillingName);
             Quote q = new Quote(); 
             
             q.name = newOp.Name;
@@ -43,17 +49,35 @@ public class oppCloneWithProducts {
             insert q; 
             newOp.SyncedQuoteId = q.Id; 
             update newOp; 
-
-        }catch(exception e){
-            Database.rollback(sp);
-            ApexPages.addMessages(e);
-            return null;
+			
+            q.BillingName = quote.BillingName;
+            q.BillingCity = quote.BillingCity;
+            q.billingstate = quote.BillingState;
+            q.billingstreet = quote.BillingStreet; 
+            q.BillingPostalCode = quote.BillingPostalCode;
+            q.Description= quote.Description;
+            q.ContactId = quote.ContactId; 
+            q.email = quote.email;
+            q.ExpirationDate = quote.ExpirationDate;
+            q.Phone = quote.phone;
+            q.QuoteToCity = quote.QuoteToCity;
+            q.QuoteToCountry = q.QuoteToCountry;
+            q.quotetoname = quote.quotetoname;
+           // q.QuoteToState = quote.QuoteToState;
+            //q.QuoteToStreet= quote.QuoteToStreet;
+            //q.QuoteToPostalCode = quote.QuoteToPostalCode;
+            //q.ShippingStreet = quote.ShippingStreet; 
+            //q.ShippingState = quote.Shippingstate; 
+            //q.ShippingCity = quote.ShippingCity;
+            //q.ShippingName = quote.ShippingName;
+            q.Start_Date__c = quote.Start_Date__c;
+            update q; 
+       
             
-        }try{
-            system.debug('second try newopID ----> '+newop.ID);
+       
             List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity,
-                                  				   rate__c, listprice
-                                  				   from opportunitylineitem where opportunityid = :opp.Id];
+                                                   rate__c, listprice, Description, Per_1_000__c, Per_Acre__c
+                                                   from opportunitylineitem where opportunityid = :opp.Id];
             for(OpportunityLineItem x : lineItems){
                 opportunitylineitem oppLine = x.clone(false);
                 oppLine.OpportunityId = newOp.Id;
@@ -61,7 +85,7 @@ public class oppCloneWithProducts {
                 
             }
             system.debug(opli);
-            if(opli.size()>1){
+            if(!opli.isempty()){
                 insert opli; 
             }
             //test
