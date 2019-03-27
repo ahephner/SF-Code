@@ -4,6 +4,7 @@ public  with sharing class multiquoteController {
     //public list<quote>  selected {get;set;}
     public decimal Total {get;set;}
     public quote qt {get;set;}
+    public list<quote> add {get;set;}
     private ApexPages.StandardController ctl {get; set;}
    // private Quote opp {get; set;}
     String sId; 
@@ -11,13 +12,17 @@ public  with sharing class multiquoteController {
     public multiquoteController(ApexPages.StandardController controller ) {
     	
         this.ctl = controller;
+        //just an ID 
         qt = (Quote)ctl.getRecord(); 
+        
         quote[] id = [select opportunityid from quote where id =: qt.Id]; 
-        
-			
+       add = [select billingstreet,billingcity, billingstate, shippingstreet, shippingcity, shippingstate,
+              CreatedBy.Name,CreatedBy.Email,Start_Date__c,ExpirationDate, QuoteNumber,
+              billingpostalcode, shippingpostalcode, billingname, shippingname from quote where id =: qt.id];
+        system.debug('here is qt ' +qt);
+		
 		wrapQuoteList = new List<wrapQuote>();
-        //system.debug('here is qt' + opid);
-        
+
         //select info to store on the screen 
 		for(quote i: [select id, name,TotalPrice, description,Start_Date__c, opportunityID, 
                       createddate, ExpirationDate,billingstreet,billingstate, shippingstreet, shippingstate,
