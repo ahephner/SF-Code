@@ -10,6 +10,7 @@
                 </c:dynapdfcomponent>
 
     		<div class='info'>
+               
               <table  width="100%" >
                 <col width='50%'/>
                 <col width='25%'/>
@@ -30,12 +31,14 @@
                         <td><p style="margin:0%;">Quote Number: {!wrapQuoteList[0].qu.QuoteNumber}</p></td>
                     </tr>
                     <tr>
-                    	<td><p style="margin:0%;">Bill to Name:{!wrapQuoteList[0].qu.BillingName}</p></td>
-                        <td colspan='2' style='text-align:left;'><p>Ship to Name:{!wrapQuoteList[0].qu.shippingname}</p></td>
+                    	<td><p style="margin:0%;">Bill to Name:{!add[0].BillingName}</p></td>
+                        <td colspan='2' style='text-align:left;'><p>Ship to Name:{!add[0].shippingname}</p></td>
                     </tr>
                     <tr>
-                    	<td><p>Bill to:{!wrapQuoteList[0].qu.billingstreet}{!wrapQuoteList[0].qu.billingstate}</p></td>
-                        <td><p>Ship to:{!wrapQuoteList[0].qu.shippingstreet}{!wrapQuoteList[0].qu.shippingstate}</p></td>
+                        <td><p>Bill to:{!add[0].billingstreet}</p>
+                            <p>{!add[0].billingcity} {!add[0].billingstate} {!add[0].billingpostalcode}</p></td>
+                        <td><p>Ship to:{!add[0].shippingstreet}</p>
+                            <p>{!add[0].shippingstate} {!add[0].shippingstate} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
                     </tr>
             </table>
     </div>
