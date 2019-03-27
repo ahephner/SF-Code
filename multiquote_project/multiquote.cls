@@ -1,7 +1,7 @@
 public  with sharing class multiquoteController {
     public List<wrapQuote> wrapQuoteList {get; set;} 
     public list<quote>  selectedQuotes{get;set;} 
-    public list<quote>  selected {get;set;}
+    //public list<quote>  selected {get;set;}
     public decimal Total {get;set;}
     public quote qt {get;set;}
     private ApexPages.StandardController ctl {get; set;}

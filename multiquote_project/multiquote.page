@@ -50,15 +50,12 @@
                     <apex:column value="{!c.Name}" headerValue="Quote Name"/>
                     <apex:column value="{!c.description}" headerValue="description"/>
                     <apex:column value="{!c.TotalPrice}" id="money" headerValue="TotalPrice"/>
+                	
                 </apex:pageBlockTable>
                 
       </apex:pageblockSection>
    </apex:pageBlock>
-       <apex:pageBlock >
-       	<apex:repeat value="{!selected}" var="x">
-            {!x.name}
-           </apex:repeat>
-       </apex:pageBlock>
+
 
     </apex:form>
 </apex:page>
