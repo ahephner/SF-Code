@@ -38,7 +38,7 @@
                         <td><p>Bill to:{!add[0].billingstreet}</p>
                             <p>{!add[0].billingcity} {!add[0].billingstate} {!add[0].billingpostalcode}</p></td>
                         <td><p>Ship to:{!add[0].shippingstreet}</p>
-                            <p>{!add[0].shippingstate} {!add[0].shippingstate} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
+                            <p>{!add[0].shippingcity} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
                     </tr>
             </table>
     </div>
