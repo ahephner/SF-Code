@@ -11,12 +11,17 @@ trigger FollowWO on AssignedResource (before insert, before update) {
     for(AssignedResource ar: Trigger.new){
 		//user
 		srid = ar.ServiceResourceId;
-        u = [select id from user where id =:srid];
+        sub.SubscriberId = srid; 
+        u = [select id from user where id in (select RelatedRecordId from ServiceResource where id =:srid)];
+        //system.debug('here is u '+ u);
 		//wo
         said = ar.ServiceAppointmentId; 
         wo = [select id from workorder where id in (select parentrecordid from serviceappointment where id = :said)];  
+        system.debug('here is wo '+ wo);
         sub.ParentId = wo[0].id;
-        sub.SubscriberId = u[0].id; 
+        system.debug('here is ParentID '+ sub.ParentID);
+		sub.SubscriberId = u[0].id; 
+        system.debug('here is subscriber '+ sub.subscriberid);
     }
 	  insert(sub); 
 
