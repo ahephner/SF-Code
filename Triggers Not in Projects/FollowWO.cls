@@ -1,25 +1,27 @@
-trigger FollowWO on AssignedResource (after insert, after update) {
+trigger FollowWO on AssignedResource (before insert, before update) {
     id srid;
     id relatedRecord;
-    user u;  
+    list<user> u;  
     //work order here
     id said; 
-    workorder wo; 
+    list<WorkOrder> wo; 
+    id woID; 
+    id userID; 
     entitysubscription sub = new entitysubscription();
     for(AssignedResource ar: Trigger.new){
-       //user info
-        srid = ar.ServiceResourceId;
-        u = [select id from user where id =:srid]; 
-        //workorder
+		//user
+		srid = ar.ServiceResourceId;
+        u = [select id from user where id =:srid];
+		//wo
         said = ar.ServiceAppointmentId; 
-       wo =[select id from workorder where id in (select parentrecordid from serviceappointment where id = :said) ]; 
-       sub.ParentId = wo[0].id;
+        wo = [select id from workorder where id in (select parentrecordid from serviceappointment where id = :said)];  
+        sub.ParentId = wo[0].id;
         sub.SubscriberId = u[0].id; 
     }
-	  
+	  insert(sub); 
 
 }
-
+//BELOW IS HOW TO GET TO ID's THE TRIGGER DIRECTLY ABOVE IS WORKING 
 //query thoughts
 //here is the way to get workorder id followers 
 select parentid from EntitySubscription
