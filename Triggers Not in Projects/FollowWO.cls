@@ -1,3 +1,5 @@
+//no test case is written at this time due to it appears pre-installed managed package handling event
+//this is assigning them to the follow though proven in soql 
 trigger FollowWO on AssignedResource (before insert, before update) {
     id srid;
     id relatedRecord;
