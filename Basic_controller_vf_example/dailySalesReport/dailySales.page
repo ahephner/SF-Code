@@ -1,14 +1,15 @@
-<apex:page controller="dailySales" renderAs="pdf"  sidebar="false"  >
+<apex:page controller="dailySales"   sidebar="false"  >
 	<head>
-        <style type='text/css'>
-        
+        <style >
+        .head{
+            border: 5px solid red; 
+            text-align:center;
+            }
         </style>
     </head>
-    <c:dynapdfcomponent type='header'>
-    <div class='row logo'>apex:image here if we want</div>
-    </c:dynapdfcomponent>
+   
     	<div class='daily'>
-            <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+            <table width='100%' style="border-collapse: collapse;border: .5px solid black;">
                 <col width='10%'/>
                 <col width='10%'/>
                 <col width='10%'/>
@@ -19,9 +20,41 @@
                 <col width='10%'/>
                 <col width='10%'/>
                 <col width='10%'/>
-                	<tr>
-                		<th>Name</th>
+                <tr>
+                    <th colspan='6'></th>
+                	<th colspan='3' style='background-color:rgb(217, 217, 217);text-align:center;'><apex:outputText value="{0,date,MMMM}">
+        					<apex:param value="{!TODAY()}" /> 
+						</apex:outputText>
+                    </th>
+                    <th colspan='1' style='border-left:1px solid black; background-color:rgb(217, 217, 217);text-align:center;'>Future</th>
+                </tr>	
+                <tr>
+                		<th style="border: .5px solid black; text-align:center;">Rep</th>
+                        <th style="border: .5px solid black; text-align:center;">Prev. YTD</th>
+                        <th style="border: .5px solid black; text-align:center;">YTD</th>
+                        <th style="border: .5px solid black; text-align:center;">YTD JDT</th>
+                        <th style="border: .5px solid black; text-align:center;">YTD Margin</th>
+                        <th style="border: .5px solid black; text-align:center;">Budget</th>
+                        <th style="border: .5px solid black; text-align:center;">TM Budget</th>
+                        <th style="border: .5px solid black; text-align:center;">Sales</th>
+                        <th style="border: .5px solid black; text-align:center;">Margin</th>
+                        <th style="border: .5px solid black; text-align:center;">Open</th>
                 	</tr>
+                <tr>
+                	<apex:repeat value='{!reps}' var="x">
+                    	<td>{!x.name}</td>
+                        <td>{!x.Prev_YTD_Sales__c}</td>
+                        <td>{!x.YTD_Sales__c}</td>
+                        <td>{!x.JDT_Service_YTD_Sales__c}</td>
+                        <td>{!x.YTD_Margin__c}</td>
+                        <td>{!x.Prev_YTD_Sales__c}</td>
+                        <td>{!x.YTD_Budget__c}</td>
+                        <td>{!x.Active_Monthly_Budget__c}</td>
+                        <td>{!x.TM_Sales__c}</td>
+                        <td>{!x.TM_Margin__c}</td>
+                        <td>{!x.Open_Orders__c}</td>
+                    </apex:repeat>
+                </tr>
             </table>
     </div>
 </apex:page>
