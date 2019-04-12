@@ -1,0 +1,25 @@
+<messaging:emailTemplate subject="{!relatedTo.Name} Data Export" recipientType="Contact" relatedToType="Account">
+    <messaging:plainTextEmailBody >
+Dear {!BLANKVALUE(recipient.Name, 'Sir or Madam')},
+please find attached the report(s) you have requested...
+
+Kind regards,
+{!$Organization.Name}
+    </messaging:plainTextEmailBody>
+    <messaging:attachment filename="excel.xls">
+        <c:ReportExport reportId="00OD0000005rcm1" format="xls"/>
+    </messaging:attachment>
+    <messaging:attachment filename="csv (with original report footer).csv">
+        <c:ReportExport reportId="00OD0000005rcm1" format="csv" prettify="false"/>
+    </messaging:attachment>
+    <messaging:attachment filename="pretty.htm">
+        <c:ReportExport reportId="00OD0000005rcm1" format="printable" />
+    </messaging:attachment>
+    <messaging:attachment filename="pretty.pdf" renderAs="pdf">
+        <style>
+            .headerRow  {background-color:#aaaaff}
+            .grandTotal {background-color:#aaaacc}
+        </style>
+        <c:ReportExport reportId="00OD0000005rcm1" format="printable" />
+    </messaging:attachment>
+</messaging:emailTemplate>

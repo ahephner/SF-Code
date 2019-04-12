@@ -16,3 +16,7 @@ AND(
 CONTAINS( Product2.Name , 'AGENCY'), 
 UnitPrice != PricebookEntry.UnitPrice 
 )
+
+margin 
+IF(Sales_Doc_Detail__c.Extended_Price__c:SUM > 0,
+((Sales_Doc_Detail__c.Extended_Price__c:SUM- Sales_Doc_Detail__c.Extended_Cost__c:SUM)/Sales_Doc_Detail__c.Extended_Price__c:SUM),0)

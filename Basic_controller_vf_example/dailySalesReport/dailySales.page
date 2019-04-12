@@ -1,0 +1,27 @@
+<apex:page controller="dailySales" renderAs="pdf"  sidebar="false"  >
+	<head>
+        <style type='text/css'>
+        
+        </style>
+    </head>
+    <c:dynapdfcomponent type='header'>
+    <div class='row logo'>apex:image here if we want</div>
+    </c:dynapdfcomponent>
+    	<div class='daily'>
+            <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                <col width='10%'/>
+                	<tr>
+                		<th>Name</th>
+                	</tr>
+            </table>
+    </div>
+</apex:page>
