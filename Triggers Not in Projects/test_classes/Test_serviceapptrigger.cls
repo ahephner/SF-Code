@@ -1,5 +1,28 @@
 @isTest
 private class Test_serviceapptrigger {
+    @isTest
+    Static void insertUser(){
+                //create user
+        UserRole r = new UserRole(DeveloperName = 'MyCustomRole', Name = 'My Role');
+		insert r;
+ 
+ 		User u = new User(
+         ProfileId = [SELECT Id FROM Profile WHERE Name = 'System Administrator'].Id,
+         LastName = 'last',
+         Email = 'puser000@amamama.com',
+         Username = 'puser000@amamama.com' + System.currentTimeMillis(),
+         CompanyName = 'TEST',
+         Title = 'title',
+         Alias = 'alias',
+         TimeZoneSidKey = 'America/Los_Angeles',
+         EmailEncodingKey = 'UTF-8',
+         LanguageLocaleKey = 'en_US',
+         LocaleSidKey = 'en_US',
+         UserRoleId = r.Id
+    );
+        insert u; 
+    }
+
 	@isTest
     static  void testAppointment(){
         //needed for pricebook 
@@ -17,7 +40,7 @@ private class Test_serviceapptrigger {
         
         Account cust = new Account(name='Test123456', type= 'Customer', Customer_Name__c = 'Test Customer 123456');
     	Contact c = new Contact(lastname= 'something', AccountId = cust.id );
- 		User u1 = [SELECT Id FROM User WHERE Alias='Tprud'];
+ 		User u1 = [SELECT Id FROM User WHERE Lastname like 'Test%'];
 		insert cust;
         insert c; 
         //create workorder
