@@ -9,12 +9,16 @@ private class Test_lineItemController {
         cust.Type = 'Customer';
         cust.Customer_Name__c = 'Test Customer 123456';
         insert cust;
+        //contact
+        contact person = new contact(lastname = 'test', AccountId = cust.Id);
+        insert person; 
         //date and pricebook don't know if you need it just incase 
         Date myDate = Date.newInstance(2040, 1, 4);
+        Date startdate = Date.newInstance(2040, 1, 3);
         Id pricebookId = Test.getStandardPricebookId();
         //opportunity
-        opportunity opp = new opportunity(name = 'test name', accountID= cust.id, pricebook2id = pricebookId,
-                                         stagename='Estimate(10%)', job_type__c = 'Construction', closedate = mydate);
+        opportunity opp = new opportunity(name = 'test name', accountID= cust.id, pricebook2id = pricebookId,Target_Start_Date__c = startdate,
+                                         Contact__c = person.id, stagename='Estimate(10%)', job_type__c = 'Construction', closedate = mydate);
 	
         insert opp;
         //insert products 
