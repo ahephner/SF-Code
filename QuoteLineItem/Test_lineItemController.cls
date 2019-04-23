@@ -41,18 +41,21 @@ private class Test_lineItemController {
         quotelineitem qli = new quotelineitem(QuoteId = tq.id, Product2Id=pr.id,  pricebookentryid = pb.id, UnitPrice=1, Quantity=1);
 
 
-        
-
+       
         
          Test.startTest();
         insert ql;
         insert qli;
-        lineItemController con = new lineItemController();
-        list<quotelineitem> product = con.getproduct();   
+         ApexPages.StandardController sc = new ApexPages.StandardController(opp);
+
+        // create the controller
+        lineItemController ext = new lineItemController(sc);
+
+        list<quotelineitem> product = ext.getproduct();   
         system.debug('test quote-> ' +tq);
         system.debug('quotelineID ** '+ ql.quoteid);
         system.assertNotEquals(product, null);
-       		list<quote> c =  con.getx();
+       		list<quote> c =  ext.getx();
         system.debug('here is con.getx  '+ c );
         system.assertNotEquals(c, null);
         

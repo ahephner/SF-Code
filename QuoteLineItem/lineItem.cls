@@ -5,9 +5,9 @@ public with sharing class lineItemController {
     public List<QuoteLineItem> product;
     //public opportunity opp {get;set;}
     //public String preparedBy {get;set;}
-
-       //ID id = '0Q0n00000006Ts8CAE'; 
-        String id = apexpages.currentpage().getparameters().get('id');
+    public lineItemController(ApexPages.StandardController controller ) {}
+       ID id = '0Q0n00000006Ts8CAE'; 
+        //String id = apexpages.currentpage().getparameters().get('id');
         public list<quotelineitem> getproduct(){ 
             				product = 	[select Product2.Name, quantity, UnitPrice,TotalPrice, Description,
                                           Product_Code__c from quotelineitem where quoteid = :id];
@@ -21,7 +21,6 @@ public with sharing class lineItemController {
         }
         
     public list<quote> getx(){ 
-        //without this it will not recognize in the test class of returning a value
            		   x= [select createddate, name, ExpirationDate,QuoteNumber, CreatedBy.Name,CreatedBy.Email,
                        GrandTotal, BillingName,shippingname,shippingstreet, shippingstate,  
                        BillingStreet, billingstate from quote where id = :id limit 1];

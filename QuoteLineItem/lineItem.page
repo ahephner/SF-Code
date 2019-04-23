@@ -1,4 +1,4 @@
-<apex:page showHeader="false" standardStylesheets="false"  renderAs="pdf" controller="lineItemController">
+<apex:page showHeader="false" standardStylesheets="false"  renderAs="pdf" standardcontroller="quote" extensions="lineItemController">
 
  		<head>
             <style type="text/css">
@@ -7,7 +7,7 @@
             </style>
         </head>	  
      			<c:dynapdfcomponent type="header">
-                	<div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
+                	<div class='row logo'><apex:image style="width:60%;height:60%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
                 </c:dynapdfcomponent>
     		<div class='info'>
               <table  width="100%" >
@@ -16,8 +16,10 @@
                 <col width='25%'/>
     				<tr>
                     	<td>
-                            <p>Company Address: 12955 Ford Dr.</p> 
- 							<p style="margin-left: 127px;margin-top:-20px;">Fishers, IN 46038</p>	                   
+                            <p><b>Company Address:</b><br/>
+                                12955 Ford Dr.<br/> 
+ 							    Fishers, IN 46038
+                            </p>	                   
                     	</td>
                         <td colspan='2' style='text-align:left;'> Created Date:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!x[0].createddate}" /></apex:outputText></td>
                     </tr>
