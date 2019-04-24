@@ -6,8 +6,8 @@ public with sharing class lineItemController {
     //public opportunity opp {get;set;}
     //public String preparedBy {get;set;}
     public lineItemController(ApexPages.StandardController controller ) {}
-       ID id = '0Q0n00000006Ts8CAE'; 
-        //String id = apexpages.currentpage().getparameters().get('id');
+       //ID id = '0Q0n00000006Ts8CAE'; 
+        String id = apexpages.currentpage().getparameters().get('id');
         public list<quotelineitem> getproduct(){ 
             				product = 	[select Product2.Name, quantity, UnitPrice,TotalPrice, Description,
                                           Product_Code__c from quotelineitem where quoteid = :id];
