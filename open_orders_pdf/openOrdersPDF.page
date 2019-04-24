@@ -7,16 +7,15 @@
         </style>
     </head>
     
-         
-    
-    <apex:form >
-        
-      
-				
-            
 
+    <div class='who'>
+       <div class='row logo'><apex:image style="width:75px;height:75px;" url="{!$Resource.ATSLogo}"/><br/><hr/></div>
+    </div>
+    <apex:form >
                             <apex:dataTable value="{!selected}" var="ord" id="table"
-                                            styleClass="tableClass">
+                                            styleClass="tableClass" columns="7"
+                                            columnsWidth="100px, 100px, 100px, 100px, 110px, 110px, 160px"
+                                            align="center">
 
                                 <apex:column>
                                     <apex:facet name='header'>Order#</apex:facet>
@@ -36,20 +35,19 @@
                                 </apex:column>
                                 <apex:column>
                                     <apex:facet name='header'>Doc Date</apex:facet>
-                                	<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Doc_Date__c}"/></apex:outputText>
+                                	<apex:outputText value="{0, date, MM'/' dd '/'yy}"><apex:param value="{!ord.Doc_Date__c}"/></apex:outputText>
                                 </apex:column>
                                 <apex:column>
                                     <apex:facet name='header'>Req Ship Date</apex:facet>
-                                	<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Req_Ship_Date__c}"/></apex:outputText>
+                                    <apex:outputText value="{0, date, MM'/' dd '/'yy}"><apex:param value="{!ord.Req_Ship_Date__c}"/></apex:outputText>
                                 </apex:column>
                                 <apex:column>
                                     <apex:facet name='header'>Note</apex:facet>
                                 	<apex:outputText value="{!ord.Order_Note__c}"/>
                                 </apex:column>
-                                
-                                
-            		</apex:dataTable> 
-        
+                                             
+            </apex:dataTable> 
     </apex:form>
+   
 
 </apex:page>
