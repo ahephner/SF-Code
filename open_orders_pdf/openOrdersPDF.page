@@ -1,34 +1,55 @@
-<apex:page standardController="Open_Order__c" recordSetVar="unused" sidebar="false" renderAs="pdf">
+<apex:page standardController="Open_Order__c" recordSetVar="unused" sidebar="false" renderAs="pdf"
+           applyBodyTag="false" applyHtmlTag="false" showHeader="false">
 <apex:includeScript value="{!$Resource.UtilJS}" />
+    <head>
+        <style>
+        	@page{size:landscape;}
+        </style>
+    </head>
+    
+         
+    
     <apex:form >
-        <apex:pageBlock >
+        
       
-
+				
             
 
-                            <apex:pageBlockTable value="{!selected}" var="ord" id="table">
-                                <apex:column headerValue="Order #">
-                                <apex:outputText value="{!ord.name}"/>
+                            <apex:dataTable value="{!selected}" var="ord" id="table"
+                                            styleClass="tableClass">
+
+                                <apex:column>
+                                    <apex:facet name='header'>Order#</apex:facet>
+                                	<apex:outputText value="{!ord.name}"></apex:outputText>
                                 </apex:column>
-                                <apex:column headerValue="Rep">
-                                <apex:outputText value="{!ord.Sales_Rep__r.name}"/>
+                                <apex:column>
+                                    <apex:facet name='header'>Rep</apex:facet>
+                                	<apex:outputText value="{!ord.Sales_Rep__r.name}"></apex:outputText>
                                 </apex:column>
-                                <apex:column headerValue="Customer">
-                                <apex:outputText value="{!ord.Customer__r.Name}"/>
+                                <apex:column>
+                                    <apex:facet name='header'>Customer</apex:facet>
+                                	<apex:outputText value="{!ord.Customer__r.name}"></apex:outputText>
                                 </apex:column>
-                                <apex:column headerValue="Doc Amount">
-                                <apex:outputText value="{!ord.Doc_Amount__c}"/>
-                            	</apex:column>
-                                <apex:column headerValue="Doc Date">
-                                <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Doc_Date__c}"/></apex:outputText>
-                            	</apex:column>
-                                <apex:column headerValue="Req Ship Date">
-                                <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Req_Ship_Date__c}"/></apex:outputText>    
-                            	</apex:column>
-                                <apex:column headerValue="Order Note">
-                                <apex:outputText value="{!ord.Order_Note__c}"/>
-                            	</apex:column>
-            		</apex:pageBlockTable>
-        </apex:pageBlock>
+                                <apex:column>
+                                    <apex:facet name='header'>Doc Amount</apex:facet>
+                                	<apex:outputText value="{!ord.Doc_Amount__c}"></apex:outputText>
+                                </apex:column>
+                                <apex:column>
+                                    <apex:facet name='header'>Doc Date</apex:facet>
+                                	<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Doc_Date__c}"/></apex:outputText>
+                                </apex:column>
+                                <apex:column>
+                                    <apex:facet name='header'>Req Ship Date</apex:facet>
+                                	<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Req_Ship_Date__c}"/></apex:outputText>
+                                </apex:column>
+                                <apex:column>
+                                    <apex:facet name='header'>Note</apex:facet>
+                                	<apex:outputText value="{!ord.Order_Note__c}"/>
+                                </apex:column>
+                                
+                                
+            		</apex:dataTable> 
+        
     </apex:form>
+
 </apex:page>
