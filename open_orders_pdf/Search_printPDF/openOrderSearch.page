@@ -1,0 +1,8 @@
+<apex:page standardcontroller="Open_Order__c" recordSetVar="unused" lightningStylesheets="true">
+    <apex:form title="Search Open Orders">
+        <apex:commandButton value='close' action="{!cancel}"/>
+		<apex:pageBlock>
+            <apex:inputText label='Location' value='{!Open_Order__c.Location__c}'/>  
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>
