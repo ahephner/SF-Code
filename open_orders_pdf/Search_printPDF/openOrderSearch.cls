@@ -15,8 +15,10 @@ public with sharing class openOrderSearch {
     string id = userinfo.getUserId(); 
     
     public list<open_order__c> getx(){
-        x =[Select Name, Sales_Rep__r.name, Customer__r.name, Doc_Amount__c, Doc_Date__c
-                ,Req_Ship_Date__c, Order_Note__c from Open_Order__c where location__r.regional_manager__c =: id ];
+        loc = '%'+ loc + '%'; 
+                x =[Select Name, Sales_Rep__r.name, Customer__r.name, Doc_Amount__c, Doc_Date__c, 
+                   Req_Ship_Date__c, Order_Note__c from Open_Order__c where location__r.regional_manager__c =: id and location__r.Location_Number__c like :loc
+           	       and doc_date__c >= :dt];
         return x; 
     }
     
@@ -25,10 +27,10 @@ public with sharing class openOrderSearch {
         dt = system.Date.today(); 
         system.debug(loc);
         loc = '';
-        system.debug(ship);
+       // system.debug(ship);
          
     }
-    public void test(){system.debug('hello'); system.debug(loc);}
+    public void test(){system.debug('hello'); system.debug(x);}
     public List<selectOption>  getshiptypes(){
         List<selectOption> shiptypes = new List<selectOption>();
             shiptypes.add(New SelectOption('DS', 'DS' ));
