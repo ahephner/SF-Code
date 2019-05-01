@@ -1,4 +1,5 @@
-<apex:page standardController="Open_Order__c" recordSetVar="unused" sidebar="false" lightningStylesheets="true">
+<apex:page standardController="Open_Order__c" extensions="openOrderController" recordSetVar="unused" sidebar="false"
+            lightningStylesheets="true">
 <apex:includeScript value="{!$Resource.UtilJS}" />
     <apex:form >
         <apex:pageBlock >
@@ -9,6 +10,7 @@
                 <apex:pageBlockButtons >
                 <apex:commandButton value="Save" action="{!save}"/>
                 <apex:commandButton value="Return" action="{!cancel}"/>
+                    <apex:commandButton value="Save + PDF" action="{!saveTwo}"/> 
                 </apex:pageBlockButtons>
                             <apex:pageBlockTable value="{!selected}" var="ord" id="table">
                                 <apex:column headerValue="Order #">

@@ -10,7 +10,7 @@ public with sharing class openOrderController {
     public Pagereference saveTwo(){
         system.debug('in save method');
         for(Open_order__c op: (List<Open_Order__c>) setCon.getSelected()){
-            system.debug('here ' +op.name);
+            update op; 
         } 
         return Page.openOrdersPDF; 
     }
