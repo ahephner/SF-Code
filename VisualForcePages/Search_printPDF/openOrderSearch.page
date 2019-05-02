@@ -1,0 +1,20 @@
+<apex:page standardcontroller="Open_Order__c" extensions="openOrderSearch"
+           recordSetVar="unused" lightningStylesheets="true">
+    <apex:form title="Search Open Orders">
+        <apex:commandButton value="close" action="{!cancel}"/>
+        <apex:commandButton value="move" action="{!test}"/>
+		<apex:pageBlock >
+            <apex:pageblocksection>	
+            <apex:inputText label="Location" value="{!loc}"/>  
+            <apex:outputText value="{!foo}"></apex:outputText>
+                <apex:inputText label='shipdate' value="{!dt}"/>
+                 
+            <apex:outputPanel >
+            <apex:selectList value="{!Open_Order__c.Ship_Type__c}" size="1" multiselect="true" styleClass="form-control">
+                <apex:selectOptions value="{!shiptypes}"/>
+            </apex:selectList>
+                </apex:outputPanel>
+                </apex:pageblocksection>
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>

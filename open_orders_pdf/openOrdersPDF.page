@@ -1,0 +1,86 @@
+<apex:page standardController="Open_Order__c" recordSetVar="unused" sidebar="false" renderAs="pdf"
+           applyBodyTag="false" applyHtmlTag="false" showHeader="false">
+<apex:includeScript value="{!$Resource.UtilJS}" />
+    <head>
+        <style>
+        	@page{size:landscape;}
+            .row{
+            	display:inline-block; 
+            	
+            	}
+
+            .user{
+            	margin-left: 80%;
+            	 }
+            .below{
+            	 margin-left: 80%;
+            	  }
+            .top{
+            	border: 1px solid black;
+            	text-align: center; 
+            	}
+            .info{
+            	text-align: center;
+                border-top: 1px solid black;
+            	border-bottom: 1px solid black; 
+            	 }
+            /* does not work on pdf print out currently
+            	table tr:nth-child(odd) {
+    			background: #ccc;
+            }*/
+
+        </style>
+    </head>
+    
+
+    <div class='who'>
+       <div class='row logo'><apex:image style="width:75px;height:75px;" url="{!$Resource.ATSLogo}"/></div>
+        <div class='row user'>User: {!$User.Firstname} {!$User.LastName}</div>
+        <div class='row below'>Date Created: <apex:outputText value="{0,date,MM-dd-yyyy}"><apex:param value="{!TODAY()}" /></apex:outputText></div>
+        <br/>
+    </div>
+    <apex:form >
+                             
+                <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+                            <col width='5%'/>
+                            <col width='5%'/>
+                            <col width='5%'/>        
+                            <col width='5%'/>
+            				<col width='5%'/>
+            				<col width='5%'/>
+            				<col width='5%'/>
+                                    <tr>
+                                      <th class='top'>Order #</th>
+                                      <th class='top'>Rep</th>
+                                      <th class='top'>Customer</th>
+                                      <th class='top'>Doc Amount</th>
+                                      <th class='top'>Doc Date</th>
+                                      <th class='top'>Req. Ship</th>
+                                      <th class='top'>Note</th>
+                                    </tr>
+                    					<apex:variable var='i' value='{!0}'/>
+                    					<apex:repeat value="{!selected}" var='a'>
+                                            <apex:variable var='i' value='{!i+0}'/>
+                    				<tr>
+                    					<td class='info'>{!a.name}</td>
+                                        <td class='info'>{!a.Sales_Rep__r.name}</td>
+                                        <td class='info'>{!a.Customer__r.name}</td>
+                                        <td class='info'>{!a.Doc_Amount__c}</td>
+                                        <td class='info'>
+                                            <apex:outputText value="{0,date,MM-dd-yyyy}">
+                   								<apex:param value="{!a.Doc_Date__c}" />
+         								    </apex:outputText>
+                                        </td>
+                                        <td class='info'>
+                                            <apex:outputText value="{0,date,MM-dd-yyyy}">
+                   								<apex:param value="{!a.Req_Ship_Date__c}" />
+         								    </apex:outputText>
+                                        </td>
+                                        <td class='info'>{!a.Order_Note__c}</td>
+                    				</tr>
+            </apex:repeat>
+        </table>
+    </apex:form>
+   
+
+</apex:page>
