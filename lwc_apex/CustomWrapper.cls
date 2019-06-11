@@ -9,4 +9,6 @@ public with sharing class CustomWrapper {
     public Boolean check {get; set;}
     @AuraEnabled
     public String prodName {get; set;}
+    @AuraEnabled
+    public String custNum {get;set;}
 }

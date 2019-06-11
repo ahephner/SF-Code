@@ -8,7 +8,7 @@
 // }
 //**********Below is testing getting input from client 
 public with sharing  class docSearchController {
- 
+
 	  @AuraEnabled
     public static String docSearch(CustomWrapper wrapper) {
         // Using System.debug() isn't good practice for production applications.
@@ -18,7 +18,7 @@ public with sharing  class docSearchController {
         // apexImperativeMethodWithComplexParams Lightning web component.
         String call = 'You entered "' + wrapper.one + '" and "' 
                           + wrapper.two + '"  product string '
-                          + wrapper.prodName + ' checkbox =' + wrapper.check; 
+                          + wrapper.prodName + ' checkbox =' + wrapper.check + ' customer number ' + wrapper.custNum; 
         return call;
     }
     
