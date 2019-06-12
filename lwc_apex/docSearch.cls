@@ -10,15 +10,12 @@
 public with sharing  class docSearchController {
 
 	  @AuraEnabled
-    public static String docSearch(CustomWrapper wrapper) {
-        // Using System.debug() isn't good practice for production applications.
-        // It's used here to showcase how the received data looks like in Apex.
-        System.debug(wrapper);
-        // The values are based on the data that is defined in the
-        // apexImperativeMethodWithComplexParams Lightning web component.
-        String call = 'You entered "' + wrapper.one + '" and "' 
-                          + wrapper.two + '"  product string '
-                          + wrapper.prodName + ' checkbox =' + wrapper.check + ' customer number ' + wrapper.custNum; 
+    public static list<Sales_Doc_Detail__c> docSearch(CustomWrapper wrapper) {
+		date dOne = date.valueOf(wrapper.one); 
+        date dTwo = date.newInstance(wrapper.two.year(), wrapper.two.month(), wrapper.two.day());    
+        list<Sales_Doc_Detail__c> call = [SELECT Doc_Date__c, Extended_Price__c, Product_Name__c, Qty__c, Sales_Document__r.Name 
+                                          FROM Sales_Doc_Detail__c where  Customer__c = :wrapper.custNum and doc_date__c >= :dOne and doc_date__c <= :dTwo]; 
+        system.debug(call);
         return call;
     }
     
