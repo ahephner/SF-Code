@@ -1,0 +1,5 @@
+<apex:page standardController="Sales_Doc_Detail__c" extensions="docSearchController">
+    <h2>
+       hey
+    </h2>
+</apex:page>
