@@ -1,4 +1,4 @@
-<apex:page standardController="account" extensions="customerSearchDocController" showHeader="false"  lightningStylesheets="true" docType="HTML-5.0">
+<apex:page standardController='account' extensions="customerSearchDocController" showHeader="false"  lightningStylesheets="true" docType="HTML-5.0">
 	<head>
         <style></style>
     </head>
@@ -7,16 +7,11 @@
         	<div class="slds-grid" id='dates'>
 
 				<label>Date one:</label>
-                <apex:input type='date' value="{!dOne}"></apex:input>
+                <apex:input type="date" value="{!dOne}"></apex:input>
                 <label>Date two: </label>
-                <apex:input type='date'  value="{!dTwo}"></apex:input>
-    
-                <p>
-                    {!click}
-                </p>
-                
+                <apex:input type="date"  value="{!dTwo}"></apex:input>
             </div>
-            <apex:commandButton action="{!getsearch}" value="search" rerender='{!click}'/>
+            <apex:commandButton action="{!getsearch}" value="search" />
         </apex:form>
     </apex:pageBlock>	
 </apex:page>

@@ -1,5 +1,10 @@
-<apex:page standardController="Sales_Doc_Detail__c" extensions="docSearchController">
+<apex:page standardController='account' extensions="customerSearchDocController">
     <h2>
        hey
     </h2>
+    <apex:repeat value="{!call}" var="string" >
+
+        <apex:outputText value="{!string.Product_Name__c}" id="theValue"/><br/>
+
+    </apex:repeat>
 </apex:page>

@@ -5,8 +5,8 @@ public class customerSearchDocController {
     public string click {get;set;}
     public string cn {get; set;}
     public account acct {get;set;}
-    public list<Sales_Doc_Detail__c> call;
-    
+    public list<sales_doc_detail__c> call {get;set;}
+    public list<sales_doc_detail__c> sale {get;set;}
     String range;
         
     public customerSearchDocController(ApexPages.StandardController ctl){
@@ -14,18 +14,26 @@ public class customerSearchDocController {
         acct = (account)ctl.getRecord(); 
         if(acct.id != null){
             acct = [select id, customer__c from account where id = :acct.id]; 
+            docList(dOne, dTwo); 
         }
+
     }
  	
+    public list<sales_doc_detail__c> docList(date a, date b){
+        list<sales_doc_detail__c> sale = new list<sales_doc_detail__c>();
+        	sale = [SELECT Doc_Date__c, Extended_Price__c, Product_Name__c, Qty__c, Sales_Document__r.Name 
+                    FROM Sales_Doc_Detail__c where customer__c =:acct.Customer__c and doc_date__c >= :a and doc_date__c <= :b]; 
+       
+        return sale; 
+    }
     public pagereference getsearch(){   
         system.debug('button clicked');
         click = 'clicked'; 
-        date cleanOne = date.valueOf(dOne); 
-        date cleanTwo = date.valueOf(dTwo); 
-        list<Sales_Doc_Detail__c> call = [SELECT Doc_Date__c, Extended_Price__c, Product_Name__c, Qty__c, Sales_Document__r.Name 
-                                          FROM Sales_Doc_Detail__c where customer__c =:acct.Customer__c and doc_date__c >= :dOne and doc_date__c <= :dTwo];
-        system.debug(call);
-        return null; 
+        call = docList(dOne,dTwo); 
+         
+ 	PageReference pageRef = Page.customerSalesDocsLightPDF;
+  	pageRef.setRedirect(false);
+  	return Page.customerSalesDocsLightPDF;
     }
     
 }
