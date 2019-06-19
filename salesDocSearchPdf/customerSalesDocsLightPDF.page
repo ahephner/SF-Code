@@ -3,10 +3,27 @@
     <style></style>
     </head>
     <c:dynapdfcomponent type="header">
-    	<div class='row logo'><apex:image style="width:7%;height:7%;" url="{!$Resource.ATSLogo}"/><br/><hr/></div>
+    	<div class='row logo'><apex:image style="width:25%;height:25%;" url="{!$Resource.ATSLogo}"/><br/><hr/></div>
     </c:dynapdfcomponent>
-    
-    	<div>
+    	<div class='account info'>
+                          <table  width="100%" >
+                <col width='50%'/>
+                <col width='25%'/>
+                <col width='25%'/>
+    				<tr>
+                    	<td>
+                            <p>Company Address: 12955 Ford Dr.</p> 
+ 							<p style="margin-left: 127px;margin-top:-20px;">Fishers, IN 46038</p>	                   
+                    	</td>
+                        <td><p>Report Prepared for:<apex:outputText value="{!acct.Customer_Name__c}"></apex:outputText></p></td>
+                    </tr>
+                    <tr>
+                   <td colspan='2' style='text-align:left;'> Doc Dates:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dOne}" /></apex:outputText> - <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dTwo}" /></apex:outputText></td>
+                   </tr>
+            </table>
+            
+    </div>
+    	<div class='sales'>
     <apex:repeat value="{!call}" var="string" >
 
         <apex:outputText value="{!string.Product_Name__c}" id="theValue"/> <apex:outputText value="{!string.doc_date__c}" /><br/>
