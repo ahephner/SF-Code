@@ -1,10 +1,16 @@
-<apex:page standardController='account' extensions="customerSearchDocController">
-    <h2>
-       hey
-    </h2>
+<apex:page standardController="account" extensions="customerSearchDocController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" renderAs="pdf" >
+<head>
+    <style></style>
+    </head>
+    <c:dynapdfcomponent type="header">
+    	<div class='row logo'><apex:image style="width:7%;height:7%;" url="{!$Resource.ATSLogo}"/><br/><hr/></div>
+    </c:dynapdfcomponent>
+    
+    	<div>
     <apex:repeat value="{!call}" var="string" >
 
-        <apex:outputText value="{!string.Product_Name__c}" id="theValue"/><br/>
+        <apex:outputText value="{!string.Product_Name__c}" id="theValue"/> <apex:outputText value="{!string.doc_date__c}" /><br/>
 
     </apex:repeat>
+    </div>
 </apex:page>

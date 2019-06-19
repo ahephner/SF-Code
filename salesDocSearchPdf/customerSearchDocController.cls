@@ -11,6 +11,8 @@ public class customerSearchDocController {
         
     public customerSearchDocController(ApexPages.StandardController ctl){
        this.ctl = ctl; 
+        this.dOne = date.newInstance(2017, 10, 01);
+        this.dTwo = date.today().addDays(-365); 
         acct = (account)ctl.getRecord(); 
         if(acct.id != null){
             acct = [select id, customer__c from account where id = :acct.id]; 
@@ -20,10 +22,11 @@ public class customerSearchDocController {
     }
  	
     public list<sales_doc_detail__c> docList(date a, date b){
-        list<sales_doc_detail__c> sale = new list<sales_doc_detail__c>();
+        //list<sales_doc_detail__c> sale = new list<sales_doc_detail__c>();
         	sale = [SELECT Doc_Date__c, Extended_Price__c, Product_Name__c, Qty__c, Sales_Document__r.Name 
-                    FROM Sales_Doc_Detail__c where customer__c =:acct.Customer__c and doc_date__c >= :a and doc_date__c <= :b]; 
-       
+                    FROM Sales_Doc_Detail__c where customer__c =:acct.Customer__c and doc_date__c >= :a and doc_date__c <= :b order by doc_date__c asc]; 
+       			
+        	
         return sale; 
     }
     public pagereference getsearch(){   
