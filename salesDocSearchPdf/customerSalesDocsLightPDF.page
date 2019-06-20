@@ -18,10 +18,9 @@
                         <td><p>Report Prepared for:<apex:outputText value="{!acct.Customer_Name__c}"></apex:outputText></p></td>
                     </tr>
                     <tr>
-                   <td colspan='2' style='text-align:left;'> Doc Dates:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dOne}" /></apex:outputText> - <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dTwo}" /></apex:outputText></td>
+                   <td colspan='2' style='text-align:left;'> Date Range:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dOne}" /></apex:outputText> - <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dTwo}" /></apex:outputText></td>
                    </tr>
-            </table>
-            
+            </table> 
     </div>
     	<div class='sales'>
              <apex:repeat value="{!doc_c}" var="doc">
@@ -31,29 +30,32 @@
                  </h6>
                     <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
 
-                        	<col width='25%'/>
-                            <col width='25%'/>
-                            <col width='25%'/>
-                            <col width='25%'/>        
+                        	<col width='40%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>        
 
 
                                     <tr>
                                       <th style="border: 1px solid black;">Product</th> 
                                       <th style="border: 1px solid black;">Qty</th> 
                                       <th style="border: 1px solid black;">Unit Price</th>  
-                                      <th style="border: 1px solid black;">Total Price</th>
+                                      <th style="border: 1px solid black;">Product Total</th>
                                     </tr>
                             			<apex:repeat value="{!call}" var="s" >
 										<apex:outputText rendered="{!s.Sales_Document__c == doc.Id}">
                                             <tr>
                                                 <td>{!s.Product_Name__c}</td>
-                                                <td>{!s.Qty__c}</td>
-                                                <td>{!s.Unit_Price__c}</td>
-                                                <td>{!s.Extended_Price__c}</td>
+                                                <td style='text-align:center;'>{!s.Qty__c}</td>
+                                                <td style='text-align:center;'>{!s.Unit_Price__c}</td>
+                                                <td style='text-align:center;'>{!s.Extended_Price__c}</td>
                                             </tr>
-                                            <tr><td colspan='4'>{!doc.Product_Sub_Total__c}</td></tr>
+                                            <div style='border-bottom: .5px solid black'><tr></tr></div>
                                         </apex:outputText>    
-    </apex:repeat>
+    									</apex:repeat>
+                                         <tr style='background-color: grey;'>
+                                            <td style='text-align: center;'>Order Total: {!doc.Product_Sub_Total__c}</td>
+                                         </tr>
             </table>
 </apex:repeat>
     </div>
