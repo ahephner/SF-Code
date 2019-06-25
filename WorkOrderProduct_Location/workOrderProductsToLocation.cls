@@ -36,11 +36,21 @@ public class workOrderProductsToLocation {
                 prod.QuantityOnHand = prodlist.get(i.Product2Id).QuantityOnHand + i.Quantity;
                 prod.LocationId = locationID; 
                 prod.Product2Id = i.Product2Id; 
-                
+       
                 upProduct.add(prod); 
+            }else{
+                productitem np = new productitem();
+                np.Account_Name__c = i.Account__c;
+                np.QuantityOnHand = i.Quantity;
+                np.Product2Id = i.Product2Id;
+                np.LocationId = LocationId;
+                
+                newProduct.add(np);
             }
         }
         //insert or upsert 
+        update upProduct; 
+        insert newproduct; 
         return null;
     }
 }
