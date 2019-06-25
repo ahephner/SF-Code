@@ -1,0 +1,5 @@
+<apex:page StandardController="WorkOrder"
+           extensions="workOrderProductsToLocation"
+           action="{!send}">
+    <apex:pageMessages /> 
+</apex:page>
