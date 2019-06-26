@@ -1,0 +1,81 @@
+<apex:page standardController="account" showHeader="false" extensions="customerSearchDocController"  applyBodyTag="false" renderAs="pdf" >
+<head>
+    <style></style>
+    </head>
+    <c:dynapdfcomponent type="header">
+        <table width="100%" >
+            <col width="30%"/>
+            <col width="55%"/>
+            <col width="15%"/>
+              <tr>
+                  <td colspan='1'><apex:image style="width:80%;height:80%;" url="{!$Resource.ATSLogo}"/></td>
+                  <td><h6 style='background-color:yellow; text-align:center;'>
+                      Disclaimer: This is not a replacement of the original invoice.
+                      </h6></td>
+        		<td></td>
+              </tr>
+        </table>
+        <hr/>
+    </c:dynapdfcomponent>
+    <c:dynapdfcomponent type='footer'></c:dynapdfcomponent>
+    	<div class='account info' style='margin-top:0%; margin-bottom:0%;'>
+                          <table  width="100%" >
+                <col width='50%'/>
+                <col width='25%'/>
+                <col width='25%'/>
+    				<tr>
+                    	<td>
+                            <p>Company: <apex:outputText value="{!acct.Customer_Name__c}"></apex:outputText></p>                   
+                    	</td>
+                        <td><p>Grand Total:{!total}</p></td>
+                    </tr>
+                    <tr>
+                    <td colspan='2' ></td>    
+                   <td style='text-align:left;'> Date Range:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dOne}" /></apex:outputText> - <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dTwo}" /></apex:outputText></td>
+                   </tr>
+            </table> 
+    </div>
+    	<div class='sales' style='margin-top:0%; margin-bottom:0%;'>
+             <apex:repeat value="{!doc_c}" var="doc">
+                 <h5>Doc Number:{!doc.name} Sale Date:<apex:outputText value="{0,date,MM-dd-yyyy}">
+                   								<apex:param value="{!doc.Doc_Date__c}" />
+         								</apex:outputText>
+                 </h5>
+                    <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+
+                        	<col width='40%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>        
+
+
+                                    <tr>
+                                      <th style="border: 1px solid black; text-align:center;">Product</th> 
+                                      <th style="border: 1px solid black; text-align:center;">Qty</th> 
+                                      <th style="border: 1px solid black; text-align:center;">Unit Price</th>  
+                                      <th style="border: 1px solid black; text-align:center;">Product Total</th>
+                                    </tr>
+                            			<apex:repeat value="{!call}" var="s" >
+										<apex:outputText rendered="{!s.Sales_Document__c == doc.Id}">
+                                            <tr>
+                                                <td>{!s.Product_Name__c}</td>
+                                                <td style='text-align:center;'>{!s.Qty__c}</td>
+                                                <td style='text-align:center;'>{!s.Unit_Price__c}</td>
+                                                <td style='text-align:center;'>{!s.Extended_Price__c}</td>
+                                            </tr>
+                                            
+                                        </apex:outputText>    
+    									</apex:repeat>
+                                         <tr style='background-color: grey;'>
+                                             <td colspan='2'></td>
+                                             <td style='text-align: right;'>Order Total:</td>
+                                            <td style='text-align: center;'>{!doc.Product_Sub_Total__c}</td>
+                                         </tr>
+
+            </table>
+</apex:repeat>
+    </div>
+    <div>
+        <h4>Grand Total:${!total} </h4>
+    </div>
+</apex:page>

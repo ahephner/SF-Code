@@ -1,0 +1,33 @@
+<apex:page standardController="WorkOrder" recordSetVar="unused" sidebar="false"
+            lightningStylesheets="true">
+<apex:includeScript value="{!$Resource.UtilJS}" />
+    <apex:form >
+        <apex:pageBlock >
+        <apex:pageMessages />
+            <apex:pageBlock title="Edit Work Order Notes" mode="edit">
+            Note: All modifications made on the page will be lost if Return button is clicked without clicking the Save button first. 
+            </apex:pageBlock>
+                <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Return" action="{!cancel}"/>
+                </apex:pageBlockButtons>
+                            <apex:pageBlockTable value="{!selected}" var="wo" id="table">
+                                <apex:column headerValue="W.O. #">
+                                <apex:outputText value="{!wo.WorkOrderNumber}"/>
+                                </apex:column>
+                                <apex:column headerValue="Location">
+                                <apex:outputText value="{!wo.Location.Name}"/>
+                                </apex:column>
+                                <apex:column headerValue="Account">
+                                <apex:outputText value="{!wo.account__r.Name}"/>
+                                </apex:column>
+                                <apex:column headerValue="W.O. Status">
+                                <apex:outputText value="{!wo.Status}"/>
+                            	</apex:column>
+                                <apex:column headerValue="W.O. Note">
+                                <apex:inputField value="{!wo.Work_Order_Note__c}"/>
+                            	</apex:column>
+            		</apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

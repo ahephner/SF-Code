@@ -1,0 +1,23 @@
+<apex:page standardController="account" extensions="customerSearchDocController" showHeader="false"  lightningStylesheets="true" docType="HTML-5.0">
+	<head>
+        <style></style>
+    </head>
+    <apex:pageBlock >
+    	<apex:form >
+        	<div class="slds-grid" id='dates'>
+				<p>
+                    Sales from: 
+                </p>	
+				<label>Date one:</label>
+                <apex:input type="date" value="{!dOne}"></apex:input>
+                <p>
+                    to 
+                </p>
+                <label>Date two: </label>
+                <apex:input type="date"  value="{!dTwo}"></apex:input>
+            
+            <apex:commandButton action="{!getsearch}" value="search" />
+                </div>
+        </apex:form>
+    </apex:pageBlock>	
+</apex:page>
