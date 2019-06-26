@@ -14,6 +14,9 @@ public class workOrderProductsToLocation {
     }
     
     public PageReference send(){
+        //Rollback point
+        Savepoint sp = Database.setSavepoint();
+        
         List<WorkOrderLineItem> wop = [SELECT Account__c, Product2Id, Quantity, WorkOrder.AccountId FROM WorkOrderLineItem where  WorkOrderId = :wo.Id ];
         list<ProductItem> pi = [Select ID, Account_Name__c,LocationId,Product2Id,QuantityOnHand from productitem 
                         where account_name__c = :wo.AccountId];
@@ -28,29 +31,38 @@ public class workOrderProductsToLocation {
             locationId = x.LocationId; 
         }
         
-        for(WorkOrderLineItem i: wop){
+                for(WorkOrderLineItem i: wop){
             if(prodlist.get(i.Product2Id) != null){
-                productitem prod = new productitem();
-                prod.Id = prodlist.get(i.Product2Id).Id; 
-               	prod.Account_Name__c = i.Account__c;
-                prod.QuantityOnHand = prodlist.get(i.Product2Id).QuantityOnHand + i.Quantity;
-                prod.LocationId = locationID; 
-                prod.Product2Id = i.Product2Id; 
-       
+                productitem prod = new productitem(
+                Id = prodlist.get(i.Product2Id).Id, 
+               	Account_Name__c = i.Account__c,
+                QuantityOnHand = prodlist.get(i.Product2Id).QuantityOnHand + i.Quantity,
+                locationID = locationID,
+                Product2Id = i.Product2Id
+       );
                 upProduct.add(prod); 
             }else{
                 productitem np = new productitem();
                 np.Account_Name__c = i.Account__c;
                 np.QuantityOnHand = i.Quantity;
                 np.Product2Id = i.Product2Id;
-                np.LocationId = LocationId;
+                np.LocationId = locationID;
                 
                 newProduct.add(np);
             }
-        }
+         }
         //insert or upsert 
-        update upProduct; 
-        insert newproduct; 
-        return null;
+        try{
+            update upProduct; 
+            insert newproduct;
+            //system.debug('Update ' +upProduct);
+            //system.debug('NP '+newProduct);
+        }catch(exception e){
+            Database.rollback(sp);
+            ApexPages.addMessages(e);
+            return null; 
+        }
+ 
+        return new PageReference('/lightning/r/WorkOrder/'+wo.id+'/view');
     }
 }
