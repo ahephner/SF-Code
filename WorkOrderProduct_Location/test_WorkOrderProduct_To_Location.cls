@@ -50,14 +50,41 @@ private class test_WorkOrderProduct_To_Location {
 	//contact
 	Contact c = new Contact(lastname= 'something', AccountId = cust.id );
         insert c;
-	//workorder
-	 WorkOrder wo = new WorkOrder(ContactId = c.id, Area_Manager__c = u1.id, Pricebook2Id = pricebookID); 
-        insert wo;
-	//workorderline items
-	//location holds inventory = true,
+    //location holds inventory = true,
 	Schema.location l =new Schema.location(name='testLocation', locationType='Site', isInventoryLocation=True);
         insert l; 
          
 	//productitems
+	productitem pi = new productitem(Product2Id= prod2.id, QuantityOnHand=1 , locationID=l.id);
+        insert pi;
+        productitem pi1 = new productitem(Product2Id= prod.id, QuantityOnHand=1 , locationID=l.id);
+        insert pi1;
+    //map
+    map<string, ProductItem> prodList = new map<string, ProductItem>();
+         
+	//workorder
+	 WorkOrder wo = new WorkOrder(ContactId = c.id, Area_Manager__c = u1.id, Pricebook2Id = pricebookID); 
+        insert wo;
+	//workorderline items
+	WorkOrderLineItem wop = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbe.id, Quantity=1);
+    WorkOrderLineItem wop1 = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbe2.id,  Quantity=1);
+        insert wop;
+        insert wop1; 
+
+    //standard controller
+   ApexPages.StandardController con = new ApexPages.StandardController(wo); 
+   //extension controller
+    workOrderProductsToLocation ext = new workOrderProductsToLocation(con);
+system.debug('product 2 ' +wop1);
+        system.debug('item ' +pi);
+   //start test
+  Test.startTest();
+        PageReference ref = ext.send(); 
+        List<productitem> k = [select id,QuantityOnHand, Product2Id,Account_Name__c  from productitem ];
+        List<workorderlineitem> w = [select id, product2id, quantity from workorderlineitem];
+        System.assertNotEquals(k, null);
+        system.debug('customer stuff ' +k);
+        system.debug('wop '+w);
+  Test.stopTest();
     }
 }
