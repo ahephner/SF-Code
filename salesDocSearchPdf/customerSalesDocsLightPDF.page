@@ -1,10 +1,23 @@
-<apex:page standardController="account" extensions="customerSearchDocController"  applyBodyTag="false" renderAs="pdf" >
+<apex:page standardController="account" showHeader="false" extensions="customerSearchDocController"  applyBodyTag="false" renderAs="pdf" >
 <head>
     <style></style>
     </head>
     <c:dynapdfcomponent type="header">
-    	<div class='row logo'><apex:image style="width:25%;height:25%;" url="{!$Resource.ATSLogo}"/><br/><hr/></div>
+        <table width="100%" >
+            <col width="30%"/>
+            <col width="55%"/>
+            <col width="15%"/>
+              <tr>
+                  <td colspan='1'><apex:image style="width:80%;height:80%;" url="{!$Resource.ATSLogo}"/></td>
+                  <td><h6 style='background-color:yellow; text-align:center;'>
+                      Disclaimer: This is not a replacement of the original invoice.
+                      </h6></td>
+        		<td></td>
+              </tr>
+        </table>
+        <hr/>
     </c:dynapdfcomponent>
+    <c:dynapdfcomponent type='footer'></c:dynapdfcomponent>
     	<div class='account info' style='margin-top:0%; margin-bottom:0%;'>
                           <table  width="100%" >
                 <col width='50%'/>
