@@ -1,0 +1,71 @@
+<apex:page showHeader="false" standardStylesheets="false"  renderAs="pdf" standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
+
+ 		<head>
+            <style type="text/css">
+                        @page {
+            margin-top: 11%;
+            margin-bottom: 11%;
+        }
+                
+            </style>
+    </head>
+    <c:dynapdfcomponent type="header">
+        <table width="100%" >
+            <col width="30%"/>
+            <col width="55%"/>
+            <col width="15%"/>
+              <tr>
+                  <td colspan='1'><apex:image style="width:80%;height:80%;" url="{!$Resource.ATSLogo}"/></td>
+                  <td><h6 style='background-color:yellow; text-align:left;;'>
+                      Disclaimer: This is not a replacement of the original invoice.
+                      </h6>
+              <h6>Sales Invoice: {!head[0].name}</h6></td>
+        		<td></td>
+              </tr>
+        </table>
+        <hr/>
+    </c:dynapdfcomponent>
+    		<div class='info' style="padding-top:-100px;">
+			<ul style="list-style-type:none; ">
+                <li>Doc Date: <apex:outputText value="{0,date,MM-dd-yyyy}">
+                   			  	<apex:param value="{!head[0].doc_date__c}" />
+         					  </apex:outputText></li>
+                <li>Customer: {!head[0].customer__r.name}</li>
+                <li>Sales Rep: {!head[0].Sales_Rep__r.name}</li>
+                </ul>                
+    </div> 
+                        <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+                            <col width='40%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>
+                            
+                                    <tr>
+                                      <th style="border: 1px solid black;">Product</th>
+                                      <th style="border: 1px solid black;">Qty</th>
+                                      <th style="border: 1px solid black;">Unit Price</th>
+                                      <th style="border: 1px solid black;">Total Price</th>
+                                    </tr>	
+                                  <apex:repeat value="{!detail}" var="p">
+                                  <tr> 
+                                    <td style="border: 1px solid black;">{!p.Product_Name__c}</td>
+                                    <td style="border: 1px solid black; text-align:center;">{!p.Qty__c}</td>
+                                    <td style="border: 1px solid black; text-align:center;">${!p.Unit_Price__c}</td> 
+                                    <td style="border: 1px solid black; text-align:center;">${!p.Extended_Price__c}</td> 
+                                 </tr>   
+                                </apex:repeat>
+                            <tr></tr>
+                            <tr><td colspan='2'></td>
+                                <td style="text-align:center;">Invoice Total:</td>
+                                <td style="text-align:center;"> ${!head[0].Line_Total__c}</td></tr>
+                           </table>
+<c:dynapdfcomponent type="footer">
+        <hr/>
+        <h6>
+            All purchasese are due and payable with terms distributed at the time of the sale. A monthly service charge of 1.5% will be assessed on past due amounts not paid.
+
+            Acceptance of goods shipped, the buyer agrees to pay seller all costs collected by or through an attorney at law/collection agency, including reasonable attorney fees. 
+        </h6>
+    </c:dynapdfcomponent>
+
+</apex:page>
