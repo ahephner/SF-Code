@@ -6,27 +6,37 @@
             margin-top: 11%;
             margin-bottom: 11%;
         }
-                
+                tr.blank{
+                height: 10px; !important; 
+                }
             </style>
     </head>
     <c:dynapdfcomponent type="header">
         <table width="100%" >
             <col width="30%"/>
-            <col width="55%"/>
-            <col width="15%"/>
+            <col width="40%"/>
+            <col width="30%"/>
               <tr>
                   <td colspan='1'><apex:image style="width:80%;height:80%;" url="{!$Resource.ATSLogo}"/></td>
-                  <td><h6 style='background-color:yellow; text-align:left;;'>
-                      Disclaimer: This is not a replacement of the original invoice.
-                      </h6>
-              <h6>Sales Invoice: {!head[0].name}</h6></td>
-        		<td></td>
+                  <td></td>
+              
+                  <td><div><p style="font-size:10px">Corp. Phone: (877)433-7037</p></div>
+                      <div><p style="font-size:10px">Rep Mobile: {!head[0].sales_rep__r.mobile__c}</p></div>
+                      <div><p style="font-size:10px">Rep Email: {!head[0].sales_rep__r.email__c}</p></div>
+                  	  <div></div>
+                       	
+                  </td>
               </tr>
         </table>
         <hr/>
     </c:dynapdfcomponent>
     		<div class='info' style="padding-top:-100px;">
+                <h4 style='text-align:center;'>Sales Invoice: {!head[0].name}</h4>
+                <h5 style='background-color:yellow; text-align:Center;;'>
+                      Disclaimer: This is not a replacement of the original invoice.
+                </h5>
 			<ul style="list-style-type:none; ">
+                
                 <li>Doc Date: <apex:outputText value="{0,date,MM-dd-yyyy}">
                    			  	<apex:param value="{!head[0].doc_date__c}" />
          					  </apex:outputText></li>
@@ -41,23 +51,26 @@
                             <col width='20%'/>
                             
                                     <tr>
-                                      <th style="border: 1px solid black;">Product</th>
-                                      <th style="border: 1px solid black;">Qty</th>
-                                      <th style="border: 1px solid black;">Unit Price</th>
-                                      <th style="border: 1px solid black;">Total Price</th>
+                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;">Descripton</th>
+                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;">Qty</th>
+                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;">Unit Price</th>
+                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;" >Total Price</th>
                                     </tr>	
                                   <apex:repeat value="{!detail}" var="p">
                                   <tr> 
-                                    <td style="border: 1px solid black;">{!p.Product_Name__c}</td>
+                                    <td style="border: 1px solid black; text-align:center;">{!p.Product_Name__c}</td>
                                     <td style="border: 1px solid black; text-align:center;">{!p.Qty__c}</td>
                                     <td style="border: 1px solid black; text-align:center;">${!p.Unit_Price__c}</td> 
                                     <td style="border: 1px solid black; text-align:center;">${!p.Extended_Price__c}</td> 
                                  </tr>   
                                 </apex:repeat>
-                            <tr></tr>
+ 
                             <tr><td colspan='2'></td>
-                                <td style="text-align:center;">Invoice Total:</td>
-                                <td style="text-align:center;"> ${!head[0].Line_Total__c}</td></tr>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8; padding-top: 10px;">Invoice Qty Total:</td>
+                                <td style="text-align:center; border: 1px solid black;">{!q}</td></tr>
+                            <tr><td colspan='2'></td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Invoice Total:</td>
+                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Line_Total__c}</td></tr>
                            </table>
 <c:dynapdfcomponent type="footer">
         <hr/>
