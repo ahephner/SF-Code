@@ -2,80 +2,70 @@
 
  		<head>
             <style type="text/css">
-            	.info{height:250px;}
+                        @page {
+            margin-top: 11%;
+            margin-bottom: 11%;
+        }
                 
             </style>
-        </head>	  
-     			<c:dynapdfcomponent type="header">
-                	<div class='row logo'><apex:image style="width:60%;height:60%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
-                </c:dynapdfcomponent>
-    		<div class='info'>
-              <table  width="100%" >
-                <col width='50%'/>
-                <col width='25%'/>
-                <col width='25%'/>
-    				<tr>
-                    	<td>
-                            <p><b>Company Address:</b><br/>
-                                12955 Ford Dr.<br/> 
- 							    Fishers, IN 46038
-                            </p>	                   
-                    	</td>
-                        <td colspan='2' style='text-align:left;'> Created Date:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!x[0].createddate}" /></apex:outputText></td>
-                    </tr>
-                    <tr>
-                        <td colspan='1'><p style="margin:0%;">Prepared By: {!x[0].CreatedBy.name}</p></td>
-                    	<td colspan='2' style='text-align:left;'>Expiration Date:<apex:outputText value="{0, date,MMMM dd yyyy}"><apex:param value="{!x[0].ExpirationDate}" /></apex:outputText></td>    
-                    </tr>
-                    <tr>
-                        <td colspan='1'><p style="margin:0%;">Email: {!x[0].createdby.email}</p></td>
-                        <td><p style="margin:0%;">Quote Number: {!x[0].QuoteNumber}</p></td>
-                    </tr>
-                    <tr>
-                    	<td><p style="margin:0%;">Bill to Name:{!x[0].BillingName}</p></td>
-                        <td colspan='2' style='text-align:left;'><p>Ship to Name:{!x[0].shippingname}</p></td>
-                    </tr>
-                    <tr>
-                    	<td><p>Bill to:{!x[0].billingstreet}{!x[0].billingstate}</p></td>
-                        <td><p>Ship to:{!x[0].shippingstreet}{!x[0].shippingstate}</p></td>
-                    </tr>
-            </table>
+    </head>
+    <c:dynapdfcomponent type="header">
+        <table width="100%" >
+            <col width="30%"/>
+            <col width="55%"/>
+            <col width="15%"/>
+              <tr>
+                  <td colspan='1'><apex:image style="width:80%;height:80%;" url="{!$Resource.ATSLogo}"/></td>
+                  <td><h6 style='background-color:yellow; text-align:left;;'>
+                      Disclaimer: This is not a replacement of the original invoice.
+                      </h6>
+              <h6>Sales Invoice: {!head[0].name}</h6></td>
+        		<td></td>
+              </tr>
+        </table>
+        <hr/>
+    </c:dynapdfcomponent>
+    		<div class='info' style="padding-top:-100px;">
+			<ul style="list-style-type:none; ">
+                <li>Doc Date: <apex:outputText value="{0,date,MM-dd-yyyy}">
+                   			  	<apex:param value="{!head[0].doc_date__c}" />
+         					  </apex:outputText></li>
+                <li>Customer: {!head[0].customer__r.name}</li>
+                <li>Sales Rep: {!head[0].Sales_Rep__r.name}</li>
+                </ul>                
     </div> 
                         <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+                            <col width='40%'/>
                             <col width='20%'/>
-                            <col width='5%'/>
-                            <col width='10%'/>
-                            <col width='10%'/>
-                            <col width='55%'/>
+                            <col width='20%'/>
+                            <col width='20%'/>
+                            
                                     <tr>
                                       <th style="border: 1px solid black;">Product</th>
                                       <th style="border: 1px solid black;">Qty</th>
                                       <th style="border: 1px solid black;">Unit Price</th>
                                       <th style="border: 1px solid black;">Total Price</th>
-                                      <th style="border: 1px solid black;">Description</th>
                                     </tr>	
-                                  <apex:repeat value="{!product}" var="p">
+                                  <apex:repeat value="{!detail}" var="p">
                                   <tr> 
-                                    <td style="border: 1px solid black;">{!p.Product2.Name}</td>
-                                    <td style="border: 1px solid black; text-align:center;">{!p.quantity}</td>
-                                    <td style="border: 1px solid black; text-align:center;">{!p.UnitPrice}</td> 
-                                    <td style="border: 1px solid black; text-align:center;">{!p.TotalPrice}</td> 
-                                    <td style="border: 1px solid black; text-align:left;">{!p.Description}</td>
+                                    <td style="border: 1px solid black;">{!p.Product_Name__c}</td>
+                                    <td style="border: 1px solid black; text-align:center;">{!p.Qty__c}</td>
+                                    <td style="border: 1px solid black; text-align:center;">${!p.Unit_Price__c}</td> 
+                                    <td style="border: 1px solid black; text-align:center;">${!p.Extended_Price__c}</td> 
                                  </tr>   
                                 </apex:repeat>
-
+                            <tr></tr>
+                            <tr><td colspan='2'></td>
+                                <td style="text-align:center;">Invoice Total:</td>
+                                <td style="text-align:center;"> ${!head[0].Line_Total__c}</td></tr>
                            </table>
-                
-                <div class='row' style='background-color:#d4d5d8' ><h6>Quote Acceptance Information</h6></div>
-                    <div class='row'>
-						<div class='form'>
-                            <label><b>Signature:_________________________________</b></label><br/>
-                            <label><b>Name: _____________________________________</b></label><br/>
-                            <label><b>Title:______________________________________</b></label><br/>
-                            <label><b>Date: ______________________________________</b></label>
-                        </div>
-                    </div>
-      
-   
+<c:dynapdfcomponent type="footer">
+        <hr/>
+        <h6>
+            All purchasese are due and payable with terms distributed at the time of the sale. A monthly service charge of 1.5% will be assessed on past due amounts not paid.
+
+            Acceptance of goods shipped, the buyer agrees to pay seller all costs collected by or through an attorney at law/collection agency, including reasonable attorney fees. 
+        </h6>
+    </c:dynapdfcomponent>
 
 </apex:page>
