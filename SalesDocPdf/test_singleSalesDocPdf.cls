@@ -41,13 +41,12 @@ static testMethod void test_singleSalesDocPdf(){
         singleSalesDocController ext = new singleSalesDocController(sc);
 
         list<Sales_Doc_Detail__c> product = ext.getdetail();   
-        system.debug('test quote-> ' +head.id);
-        system.debug('quotelineID ** '+ detail.id);
+        
         system.assertNotEquals(product, null);
        		list<Sales_Document__c> c =  ext.gethead();
         system.debug('here is con.getx  '+ c );
         system.assertNotEquals(c, null);
-        
+			object z = ext.getq();
         
         for(Sales_Doc_Detail__c x : product){
         system.assertEquals(x.qty__c,0);
