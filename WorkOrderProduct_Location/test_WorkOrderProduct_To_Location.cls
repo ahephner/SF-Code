@@ -66,8 +66,9 @@ private class test_WorkOrderProduct_To_Location {
 	 WorkOrder wo = new WorkOrder(ContactId = c.id, Area_Manager__c = u1.id, Pricebook2Id = pricebookID); 
         insert wo;
 	//workorderline items
-	WorkOrderLineItem wop = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbe.id, Quantity=1);
-    WorkOrderLineItem wop1 = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbe2.id,  Quantity=1);
+	WorkOrderLineItem wop = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbe.id, Quantity=1, Product_Code__c = '123', Account__c = cust.Id);
+    WorkOrderLineItem wop1 = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbe2.id,  Quantity=1, Product_Code__c = '321', Account__c = cust.Id);
+        //here is the issue
         insert wop;
         insert wop1; 
 
