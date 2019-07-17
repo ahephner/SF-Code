@@ -12,16 +12,16 @@ public class appProduct {
 //probally better in js    
   @AuraEnabled(Cacheable=true)
     public static Product__c[] searchProduct(string searchKey, string cat){
-        searchKey = searchKey + '%'; 
+        searchKey = '%' + searchKey + '%'; 
         list<product__c> searchResult = new list<product__c>();
-        if (cat != null && searchKey == '%'){
+        if (cat != null && searchKey == '%%'){
             return null; 
         }
          else if( cat=='ALL'){
-                searchResult = [select name, product_name__c, Subcategory__c from product__c where name like :searchKey or product_name__c like :searchKey ]; 
+                searchResult = [select id, name, product_name__c, Subcategory__c from product__c where name like :searchKey or product_name__c like :searchKey ]; 
 				system.debug('top select ' +searchResult);                
         }else{
-            searchResult = [select name, product_name__c, Subcategory__c from product__c 
+            searchResult = [select id, name, product_name__c, Subcategory__c from product__c 
                             where subcategory__c = :cat and (name like :searchKey or product_name__c like :searchKey) ]; 
         				system.debug('bottom select ' +searchResult);
         } return searchResult; 
