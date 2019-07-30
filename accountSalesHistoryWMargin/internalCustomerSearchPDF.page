@@ -1,0 +1,104 @@
+<apex:page standardController="account" showHeader="false"
+           extensions="internalCustomerSearchDocController"
+           applyBodyTag="false" renderAs="pdf" >
+<head>
+    <style>        
+        @page {
+            margin-top: 11%;
+            margin-bottom: 11%;
+        }
+        div.account td{padding:-5px;}
+        div.sales{margin-top: -3%;
+        		  padding: -20px;}
+</style>
+    </head>
+    <c:dynapdfcomponent type="header">
+        <table width="100%" >
+            <col width="30%"/>
+            <col width="55%"/>
+            <col width="15%"/>
+              <tr>
+                  <td colspan='1'><apex:image style="width:80%;height:80%;" url="{!$Resource.ATSLogo}"/></td>
+                  <td><h6 style='background-color:yellow; text-align:left;;'>
+                      Disclaimer: This is not a replacement of the original invoice.
+                      </h6></td>
+        		<td></td>
+              </tr>
+        </table>
+        <hr/>
+    </c:dynapdfcomponent>
+    <c:dynapdfcomponent type="footer">
+        <hr/>
+        <h6>
+            All purchasese are due and payable with terms distributed at the time of the sale. A monthly service charge of 1.5% will be assessed on past due amounts not paid.
+
+            Acceptance of goods shipped, the buyer agrees to pay seller all costs collected by or through an attorney at law/collection agency, including reasonable attorney fees. 
+        </h6>
+    </c:dynapdfcomponent>
+    	<div class='account' style='margin-top:0%; margin-bottom:0%;  '>
+                          <table  width="100%" >
+                <col width='50%'/>
+                <col width='25%'/>
+                <col width='25%'/>
+    				<tr>
+                    	<td>
+                            <p>Company: <apex:outputText value="{!acct.Customer_Name__c}"></apex:outputText></p>
+                              <p>Date Range:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dOne}" /></apex:outputText>
+                                - <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!dTwo}" /></apex:outputText></p>
+                    	</td>
+                   </tr>
+            </table> 
+    </div>
+    	<div class='sales' >
+            
+             <apex:repeat value="{!doc_c}" var="doc">
+     
+                 <h5>Doc Number:{!doc.name} Sale Date:<apex:outputText value="{0,date,MM-dd-yyyy}">
+                   								<apex:param value="{!doc.Doc_Date__c}" />
+         								</apex:outputText>
+                 </h5>
+                    <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+
+                        	<col width='35%'/>
+                            <col width='15%'/>
+                            <col width='15%'/>
+                            <col width='15%'/>
+                            <col width='10%'/>
+                            <col width='10%'/> 
+
+                                    <tr>
+                                      <th style="border: 1px solid black; text-align:center;">Product</th> 
+                                      <th style="border: 1px solid black; text-align:center;">Qty</th> 
+                                      <th style="border: 1px solid black; text-align:center;">Unit Price</th>  
+                                      <th style="border: 1px solid black; text-align:center;">Product Total</th>
+                                        <th style="border: 1px solid black; text-align:center;">Margin</th>
+                                        <th style="border: 1px solid black; text-align:center;">Gross Profit</th>
+                                    </tr>
+                            			<apex:repeat value="{!call}" var="s" >
+										<apex:outputText rendered="{!s.Sales_Document__c == doc.Id}">
+                                            <tr>
+                                                <td>{!s.Product_Name__c}</td>
+                                                <td style='text-align:center;'>{!s.Qty__c}</td>
+                                                <td style='text-align:center;'>${!s.Unit_Price__c}</td>
+                                                <td style='text-align:center;'>${!s.Extended_Price__c}</td>
+                                                <td style='text-align:center;'>{!s.margin__c}%</td>
+                                                <td style='text-align:center;'>${!s.gross_profit__c}</td>
+                                            </tr>
+                                            
+                                        </apex:outputText>    
+    									</apex:repeat>
+                                         <tr style='background-color: grey;'>
+                                             <td colspan='2'></td>
+                                             <td style='text-align: right;'>Order Total:</td>
+                                            <td style='text-align: center;'>${!doc.Product_Sub_Total__c}</td>
+                                         </tr>
+
+            </table>
+</apex:repeat>
+ 
+    <div>
+        <h4>Grand Total:${!total} </h4>
+    </div>
+    <div style="page-break-after: avoid;"></div>
+  </div>
+</apex:page>
