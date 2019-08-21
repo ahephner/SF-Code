@@ -14,8 +14,8 @@ private class test_appProduct {
      r1.Primary_Category__c = 'Chemicals';
      r1.Subcategory__c ='Chemicals-Herbicide';
      r1.Include_in_Programs__c = True;
-     
      r2.Product_Name__c='Product 2';
+     
      r2.Primary_Category__c = 'Chemicals';
      r2.Subcategory__c = 'Chemicals-Fungicide';
      r2.Include_in_Programs__c = True; 
@@ -64,25 +64,25 @@ private class test_appProduct {
         string label = 'green';
         string value = 'green'; 
        areaWrapper t = new areaWrapper(label, value);  
-        System.assertEquals(null, t); 
+        System.assertNotEquals(null, t); 
     }
 		//test getting area id's for the appArea
     @isTest
     static void testGetAreas(){
     
-  List<Application__c> apps = new List<Application__c>();
+  	List<Application__c> apps = new List<Application__c>();
         //insert apps
-    Application__c a1 = new Application__c(name='Spring Test App 1');
-    a1.Area__c = area.Id;
-    Application__c a2 = new Application__c(name='Spring Test App 2');
-    a2.Area__c = area.Id;
-    apps.add(a1);
-    apps.add(a2);       
-    insert apps;
-       Test.startTest(); 
-        	list<areaWrapper> aw = appProduct.getAreas(a1.id); 
-        	system.assertEquals(null, aw);
-       Test.stopTest();  
+    	Application__c a1 = new Application__c(name='Spring Test App 1');
+    	a1.Area__c = area.Id;
+    	Application__c a2 = new Application__c(name='Spring Test App 2');
+    	a2.Area__c = area.Id;
+    	apps.add(a1);
+    	apps.add(a2);       
+    	insert apps;
+       		Test.startTest(); 
+        		list<areaWrapper> aw = appProduct.getAreas(a1.id); 
+        		system.assertNotEquals(null, aw);
+      		 Test.stopTest();  
          
     }
     
@@ -99,7 +99,9 @@ private class test_appProduct {
         Test.startTest(); 
         	list<application__c> appList = appProduct.getApps(prog.Id);         	
        Test.stopTest();
-        system.assertEquals(appList.size(), 2);
+        	list<application__c> al = [select id from application__c where area__c=: area.id]; 
+        system.debug(al);	
+        system.assertEquals(3, al.size());
         
     }
     
@@ -108,11 +110,14 @@ private class test_appProduct {
         list<application_product__c> apList = new list<application_product__c>(); 
         Application_Product__c ap1 = new Application_Product__c(Application__c=application.Id,Product__c = r1.Id);
         Application_Product__c ap2 = new Application_Product__c(Application__c=application.Id,Product__c = r2.Id);
+        apList.add(ap1);
+        apList.add(ap2); 
         insert apList; 
         Test.startTest(); 
         	list<Application_Product__c> prodList = appProduct.appProducts(application.Id);         	
         Test.stopTest();
-        	system.assertEquals(prodList.size(), 2);
+        	list<application_product__c> nl = [select id from application_product__c where application__c =: application.id]; 
+        	system.assertEquals(2, nl.size());
         
     }
     
