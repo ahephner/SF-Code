@@ -14,8 +14,8 @@ private class test_appProduct {
      r1.Primary_Category__c = 'Chemicals';
      r1.Subcategory__c ='Chemicals-Herbicide';
      r1.Include_in_Programs__c = True;
-     r2.Product_Name__c='Product 2';
      
+     r2.Product_Name__c='Product 2';
      r2.Primary_Category__c = 'Chemicals';
      r2.Subcategory__c = 'Chemicals-Fungicide';
      r2.Include_in_Programs__c = True; 
