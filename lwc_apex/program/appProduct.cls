@@ -38,12 +38,12 @@ public class appProduct {
         return apps;
             
     }
-    //update application can't use cacheable or cant edit
+    //update application can't use cacheable or cant edita
     @AuraEnabled
     public static List<Application_Product__c> appProducts(string app){
         List<Application_Product__c> prods = [select id, product__c, Product_Name__c,Application__c, Application__r.Name,
-                                              Application__r.Date__c, OZ_M__c, area__c, Note__c	 from application_product__c where application__c =: app];
-        //system.debug('here are the prdoucts ' +prods);
+                                              Application__r.Date__c, OZ_M__c,LBS_ACRE__C, area__c, Note__c, Unit_Price__c	 from application_product__c where application__c =: app];
+        //system.debug('here are the products ' +prods);
         return prods; 
     }
 }
