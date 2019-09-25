@@ -30,8 +30,13 @@
         </table>
         <hr/>
     </c:dynapdfcomponent>
-    		<div class='info' style="padding-top:-100px;">
+    		    <div class='info' style="padding-top:-100px;">
                 <h4 style='text-align:center;'>Sales Invoice: {!head[0].name}</h4>
+                    <apex:outputText rendered="{!head[0].Credit_Rebill_Invoice__c == True}">
+                     	<h5 style='background-color:red; color:white; text-align:Center;;'>
+                        	Warning Replaced by another Invoice: {!head[0].Replaced_by_Credit_Rebill_Num__c}
+                	    </h5>
+                    </apex:outputText>
                 <h5 style='background-color:yellow; text-align:Center;;'>
                       Disclaimer: This is not a replacement of the original invoice.
                 </h5>
@@ -44,6 +49,7 @@
                 <li>Sales Rep: {!head[0].Sales_Rep__r.name}</li>
                 </ul>                
     </div> 
+               
                         <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
                             <col width='40%'/>
                             <col width='20%'/>
@@ -69,8 +75,14 @@
                                 <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8; padding-top: 10px;">Invoice Qty Total:</td>
                                 <td style="text-align:center; border: 1px solid black;">{!q}</td></tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Invoice Total:</td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Tax &amp; Freight:</td>
+                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Tax_and_Freight__c}</td></tr>
+                            <tr><td colspan='2'></td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Product Total:</td>
                                 <td style="text-align:center; border: 1px solid black;"> ${!head[0].Line_Total__c}</td></tr>
+                            <tr><td colspan='2'></td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Order Total:</td>
+                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Doc_Amount__c}</td></tr>
                            </table>
 <c:dynapdfcomponent type="footer">
         <hr/>
