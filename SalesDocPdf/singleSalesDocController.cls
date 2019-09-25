@@ -7,7 +7,7 @@ public class singleSalesDocController {
     //public String preparedBy {get;set;}
     public singleSalesDocController(ApexPages.StandardController controller ) {}
        //ID id = 'a0E2h0000008nYLEAY'; 
-        String id = apexpages.currentpage().getparameters().get('id');
+       String id = apexpages.currentpage().getparameters().get('id');
         public list<Sales_Doc_Detail__c> getdetail(){ 
                     detail =   [select Product_Name__c, Qty__c, Unit_Price__c,Extended_Price__c,
                                 Product__r.name from Sales_Doc_Detail__c where Sales_Document__c = :id];
@@ -22,8 +22,8 @@ public class singleSalesDocController {
         
     public list<Sales_Document__c> gethead(){ 
                   head= [select Doc_Date__c, Sales_Rep__r.name, Sales_Rep__r.Email__c, Sales_Rep__r.Mobile__c, name, 
-                         		customer__r.name, Line_Total__c,Replaced_by_Credit_Rebill_Num__c,Credit_Rebill_Invoice__c,
-                         		Tax_and_Freight__c, Doc_Amount__c from Sales_Document__c where id = :id limit 1];
+                         		customer__r.name, Line_Total__c,Replaced_by_Credit_Rebill_Num__c,Credit_Rebill_Invoice__c,Due_Date__c,
+                         		Tax_Amount__c, Freight_Amount__c, Doc_Amount__c, Payment_Terms__c from Sales_Document__c where id = :id limit 1];
         
         return head; 
                          }
