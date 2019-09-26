@@ -31,15 +31,19 @@
         <hr/>
     </c:dynapdfcomponent>
     		    <div class='info' style="padding-top:-100px;">
-                <h4 style='text-align:center;'>Sales Invoice: {!head[0].name}</h4>
-                    <apex:outputText rendered="{!head[0].Credit_Rebill_Invoice__c == True}">
+                    	<h4 style='text-align:center;'>Sales Invoice: {!head[0].name}</h4>
+                    
+                    <apex:outputText rendered="{!head[0].Replaced_by_Credit_Rebill__c == True}">
                      	<h5 style='background-color:red; color:white; text-align:Center;;'>
                         	Warning Replaced by another Invoice: {!head[0].Replaced_by_Credit_Rebill_Num__c}
                 	    </h5>
                     </apex:outputText>
-                <h5 style='background-color:yellow; text-align:Center;;'>
-                      Disclaimer: This is not a replacement of the original invoice.
-                </h5>
+                	
+                    <apex:outputText rendered="{!head[0].Replaced_by_Credit_Rebill__c == False}">
+    					<h5 style='background-color:yellow; text-align:Center;;'>
+                      		Disclaimer: This is not a replacement of the original invoice.
+                		</h5>
+    				</apex:outputText>
 			<ul style="list-style-type:none; ">
                 
                 <li>Doc Date: <apex:outputText value="{0,date,MM-dd-yyyy}">

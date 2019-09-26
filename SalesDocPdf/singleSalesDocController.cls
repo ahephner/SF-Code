@@ -22,7 +22,7 @@ public class singleSalesDocController {
         
     public list<Sales_Document__c> gethead(){ 
                   head= [select Doc_Date__c, Sales_Rep__r.name, Sales_Rep__r.Email__c, Sales_Rep__r.Mobile__c, name, 
-                         		customer__r.name, Line_Total__c,Replaced_by_Credit_Rebill_Num__c,Credit_Rebill_Invoice__c,Due_Date__c,
+                         		customer__r.name, Line_Total__c,Replaced_by_Credit_Rebill_Num__c,Replaced_by_Credit_Rebill__c,Due_Date__c,
                          		Tax_Amount__c, Freight_Amount__c, Doc_Amount__c, Payment_Terms__c from Sales_Document__c where id = :id limit 1];
         
         return head; 
