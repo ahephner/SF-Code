@@ -38,12 +38,21 @@ public class appProduct {
         return apps;
             
     }
-    //update application can't use cacheable or cant edit
+    //get area details when adding to the program 
+    @AuraEnabled
+    public static list<Area__c> areaInfo(string ai){
+        list<area__c> a = [select Area_Sq_Feet__c, name from area__c where id =:ai limit 1 ];
+        //system.debug(a);
+        return a; 
+    }
+    //update application can't use cacheable or cant edita
     @AuraEnabled
     public static List<Application_Product__c> appProducts(string app){
         List<Application_Product__c> prods = [select id, product__c, Product_Name__c,Application__c, Application__r.Name,
-                                              Application__r.Date__c, OZ_M__c, area__c, Note__c	 from application_product__c where application__c =: app];
-        //system.debug('here are the prdoucts ' +prods);
+                                              Application__r.Date__c, OZ_M__c,LBS_ACRE__C, area__c, Note__c, Unit_Price__c,
+                                              Total_Price__c, Units_Required__c,Product_Size__c, Application__r.Area__c,
+                                              Application__r.Area__r.Area_Sq_Feet__c, Margin__c, Product_Cost__c from application_product__c where application__c =: app];
+        //system.debug('here are the products ' +prods);
         return prods; 
     }
 }

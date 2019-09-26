@@ -26,6 +26,8 @@ public with sharing class addApp {
                            ap.Application__c = temp.Application__c; 	
                            ap.OZ_M__c = temp.OZ_M__c;
                            ap.Note__c = temp.Note__c; 
+                           ap.LBS_ACRE__c = temp.LBS_ACRE__c;
+                           ap.Unit_Price__c = temp.Unit_Price__c; 
                             //system.debug('product id '+ ap.Product__c);
                             prodList.add(ap);
                         }
@@ -45,9 +47,10 @@ public with sharing class addApp {
     public static Application__c updateApplication(appWrapper wrapper, string id){
         Application__c app = [select Name, Area__c, Date__c from Application__c where id =: id]; 
         
-        if(app.Name	!= wrapper.appName || app.date__c != wrapper.appDate){
+        if(app.Name	!= wrapper.appName || app.date__c != wrapper.appDate || app.Area__c != wrapper.appArea){
             app.Name = wrapper.appName;
             app.Date__c = wrapper.appDate; 
+            app.Area__c = wrapper.appArea; 
         }
         update(app); 
         return app; 
@@ -70,8 +73,10 @@ public with sharing class addApp {
                            //ap.Product__c = temp.product__c;
                            //ap.Application__c = temp.Application__c; 	
                            ap.OZ_M__c = temp.OZ_M__c;
-                           ap.Note__c = temp.Note__c; 
-                            system.debug('product id '+ ap.Id);
+                           ap.LBS_ACRE__c = temp.LBS_ACRE__c; 
+                           ap.Note__c = temp.Note__c;
+                           ap.Unit_Price__c = temp.Unit_Price__c;  
+                            //system.debug('product id '+ ap.Id);
                             prodList.add(ap);
                         }
                        
