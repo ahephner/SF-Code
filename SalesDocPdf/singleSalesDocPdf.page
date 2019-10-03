@@ -52,7 +52,7 @@
                 <li>Customer: {!head[0].customer__r.name}</li>
                 <li>Sales Rep: {!head[0].Sales_Rep__r.name}</li>
                 <li>Payment Terms: {!head[0].Payment_Terms__c}</li>
-                <apex:outputText rendered="{!head[0].Payment_Terms__c != 'SEE SPLIT TERMS'}">
+                <apex:outputText rendered="{!IF(AND(head[0].Payment_Terms__c != 'SEE SPLIT TERMS', head[0].Payment_Terms__c != 'SET DUE DATE'),TRUE, FALSE)}}">
                 	<li>Due Date:<apex:outputText value="{0,date,MM-dd-yyyy}">
                         		 <apex:param value="{!head[0].Due_Date__c}" />
                         		 </apex:outputText></li>
