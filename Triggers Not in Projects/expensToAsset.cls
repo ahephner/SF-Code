@@ -27,9 +27,60 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                 }
               }
             } update subLine; 
-        } else {
-        //get asset id's of new expense records
+    }   else if(trigger.isupdate){
+        	        //get asset id's of new expense records
         Set<Id> assetID = new Set<Id>();
+        for(Expense__c x : trigger.new){
+            assetId.add(x.ATS_Asset__c);
+        }
+        
+        //query outside of the loop
+        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c from ATS_Asset__c where id in :assetID ];
+        
+        //list to be updated
+        List<ATS_Asset__c> assetToUpdate = new List<ATS_Asset__c>(); 
+            for(Expense__c exp: trigger.new){
+                if(exp.Amount__c != trigger.oldMap.get(exp.id).amount__c && exp.Amount__c >trigger.oldMap.get(exp.id).amount__c){
+                    for(ATS_Asset__c a: asset){
+                    decimal newValue = exp.Amount__c - trigger.oldMap.get(exp.id).amount__c; 
+                    if(exp.Expense_Type__c == 'Tires'){
+                        a.Tires__c += newValue; 
+                        assetToUpdate.add(a);
+                        system.debug('asset '+ a.Tires__c + ' exp ' + exp.amount__c);
+                    }
+                    Else if(exp.Expense_Type__c == 'PM'){
+                        a.P_M__c += newValue; 
+                        assetToUpdate.add(a);
+                        system.debug('asset '+ a.P_M__c + ' exp ' + exp.amount__c);
+                    }
+                    Else if(exp.Expense_Type__c == 'Repair'){
+                        a.Repair__c += newValue;  
+                        assetToUpdate.add(a);
+                        system.debug('asset '+ a.repair__c + ' exp ' + exp.amount__c);
+                    }
+                }
+              }else{
+                  for(ATS_Asset__c a: asset){
+                    decimal newValue = exp.Amount__c - trigger.oldMap.get(exp.id).amount__c; 
+                    if(exp.Expense_Type__c == 'Tires'){
+                        a.Tires__c -= newValue; 
+                        assetToUpdate.add(a);
+                        system.debug('asset '+ a.Tires__c + ' exp ' + exp.amount__c);
+                    }
+                    Else if(exp.Expense_Type__c == 'PM'){
+                        a.P_M__c += newValue; 
+                        assetToUpdate.add(a);
+                        system.debug('asset '+ a.P_M__c + ' exp ' + exp.amount__c);
+                    }
+                    Else if(exp.Expense_Type__c == 'Repair'){
+                        a.Repair__c += newValue;  
+                        assetToUpdate.add(a);
+                        system.debug('asset '+ a.repair__c + ' exp ' + exp.amount__c);
+                    }
+                }
+              }
+            } update assetToUpdate;}else{
+        		Set<Id> assetID = new Set<Id>();
         for(Expense__c x : trigger.new){
             assetId.add(x.ATS_Asset__c);
         }
@@ -55,6 +106,6 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                 }
             }
         }
-        update assetToUpdate; 
-   }
+        update assetToUpdate;
+}
 }

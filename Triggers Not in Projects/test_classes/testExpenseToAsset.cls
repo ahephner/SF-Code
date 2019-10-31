@@ -13,6 +13,26 @@ public class testExpenseToAsset {
         	insert tire; 
         	insert pm; 
         	insert repair;
+        //updates
+        tire.Amount__c = 15; 
+        pm.Amount__c = 100;
+        repair.Amount__c = 100;
+        update tire;
+        update pm;
+        update repair;
+        
+        tire.Amount__c = 3; 
+        pm.Amount__c = 1;
+        repair.Amount__c = 1;
+        update tire;
+        update pm;
+        update repair;
+        //now test delete
+        	delete tire;
+        	delete pm; 
+        	delete repair; 
+        
+        	
         Test.stopTest();
 
         
