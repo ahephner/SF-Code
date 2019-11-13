@@ -1,5 +1,5 @@
 //trigger to add products to apps on clones.....
-//needs to be bulkified 
+
 trigger addProdsToApps on Application__c ( after insert) {
     string prevID;
     set<Id> appId = new set<ID>(); 
@@ -18,20 +18,19 @@ trigger addProdsToApps on Application__c ( after insert) {
                                             Categories__c, K__c, K_Calc__c, K_Val__c,LBS_ACRE__c,
                                             N__c,N_Val__c, Note__c, OZ_M__c,P__c, P_Calc__c,
                                             P_Val__c,Product_Category__c, Product_Size__c, name, 
-                                            Product_Sub_Category__c, Rate__c, Total_Used_f__c, Units_Required__c
+                                            Product_Sub_Category__c, Total_Used_f__c, Units_Required__c,
+                                            Rate2__c, Unit_Area__c, Unit_Price__c, Margin__c
                                           from application_Product__c 
                                           where application__c = :prevID]; 
     system.debug('***** Trigger Prods ----> ' + prods);
-    Map<String, Application_Product__c> addProds = new Map<String, Application_Product__c>();
+   // Map<String, Application_Product__c> addProds = new Map<String, Application_Product__c>();
     
     List<Application_Product__c> products = new List<Application_Product__c>(); 
    // for(application__c b: Trigger.new){
     for(Application_Product__c ap: prods){  
-       integer c = 0; 
-        c = c+1; 
         Application_Product__c x = ap.clone(false);
          x.Application__c = value;
-        system.debug('***** Triggerlower loop run ###-> ' + c);
+        system.debug('***** Triggerlower loop run ###-> ');
          products.add(x); 
        
     }
@@ -39,10 +38,7 @@ trigger addProdsToApps on Application__c ( after insert) {
     system.debug('***** Trigger Trigger #---> ' + d);
         system.debug('***** Trigger Product List outside insert ' + products);
     if(!products.isEmpty()){
-    	upsert products;    
+        upsert products;    
     }
   }
 }
-
-//put on the apex class when using id to look up @future date sf not passing lst 3 characters to product program id
-///newApp.Prev_Program_ID__c = j.Program_Prev_Id__c.substring(0,j.program_Prev_Id__c.length()-3); 
