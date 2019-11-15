@@ -27,7 +27,7 @@ public class oppCloneWithProducts {
         try{
          opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName,
                 RecordType.Id, Contact__c, pricebook2.id,Type, Target_Area__c,
-                Target_Start_Date__c, description FROM Opportunity where id = :opp.Id]; 
+                Target_Start_Date__c, description,Work_Type__c  FROM Opportunity where id = :opp.Id]; 
           
             quote = [select BillingCity, BillingCountry, BillingName, BillingState, 
                    BillingStreet, BillingPostalCode, ContactId, Description, Email, ExpirationDate, 
