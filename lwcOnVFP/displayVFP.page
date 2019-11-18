@@ -1,0 +1,17 @@
+<apex:page >
+    <apex:includeLightning />
+    <div id="lwc" />
+    
+    <script>
+    $Lightning.use("c:programLWC", function(){
+        $Lightning.createComponent("c:appPDF", {
+            //pass parameter values to lwc js controller
+        },
+                                   "lwc", 
+                                   		function(component){
+                                            console.log('component made')
+                                            }
+                                   );
+        }); 
+    </script> 
+</apex:page>
