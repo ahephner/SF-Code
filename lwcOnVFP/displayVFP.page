@@ -1,11 +1,18 @@
-<apex:page >
+<!--need to pass which controller you want to reference so I can add it as a button on the object--> 
+<!--in this case I want a button to open my custom LWC from the the program object--> 
+<apex:page standardController="Program__c" >
     <apex:includeLightning />
-    <div id="lwc" />
+     
+    <div id="lwc"/>
     
     <script>
+    //grab the record id from the custom object
+    var recordId = '{!Program__c.id}';
     $Lightning.use("c:programLWC", function(){
         $Lightning.createComponent("c:appPDF", {
             //pass parameter values to lwc js controller
+            recordId: recordId   
+       
         },
                                    "lwc", 
                                    		function(component){
