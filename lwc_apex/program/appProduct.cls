@@ -9,6 +9,18 @@ public class appProduct {
        //system.debug(aw);
        return aw; 
    }
+    
+    //this is for the pdf wizard to grab the current applications to allow user to select
+    //don't mind areaWrapper name I should have named that class something more generic. areaWrapper will support anything that requires a label value return pair 
+     @AuraEnabled(Cacheable=true)
+   public static list<areaWrapper> getAppPDF(ID recordId){
+       list<areaWrapper> appPDf = new list<areaWrapper>();
+       for(application__c x:[select id, name from application__c where Program_ID__c = :recordId]){
+           appPDF.add(new areaWrapper(x.name, x.id));
+       }
+       system.debug(appPDF);
+       return appPDF; 
+   }
 //need to make it that if the searchKey is blank nothing happens
 //probally better in js    
   @AuraEnabled(Cacheable=true)
@@ -41,7 +53,7 @@ public class appProduct {
     //get area details when adding to the program 
     @AuraEnabled
     public static list<Area__c> areaInfo(string ai){
-        list<area__c> a = [select Area_Sq_Feet__c, name from area__c where id =:ai limit 1 ];
+        list<area__c> a = [select Area_Sq_Feet__c, name, Pref_U_of_M__c from area__c where id =:ai limit 1 ];
         //system.debug(a);
         return a; 
     }
@@ -49,7 +61,7 @@ public class appProduct {
     @AuraEnabled
     public static List<Application_Product__c> appProducts(string app){
         List<Application_Product__c> prods = [select id, product__c, Product_Name__c,Application__c, Application__r.Name,
-                                              Application__r.Date__c, OZ_M__c,LBS_ACRE__C, area__c, Note__c, Unit_Price__c,
+                                              Application__r.Date__c, Unit_Area__c, Rate2__c, area__c, Note__c, Unit_Price__c,
                                               Total_Price__c, Units_Required__c,Product_Size__c, Application__r.Area__c,
                                               Application__r.Area__r.Area_Sq_Feet__c, Margin__c, Product_Cost__c from application_product__c where application__c =: app];
         //system.debug('here are the products ' +prods);
