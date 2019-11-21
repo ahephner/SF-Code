@@ -56,7 +56,13 @@
                 	<li>Due Date:<apex:outputText value="{0,date,MM-dd-yyyy}">
                         		 <apex:param value="{!head[0].Due_Date__c}" />
                         		 </apex:outputText></li>
-                </apex:outputText>    
+                </apex:outputText> 
+                <apex:outputText rendered="{!head[0].Payment_Terms__c == 'SEE SPLIT TERMS'}">
+                	<li>First Due Date:<apex:outputText value="{0,date,MM-dd-yyyy}">
+                        		 <apex:param value="{!head[0].Due_Date__c}" />
+                        		 </apex:outputText></li>
+                    <li>Number of Payments: {!head[0].Number_of_Payments__c}</li>
+                </apex:outputText> 
                 </ul>                
     </div> 
                

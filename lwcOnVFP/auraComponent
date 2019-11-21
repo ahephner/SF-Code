@@ -1,0 +1,4 @@
+//create new aura application and then pass the desired lwc as a dependency
+<aura:application access="GLOBAL" extends="ltng:outApp">
+    <aura:dependency resource="appPDF" />
+</aura:application>

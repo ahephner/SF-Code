@@ -1,0 +1,11 @@
+//M per Hour
+WorkOrder.Target_Area__c:SUM/ServiceAppointment.Actual_Duration_Hours__c:SUM
+
+//Cost per M per Hour
+(WorkOrder.Target_Area__c:SUM / ServiceAppointment.Actual_Duration_Hours__c:SUM) / (WorkOrder.JDT_Service__c:SUM / WorkOrder.Target_Area__c:SUM)
+
+//Cost per Hour
+WorkOrder.Service_Amount__c:SUM / ServiceAppointment.Actual_Duration_Hours__c:SUM
+
+//Cost per M
+WorkOrder.JDT_Service__c:SUM / WorkOrder.Target_Area__c:SUM
