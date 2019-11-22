@@ -1,0 +1,82 @@
+<apex:page standardController="Program__c" extensions="programPDF" lightningStylesheets="true" >
+    <apex:pageBlock>
+	<apex:pageBlockSection columns='2'>
+   <apex:outputPanel layout='none'> 
+    <div>       
+   <h5>What do you want to print?:</h5>
+   <apex:form >
+    <apex:selectList multiselect="false" size="1" onchange="select(this)">
+       <apex:selectOption itemLabel="Select Option" itemValue="none"></apex:selectOption> 
+       <apex:selectOption itemLabel="All Products" itemValue="ap"></apex:selectOption>
+      <apex:selectOption itemLabel="All Areas" itemValue="aa"></apex:selectOption>
+      <apex:selectOption itemLabel="Select Areas" itemValue="sa"></apex:selectOption>
+       <apex:selectOption itemLabel="Select Products" itemValue="sp"></apex:selectOption>
+    </apex:selectList>
+    </apex:form>
+    </div>
+       </apex:outputPanel>
+       <apex:outputPanel layout="none"> 
+    <div class='input'>
+      <apex:form>
+    <div id="ap" style='display:none'>
+        <apex:inputText value="{!title}" title="Enter a title" required="true"/>
+		<apex:commandButton action="{!prodSummary}" value="Create PDF" />
+        <apex:commandButton action="{!cancel}" value="Cancel" />
+        
+    </div>
+    <div id="aa" style='display:none'>
+		<apex:commandButton action="{!areaSummary}" value="Create PDF" />
+        <apex:commandButton action="{!cancel}" value="Cancel" />
+    </div>
+    <div id="sa" style='display:none'>
+    	<p>
+            will be select areas
+        </p>
+    </div>
+    <div id="sp" style='display:none'>
+    	<p>
+            will be select products
+        </p>
+    </div>
+    </apex:form>      
+   </div>
+   </apex:outputPanel>
+   </apex:pageBlockSection>
+
+    
+    <script type="text/javascript">
+    function select(x){
+        var ap = document.getElementById('ap');
+        var aa = document.getElementById('aa');
+        var sa = document.getElementById('sa');
+        var sp = document.getElementById('sp');
+        if(x.value === "ap"){
+            ap.style.display  = 'block';
+            aa.style.display  = 'none';
+            sa.style.display  = 'none';
+            sp.style.display  = 'none';
+        }else if(x.value ==="aa"){
+            ap.style.display  = 'none';
+            aa.style.display  = 'block';
+            sa.style.display  = 'none';
+            sp.style.display  = 'none';
+        }else if(x.value =="sa"){
+            ap.style.display  = 'none';
+            aa.style.display  = 'none';
+            sa.style.display  = 'block';
+            sp.style.display  = 'none';
+        }else if(x.value == "sp"){
+            ap.style.display  = 'none';
+            aa.style.display  = 'none';
+            sa.style.display  = 'none';
+            sp.style.display  = 'block';
+         }else{
+            ap.style.display  = 'none';
+            aa.style.display  = 'none';
+            sa.style.display  = 'none';
+            sp.style.display  = 'none';
+          }
+     }   
+    </script>
+        </apex:pageBlock>
+</apex:page>
