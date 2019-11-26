@@ -20,8 +20,8 @@
                   <td></td>
               
                   <td><div><p style="font-size:10px">Corp. Phone: (877)433-7037</p></div>
-                      <div><p style="font-size:10px">Rep Mobile: Sales Rep</p></div>
-                      <div><p style="font-size:10px">Rep Email: Sales Rep</p></div>
+                      <div><p style="font-size:10px">Rep Mobile: {!info.createdby.mobilephone}</p></div>
+                      <div><p style="font-size:10px">Rep Email: {!info.createdby.email}</p></div>
                   	  <div></div>
                        	
                   </td>
@@ -30,16 +30,19 @@
         <hr/>
     </c:dynapdfcomponent>
     <div class='info' style="padding-top:-100px;">
-        <h4 style='text-align:center;'>Program Products:</h4>
+        <h4 style='text-align:center;'>Program Products: {!info.name}</h4>
         <apex:outputText>
     					<h5 style='background-color:yellow; text-align:Center;;'>
                       		Disclaimer: This does not include tax and shipping charges.
                 		</h5>
     				</apex:outputText>
         <ul style="list-style-type:none; ">
+            <apex:outputText rendered="{!info.Prepared_For__c != null}"><li>Prepared for: {!info.Prepared_For__c}</li></apex:outputText>
+            <apex:outputText rendered="{!info.Prepared_For_Typed__c != null}"><li>Prepared for: {!info.Prepared_For_Typed__c}</li></apex:outputText>
             <li>Quote Date: <apex:outputText value="{0,date,MM-dd-yyyy}">
                         		 <apex:param value="{!Today()}" />
                         		</apex:outputText></li>
+				<li>{!info.CreatedBy.Name}</li>
         </ul>    
     </div>
     <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
@@ -59,7 +62,12 @@
                                     <td style="border: 1px solid black; text-align:center;">${!p.price}</td> 
                                  </tr>   
                                 </apex:repeat>
-
+								<tr><td colspan='1'></td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8; padding-top: 10px;">Invoice Qty Total:</td>
+                                <td style="text-align:center; border: 1px solid black;">{!totals.units}</td></tr>
+        						<tr><td colspan='1'></td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8; padding-top: 10px;">Invoice Qty Total:</td>
+                                <td style="text-align:center; border: 1px solid black;">${!totals.price}</td></tr>
                            </table>
                 
                 <div class='row' style='background-color:#d4d5d8' ><h6>Quote Acceptance Information</h6></div>

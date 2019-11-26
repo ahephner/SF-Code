@@ -2,9 +2,12 @@ public class programPDF {
    	//public string id = 'a0J2h000000T4vEEAS';
     private ApexPages.StandardController ctl {get; set;}
     public program__c pro {get;set;}
+    public program__c info {get;set;}
     public list<application_product__c> appProd {get; set;}
     public string title {get;set;}
     public list<products> sumProd {get;set;}
+    public products totals {get;set;}
+//class for application products makes it easier to put on vfp 
 public class products{
     public string id {get;set;}
     public decimal units {get; set;}
@@ -17,13 +20,15 @@ public class products{
         this.ctl = ctl;
         
         pro = (program__c)ctl.getRecord();
-         
+        
+        info = [select name, Prepared_For__c,Prepared_For_Typed__c, CreatedBy.Name, createdby.MobilePhone, createdby.email from program__c where id = :pro.Id]; 
         //system.debug('id -> '+ pro.Id);
 		AggregateResult[] appProd = [select Product__c pc, sum(Units_Required__c) units, sum(Total_Price__c) price
        									    FROM application_product__c
        									    WHERE program_id__c = :pro.id
        								        GROUP BY ROLLUP(Product__c)
        									    ORDER BY Product__c]; 
+         totals = new products();
          sumProd = new list<products>();
 		set<id> pID = new set<id>();
         for(aggregateResult ap: appProd){
@@ -39,8 +44,10 @@ public class products{
             if(wrapper.head == true){
     			sumProd.add(wrapper);
         		pId.add(wrapper.id); 
-
-    		}
+            }Else{
+                totals.units = wrapper.units;
+                totals.price = wrapper.price; 
+            }
 		}
         for(product__c names : [select id, product_name__c from product__c where id in :pId]){
     		for(products z: sumProd){
