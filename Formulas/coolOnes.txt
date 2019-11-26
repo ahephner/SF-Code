@@ -20,3 +20,29 @@ UnitPrice != PricebookEntry.UnitPrice
 //margin for reports
 IF(Sales_Doc_Detail__c.Extended_Price__c:SUM > 0,
 ((Sales_Doc_Detail__c.Extended_Price__c:SUM- Sales_Doc_Detail__c.Extended_Cost__c:SUM)/Sales_Doc_Detail__c.Extended_Price__c:SUM),0)
+
+
+//SUMMARY TOTALS ROLLUP
+select Product__c,  sum(Units_Required__c), sum(Total_Price__c),
+       GROUPING (Product__c) pId
+       FROM application_product__c
+       WHERE program_id__c = 'a0J2h000000T4vEEAS'
+       GROUP BY ROLLUP(Product__c)
+       ORDER BY Product__c
+//group by a product and price cant be used in apex formula fields are not groupable also product__r.product_name__c is not groupable
+//to see if a field is groupable       field name here note this field shows how to go to view a field on the parent
+//boolean dfr = application_product__c.product__c.product_name__c.getDescribe().isGroupable();
+  // system.debug(dfr);
+select Product__c, product__r.product_name__c, sum(Units_Required__c), sum(Total_Price__c),
+       GROUPING (Product__c) pId, GROUPING(product__r.product_name__c) pName
+       FROM application_product__c
+       WHERE program_id__c = 'a0J2h000000T4vEEAS' 
+       GROUP BY ROLLUP(Product__c, product__r.product_name__c)
+       ORDER BY Product__c, product__r.product_name__c
+
+//above query that was used in apex call checkout out programPDF.cli to see in action 
+[select Product__c pc, sum(Units_Required__c) units, sum(Total_Price__c) price
+       									    FROM application_product__c
+       									    WHERE program_id__c = :pro.id
+       								        GROUP BY ROLLUP(Product__c)
+       									    ORDER BY Product__c];

@@ -4,19 +4,52 @@ public class programPDF {
     public program__c pro {get;set;}
     public list<application_product__c> appProd {get; set;}
     public string title {get;set;}
-    
-    //below is for all area pdf
-    public list<area__c> areas {get;set;}
-    public List<Application__c> aApplications {get;set;}
-    public List<Application_Product__c> aApplicationProducts {get;set;}
+    public list<products> sumProd {get;set;}
+public class products{
+    public string id {get;set;}
+    public decimal units {get; set;}
+    public decimal price {get;set;}
+    public boolean head{get;set;}
+    public string name{get;set;}
+}
     
     public programPDF(ApexPages.StandardController ctl){
         this.ctl = ctl;
+        
         pro = (program__c)ctl.getRecord();
-        system.debug('id -> '+ pro.Id);
-                appProd = [select  product_name__c,Units_Required__c,
-                  Total_Price__c from application_product__c where program_id__c = :pro.Id ];
-    }
+         
+        //system.debug('id -> '+ pro.Id);
+		AggregateResult[] appProd = [select Product__c pc, sum(Units_Required__c) units, sum(Total_Price__c) price
+       									    FROM application_product__c
+       									    WHERE program_id__c = :pro.id
+       								        GROUP BY ROLLUP(Product__c)
+       									    ORDER BY Product__c]; 
+         sumProd = new list<products>();
+		set<id> pID = new set<id>();
+        for(aggregateResult ap: appProd){
+			products wrapper = new products();
+    		wrapper.id = (String) ap.get('pc');
+    
+    		if(ap.get('pc') != null){
+        		wrapper.head= true;
+    		}
+    		wrapper.units = ap.get('units') != null?((decimal)ap.get('units')):null;
+    		wrapper.price = ap.get('price') != null ?((decimal)ap.get('price')):null;
+    		
+            if(wrapper.head == true){
+    			sumProd.add(wrapper);
+        		pId.add(wrapper.id); 
+
+    		}
+		}
+        for(product__c names : [select id, product_name__c from product__c where id in :pId]){
+    		for(products z: sumProd){
+        		if(z.id == names.id){
+            		z.name = names.product_name__c; 
+        		}
+    		}
+		}
+}
     
     
     public pageReference prodSummary(){
@@ -51,31 +84,7 @@ public class programPDF {
         //After creating the file, take user back to the record file was generated from
         PageReference clientCopyPage = new PageReference('/' + pro.Id);
         clientCopyPage.setRedirect(true);
-        return clientCopyPage;    }
-    
-    public pageReference areaSummary(){
-        areas = [select Area_Acres__c, Area_K_Total__c, Area_N_Total__c, Area_P_Total__c, Area_Sq_Feet__c, Date__c, Name, 
-                Program__c, Type__c, OwnerId
-                from Area__c where program__c =: pro.id];
-       
-        List<Id> areaIds = new List<Id>(); 
-       
-        for(Area__c a : areas){
-            areaIds.add(a.Id); 
-        }
-        aApplications = [select Application_K_Total__c, Application_N_Total__c, Application_P_Total__c, Area__c, Month__c, Week__c, Name, Date__c 
-                        from Application__c where Area__c in :areaIds order by Date__c Asc ];
-                        
-        List<Id> appIds = new List<Id>();
-                        
-        for(Application__c app : aApplications) {
-            appIds.add(app.Id);
-        }
-                        
-        aApplicationProducts = [select Area_Square_Feet_M__c, Categories__c, K__c, LBS_ACRE__c, N__c, OZ_M__c, P__c, Product__c, Total_Used_f__c,
-                                Product__r.Name, Product_Name__c, Application__c, Note__c, Note_Other__c, 
-                                N_Val__c, P_Val__c, K_Val__c 
-                                from Application_Product__c where Application__c IN: appIds];
-        return null; 
+        return clientCopyPage;    
     }
+    
 }
