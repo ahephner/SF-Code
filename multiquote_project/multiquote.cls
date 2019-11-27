@@ -9,7 +9,7 @@ public  with sharing class multiquoteController {
    // private Quote opp {get; set;}
     String sId; 
       
-    public multiquoteController(ApexPages.StandardController controller ) {
+    public multiquoteController(ApexPages.StandardController controller ) { 
     	
         this.ctl = controller;
         //just an ID 
