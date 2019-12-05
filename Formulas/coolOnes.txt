@@ -46,3 +46,4 @@ select Product__c, product__r.product_name__c, sum(Units_Required__c), sum(Total
        									    WHERE program_id__c = :pro.id
        								        GROUP BY ROLLUP(Product__c)
        									    ORDER BY Product__c];
+

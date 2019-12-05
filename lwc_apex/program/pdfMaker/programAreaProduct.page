@@ -1,0 +1,8 @@
+<apex:page standardcontroller="Program__c" extensions="programAreaPDF" >
+	<apex:repeat value="{!areaList}" var="a">
+    	<p>
+            {!a.name}
+        </p>
+    </apex:repeat>
+
+</apex:page>
