@@ -30,6 +30,12 @@
         </table>
         <hr/>
     </c:dynapdfcomponent>
+    	<apex:outputText rendered="{!head[0].customer__r.S_Account__c == True}">
+    		<h3>
+                For S Accounts please contact Michelle Hancock or John Kavanaugh for a copy of an invoice. 
+            </h3>
+    	</apex:outputText>
+    		<apex:outputText rendered="{!head[0].customer__r.S_Account__c == False}">
     		    <div class='info' style="padding-top:-100px;">
                     	<h4 style='text-align:center;'>Sales Invoice: {!head[0].name}</h4>
                     
@@ -103,6 +109,7 @@
                                 <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Order Total:</td>
                                 <td style="text-align:center; border: 1px solid black;"> ${!head[0].Doc_Amount__c}</td></tr>
                            </table>
+    </apex:outputText>
 <c:dynapdfcomponent type="footer">
         <hr/>
         <h6>
@@ -113,4 +120,3 @@
     </c:dynapdfcomponent>
 
 </apex:page>
-

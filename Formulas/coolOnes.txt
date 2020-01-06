@@ -47,3 +47,7 @@ select Product__c, product__r.product_name__c, sum(Units_Required__c), sum(Total
        								        GROUP BY ROLLUP(Product__c)
        									    ORDER BY Product__c];
 
+//ServiceAppointment Duration
+IF(DueDate - EarliestStartTime > 1,
+((DueDate - EarliestStartTime) *24) - (ROUND((DueDate - EarliestStartTime),0) * 12),
+(DueDate - EarliestStartTime)*24)
