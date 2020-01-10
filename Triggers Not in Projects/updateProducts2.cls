@@ -1,3 +1,5 @@
+//This was the original trigger to send/update products from ATS Products to Products 2 
+//being decommissioned due to top soql looking up all products instead of those being updated.
 trigger updateProducts2 on Product__c (before insert, before update) {
     
      
