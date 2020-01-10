@@ -5,6 +5,7 @@ trigger atsProductsToProduct2 on Product__c (before insert, before update) {
     
     for(Product__c temp: trigger.new){
         if(temp.In_JDT_Service_Book__c == True){
+            system.debug(temp.name);
         	prodCode.add(temp.Name);
         }else if (temp.JDT_Product__c == True && temp.In_JDT_Service_Book__c == False){
          	Product2 npt = new Product2();
@@ -14,6 +15,10 @@ trigger atsProductsToProduct2 on Product__c (before insert, before update) {
             npt.ProductCode = temp.Name;
             npt.IsActive = temp.Active__c; 
             npt.Size__c = temp.Size__c;
+            //npt.EPA__c = temp.EPA__c;
+            //npt.QuantityUnitOfMeasure = temp.UOM__c;
+            npt.From_ATS_Product__c = True;
+            temp.In_JDT_Service_Book__c = True;
             newProdList.add(npt); 
         }       
     }
@@ -21,7 +26,8 @@ trigger atsProductsToProduct2 on Product__c (before insert, before update) {
     List<Product2> spProd = [select name, id, Average_Cost__c, 
                       		 Productcode, Description, size__c, product_category__c  from product2
                        		 where ProductCode in :prodCode]; 
-    if(spProd.size()> 1){
+    //system.debug(spProd);
+    if(spProd.size()>= 1){
         for(Product__c prods: Trigger.new){
             for(Product2 pt : spProd){
                		pt.Description = prods.Description__c;
@@ -29,7 +35,6 @@ trigger atsProductsToProduct2 on Product__c (before insert, before update) {
                 	pt.Name = prods.Product_Name__c;
                     pt.IsActive = prods.Active__c;
                     pt.size__c = prods.size__c; 
-                    //prods.In_JDT_Service_Book__c = True;
                     updateList.add(pt); 
             }
         }
