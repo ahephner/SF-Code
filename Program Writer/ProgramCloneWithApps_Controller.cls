@@ -29,7 +29,7 @@ public class ProgramCloneWithApps_Controller {
             //flow control 
             //Hoisting out of if's not like js 
             boolean grabApps = false; 
-            
+            system.debug('hey there how are you?');
             //find and insert new program
             pro = [select id, name, Account__c, CreatedById, year__c 
                 from Program__c where id = :pro.Id]; 
@@ -44,15 +44,14 @@ public class ProgramCloneWithApps_Controller {
             //grab area 
             if(newPro.id != null){
 
-                id holdOver; 
+                system.debug('inside the if newpro <> null');
             	List<Area__c> areaCopy = new List<Area__c>(); 
                 List<Application__c> apps =new List<Application__c>();
-                List<Application_Product__c> prods = new List<Application_Product__c>(); 
+                
 
                 for(Area__c a1 : [Select x.id, x.name, x.Area_Acres__c, x.Area_K_Total__c,x.Area_N_Total__c,  
                                   x.Area_P_Total__c,x.Area_Sq_Feet__c,x.Date__c, x.Type__c, x.PrevID__c 
-                                  from area__c x where program__c = :pro.id]){
-                                    holdOver = a1.id; 
+                                  from area__c x where program__c = :pro.id]){ 
                                     Area__c na = a1.clone(false);
                                     na.Program__c  = newPro.id;
                                     na.PrevID__c = a1.id; 
@@ -88,5 +87,16 @@ public class ProgramCloneWithApps_Controller {
             
         }
     	return new PageReference('/lightning/r/Program__c/'+newPro.id+'/view'); 
+    }
+    
+    //This gets the products for the lwc appCloneModal
+    @AuraEnabled(Cacheable=true)
+    public static List<Application_Product__c> cloneProducts(string app){
+        List<Application_Product__c> prods = [select id, product__c, Product_Name__c,Application__c, Application__r.Name,Report_Rate__c, 
+                                              Application__r.Date__c, Unit_Area__c, Rate2__c, area__c, Note__c, Unit_Price__c,
+                                              Total_Price__c, Units_Required__c,Product_Size__c, Application__r.Area__c,
+                                              Application__r.Area__r.Area_Sq_Feet__c, Margin__c, Product_Cost__c from application_product__c where application__c =: app];
+        //system.debug('here are the products ' +prods);
+        return prods;
     }
 }

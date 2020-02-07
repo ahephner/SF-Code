@@ -22,15 +22,18 @@
                                 <apex:column headerValue="Customer">
                                 <apex:outputText value="{!ord.Customer__r.Name}"/>
                                 </apex:column>
-                                <apex:column headerValue="Doc Amount">
-                                <apex:outputText value="{!ord.Doc_Amount__c}"/>
-                            	</apex:column>
                                 <apex:column headerValue="Doc Date">
                                 <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Doc_Date__c}"/></apex:outputText>
                             	</apex:column>
                                 <apex:column headerValue="Req Ship Date">
                                 <apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!ord.Req_Ship_Date__c}"/></apex:outputText>    
                             	</apex:column>
+                                <apex:column headerValue="Doc Amount">
+                                <apex:outputText value="{!ord.Doc_Amount__c}"/>
+                            	</apex:column>
+                                <apex:column headerValue="Exp. Invoice">
+                                    <apex:inputField value="{!ord.Expected_to_Inv__c}"/>
+                                </apex:column>
                                 <apex:column headerValue="Order Note">
                                 <apex:inputField value="{!ord.Order_Note__c}"/>
                             	</apex:column>
