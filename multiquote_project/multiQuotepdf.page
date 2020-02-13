@@ -6,7 +6,7 @@
             </style>
         </head>	  
      			<c:dynapdfcomponent type="header">
-                	<div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
+                	<div class='row logo'><apex:image style="width:35%;height:35%;" url="{!$Resource.ATSLogoNoGolf}"/><br/><hr/></div>
                 </c:dynapdfcomponent>
 
     		<div class='info'>
@@ -38,7 +38,7 @@
                         <td><p>Bill to:{!add[0].billingstreet}</p>
                             <p>{!add[0].billingcity} {!add[0].billingstate} {!add[0].billingpostalcode}</p></td>
                         <td><p>Ship to:{!add[0].shippingstreet}</p>
-                            <p>{!add[0].shippingcity} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
+                            <p> {!add[0].shippingcity} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
                     </tr>
             </table>
     </div>
@@ -52,7 +52,7 @@
                                       <th style="border: 1px solid black;">Start Date</th>
                                       <th style="border: 1px solid black;">Description</th>
                                       <th style="border: 1px solid black;">Total Price</th>
-                                    </tr>	    
+                                    </tr>	
                                     	<apex:repeat value="{!wrapQuoteList}" var="sq">
     										<apex:outputText rendered="{!sq.selected}" >
                                   <tr> 
