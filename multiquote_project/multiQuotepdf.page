@@ -6,7 +6,7 @@
             </style>
         </head>	  
      			<c:dynapdfcomponent type="header">
-                	<div class='row logo'><apex:image style="width:75%;height:75%;" url="{!$Resource.ATSJDTLogo}"/><br/><hr/></div>
+                	<div class='row logo'><apex:image style="width:35%;height:35%;" url="{!$Resource.ATSLogoNoGolf}"/><br/><hr/></div>
                 </c:dynapdfcomponent>
 
     		<div class='info'>
@@ -23,11 +23,11 @@
                         <td colspan='2' style='text-align:left;'> Created Date:<apex:outputText value="{0, date, MMMM dd yyyy}"><apex:param value="{!wrapQuoteList[0].qu.createddate}" /></apex:outputText></td>
                     </tr>
                     <tr>
-                        <td colspan='1'><p style="margin:0%;">Prepared By: {!wrapQuoteList[0].qu.CreatedBy.name}</p></td>
+                        <td colspan='1'><p style="margin:0%;">Prepared By: {!usrName}</p></td>
                     	<td colspan='2' style='text-align:left;'>Expiration Date:<apex:outputText value="{0, date,MMMM dd yyyy}"><apex:param value="{!wrapQuoteList[0].qu.ExpirationDate}" /></apex:outputText></td>    
                     </tr>
                     <tr>
-                        <td colspan='1'><p style="margin:0%;">Email: {!wrapQuoteList[0].qu.createdby.email}</p></td>
+                        <td colspan='1'><p style="margin:0%;">Email: {!emailAddress}</p></td>
                         <td><p style="margin:0%;">Quote Number: {!wrapQuoteList[0].qu.QuoteNumber}</p></td>
                     </tr>
                     <tr>
@@ -38,7 +38,7 @@
                         <td><p>Bill to:{!add[0].billingstreet}</p>
                             <p>{!add[0].billingcity} {!add[0].billingstate} {!add[0].billingpostalcode}</p></td>
                         <td><p>Ship to:{!add[0].shippingstreet}</p>
-                            <p>{!add[0].shippingcity} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
+                            <p> {!add[0].shippingcity} {!add[0].shippingstate} {!add[0].shippingpostalcode}</p></td>
                     </tr>
             </table>
     </div>
@@ -52,7 +52,7 @@
                                       <th style="border: 1px solid black;">Start Date</th>
                                       <th style="border: 1px solid black;">Description</th>
                                       <th style="border: 1px solid black;">Total Price</th>
-                                    </tr>	    
+                                    </tr>	
                                     	<apex:repeat value="{!wrapQuoteList}" var="sq">
     										<apex:outputText rendered="{!sq.selected}" >
                                   <tr> 
