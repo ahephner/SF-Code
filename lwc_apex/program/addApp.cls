@@ -24,9 +24,9 @@ public with sharing class addApp {
                            //ap.Id = temp.Id;
                            ap.Product__c = temp.product__c;
                            ap.Application__c = temp.Application__c; 	
-                           ap.OZ_M__c = temp.OZ_M__c;
+                           ap.Rate2__c = temp.Rate2__c;
                            ap.Note__c = temp.Note__c; 
-                           ap.LBS_ACRE__c = temp.LBS_ACRE__c;
+                           ap.Unit_Area__c = temp.Unit_Area__c;
                            ap.Unit_Price__c = temp.Unit_Price__c; 
                             //system.debug('product id '+ ap.Product__c);
                             prodList.add(ap);
@@ -72,8 +72,8 @@ public with sharing class addApp {
                            ap.Id = temp.Id;
                            //ap.Product__c = temp.product__c;
                            //ap.Application__c = temp.Application__c; 	
-                           ap.OZ_M__c = temp.OZ_M__c;
-                           ap.LBS_ACRE__c = temp.LBS_ACRE__c; 
+                           ap.Rate2__c = temp.Rate2__c;
+                           ap.Unit_Area__c = temp.Unit_Area__c; 
                            ap.Note__c = temp.Note__c;
                            ap.Unit_Price__c = temp.Unit_Price__c;  
                             //system.debug('product id '+ ap.Id);
@@ -91,4 +91,8 @@ public with sharing class addApp {
         return null;  
     }
     
+    @AuraEnabled
+    public static list<application__c> multiInsert(id appId, string repeatType){
+        return null;
+    }
 }
