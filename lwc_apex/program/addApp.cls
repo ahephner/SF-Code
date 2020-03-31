@@ -94,36 +94,36 @@ public with sharing class addApp {
     @AuraEnabled
     public static list<application__c> multiInsert(id appId, integer occurance, integer daysBetween){
         list<Application__c> appsToInsert = new list<application__c>();
-        list<Application_Product__c> productsToInsert  = new list<Application_Product__c>(); 
+        integer appNumber = 1; 
+       // list<Application_Product__c> productsToInsert  = new list<Application_Product__c>(); 
         //get orginial app
         application__c app = [select id, area__c, name,
                            	date__c from application__c 
                            	where id =:appId];
         //get products
-        list<application_product__c> products = [SELECT Application__c, Categories__c, K__c, 
-                                                  LBS_ACRE__c, N__c, Note__c, OZ_M__c, P__c, 
-                                                  Product__c, Rate2__c, Unit_Area__c, Unit_Price__c, 
-                                                  Units_Required__c 
-                                                  FROM Application_Product__c where Application__c =: appId];
-        
-        for(integer i = 0; i< occurance; i++){
-             integer days = daysBetween * i; 
+        //list<application_product__c> products = [SELECT Application__c, Categories__c, K__c, 
+          //                                        LBS_ACRE__c, N__c, Note__c, OZ_M__c, P__c, 
+            //                                      Product__c, Rate2__c, Unit_Area__c, Unit_Price__c, 
+              //                                    Units_Required__c 
+                //                                  FROM Application_Product__c where Application__c =: appId];
+        system.debug(occurance);
+        for(integer i = 1; i<= occurance; i++){
+            system.debug('I '+ i);
+            integer days = daysBetween * i;
+            system.debug('days '+days);
             application__c clonedApp = app.clone(false); 
             clonedApp.prev_app_id__c = appId; 
             clonedApp.date__c = app.date__c.addDays(days); 
-            i += 1; 
-            clonedApp.name = app.name +' '+ i; 
-            appsToInsert.add(clonedApp);                           
+            system.debug('app.date__c.addDays(days) '+app.date__c.addDays(days)); 
+            appNumber += 1; 
+            clonedApp.name = app.name +' '+ appNumber;  
+            system.debug('app '+clonedApp);
+            appsToInsert.add(clonedApp); 
+
 		}
-        if(appsToInsert !=null){
+        if(appsToInsert != null){
             insert appsToInsert; 
         }
-        
-        try{
-            //list<application_product__c> cloneProds = products.clone(false); 
-        }catch(exception e){
-            system.debug(e.getMessage());
-        }
-        return null; 
+ 			return null; 
     }
 }
