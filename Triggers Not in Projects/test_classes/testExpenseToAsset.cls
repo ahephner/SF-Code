@@ -10,34 +10,40 @@ public class testExpenseToAsset {
         
         ATS_Asset__c ta = new ATS_Asset__c(name = 'test', ATS_Location__c= location.id, 
                                            tires__c = 0,P_M__c=0,Repair__c=0, Asset_Type__c='Dump Truck (DT)');
+         insert ta; 
          
         Expense__c tire= new Expense__c(ATS_Asset__c=ta.Id,Expense_Type__c = 'Tires', Amount__c=1,Expense_Date__c = date.newInstance(2019, 10, 30) );
         Expense__c pm= new Expense__c(ATS_Asset__c=ta.Id,Expense_Type__c = 'PM', Amount__c=2,Expense_Date__c = date.newInstance(2019, 10, 30) );
         Expense__c repair= new Expense__c(ATS_Asset__c=ta.Id,Expense_Type__c = 'Repair', Amount__c=3,Expense_Date__c = date.newInstance(2019, 10, 30) );
-        
+        Expense__c misc = new Expense__c(ATS_Asset__c=ta.Id,Expense_Type__c = 'Miscellaneous', Amount__c=3,Expense_Date__c = date.newInstance(2019, 10, 30) );
         Test.startTest();
         	insert tire; 
         	insert pm; 
         	insert repair;
+            insert misc; 
         //updates
         tire.Amount__c = 15; 
         pm.Amount__c = 100;
         repair.Amount__c = 100;
+        misc.Amount__c = 3;
         update tire;
         update pm;
         update repair;
+        update misc; 
         
         tire.Amount__c = 3; 
         pm.Amount__c = 1;
         repair.Amount__c = 1;
+        misc.Amount__c = 3; 
         update tire;
         update pm;
         update repair;
+        update misc;
         //now test delete
         	delete tire;
         	delete pm; 
         	delete repair; 
-        
+            delete misc; 
         	
         Test.stopTest();
 
