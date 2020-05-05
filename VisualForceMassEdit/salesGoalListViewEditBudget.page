@@ -16,7 +16,7 @@
             <apex:column headerValue="Your Forecast">
                <apex:inputField value="{!goal.Forecast_Amount__c}"/>
             </apex:column>s
-            <apex:column headerValue="Update">
+            <apex:column headerValue="Comments">
                <apex:inputField value="{!goal.Updates__c}"/>
             </apex:column>
          </apex:pageBlockTable>

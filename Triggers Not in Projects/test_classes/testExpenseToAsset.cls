@@ -2,8 +2,14 @@
 public class testExpenseToAsset {
 	@isTest
     Static void testTrigger(){
-        ATS_Asset__c ta = new ATS_Asset__c(name = 'test', tires__c = 0,P_M__c=0,Repair__c=0);
-         insert ta; 
+        Account cust = new Account(Name = 'Test123456',RecordTypeId = '01241000001Dy5zAAC',Customer_Name__c = 'Test Customer 123456');
+        insert cust;
+        
+        Location__c location = new Location__c(Name = 'Test', Account__c=cust.id); 
+        insert location; 
+        
+        ATS_Asset__c ta = new ATS_Asset__c(name = 'test', ATS_Location__c= location.id, 
+                                           tires__c = 0,P_M__c=0,Repair__c=0, Asset_Type__c='Dump Truck (DT)');
          
         Expense__c tire= new Expense__c(ATS_Asset__c=ta.Id,Expense_Type__c = 'Tires', Amount__c=1,Expense_Date__c = date.newInstance(2019, 10, 30) );
         Expense__c pm= new Expense__c(ATS_Asset__c=ta.Id,Expense_Type__c = 'PM', Amount__c=2,Expense_Date__c = date.newInstance(2019, 10, 30) );
