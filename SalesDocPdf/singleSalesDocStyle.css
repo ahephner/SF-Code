@@ -1,0 +1,26 @@
+.topcellInvoiceInfo td{
+    background-color:#c8d1e0; 
+    text-align: center; 
+    border: .5px solid black;
+}
+
+.bottomcellInvoiceInfo{
+    text-align: center; 
+    border-left: .5px solid black;
+    border-right: .5px solid black;
+    border-bottom: .5px solid black;
+}
+
+.companyInfo ul{
+    list-style: none;
+}
+
+.companyInfo li{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.companyInfo li:nth-child(1){
+    font-size: 15px;
+    font-weight: bolder;
+}
