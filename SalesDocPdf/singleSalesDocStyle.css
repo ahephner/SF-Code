@@ -1,5 +1,5 @@
 .topcellInvoiceInfo td{
-    background-color:#c8d1e0; 
+    background-color:#DCDCDC; 
     text-align: center; 
     border: .5px solid black;
 }
@@ -14,6 +14,15 @@
 .companyInfo ul{
     list-style: none;
 }
+.companyInfo li:nth-child(1){
+    font-size:15px;
+    font-weight: bolder;
+}
+
+.companyInfo li{
+    font-size: 15px;
+    font-weight: bold;
+}
 
 .companyInfo li{
     font-size: 12px;
@@ -23,4 +32,14 @@
 .companyInfo li:nth-child(1){
     font-size: 15px;
     font-weight: bolder;
+}
+
+.billTo{
+    margin-left: 5%;
+    margin-bottom: 3%;
+    margin-top: 2%;
+}
+
+.billToShipTo td:nth-child(1){
+    margin-left: 50%;
 }

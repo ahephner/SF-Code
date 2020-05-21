@@ -1,27 +1,23 @@
+<apex:page showHeader="false" standardStylesheets="false" renderAs="pdf"  standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
 
  		<head>
-            <style type="text/css">
-                        @page {
-            margin-top: 11%;
-            margin-bottom: 11%;
-        }
-                tr.blank{
-                height: 10px; !important; 
-                }
-            </style>
+
     </head>
-    <c:dynapdfcomponent type="header">
+    <c:dynapdfcomponent type='header'>
         <table width="100%" >
             <col width="30%"/>
             <col width="40%"/>
             <col width="30%"/>
               <tr>
-                 <td>
-                      <div><p style="font-size:10px">Corp. Phone: (877)433-7037</p></div>
-                      <div><p style="font-size:10px">Rep Mobile: {!head[0].sales_rep__r.mobile__c}</p></div>
-                      <div><p style="font-size:10px">Rep Email: {!head[0].sales_rep__r.email__c}</p></div>
-                  	  <div></div>
-                       	
+                 <td class='companyInfo'>
+                     <ul style='list-style: none;'>
+                          <li style="font-size:15px; font-weight: bolder;">Advanced Turf Solutions</li>
+                          <li style="font-size:12px; font=weight: bold;">12955 Ford Drive</li>
+                          <li style="font-size:12px; font=weight: bold;">Fishers, IN 46038</li>
+                          <li style="font-size:12px; font=weight: bold;">Corp. Phone: (877)433-7037</li>
+                         <!-- <li style="font-size:12px; font=weight: bold;">Rep Mobile: {!head[0].sales_rep__r.mobile__c}</li>
+                          <li style="font-size:12px; font=weight: bold;">Rep Email: {!head[0].sales_rep__r.email__c}</li>-->
+                  	   </ul>                      	
                   </td>
                   
                   <td style="text-align:center">
@@ -38,31 +34,32 @@
         </table>
         <hr/>
     </c:dynapdfcomponent>
+
     	<apex:outputText rendered="{!head[0].customer__r.S_Account__c == True}">
     		<h3>
                 For S Accounts please contact Michelle Hancock or John Kavanaugh for a copy of an invoice. 
             </h3>
     	</apex:outputText>
+<!--Replaced by credit rebill warning--> 
+         <apex:outputText rendered="{!head[0].Replaced_by_Credit_Rebill__c == True}">
+              <h5 style='background-color:red; color:white; text-align:Center;;'>
+                 Warning Replaced by another Invoice: {!head[0].Replaced_by_Credit_Rebill_Num__c}
+              </h5>
+          </apex:outputText>
     		<apex:outputText rendered="{!head[0].customer__r.S_Account__c == False}">
     		    <div class='info' style="padding-top:-100px;">
-                    	<h4 style='text-align:center;'>Sales Invoice: {!head[0].name}</h4>
-                    
-                    <apex:outputText rendered="{!head[0].Replaced_by_Credit_Rebill__c == True}">
-                     	<h5 style='background-color:red; color:white; text-align:Center;;'>
-                        	Warning Replaced by another Invoice: {!head[0].Replaced_by_Credit_Rebill_Num__c}
-                	    </h5>
-                    </apex:outputText>
+
  <!--This is the bill to ship section. Empty <td> ready for ship to info once we have it in SF--> 
-                    <div class='billTO'>
+                    <div class='billTo' style='margin-left: 5%; margin-bottom: 3%; margin-top:5%;'>
                         <table width='100%'>
-                            <col width='50%'/>
-                            <col width='50%'/>
-                            	<tr class='billToShipTo'>
-                                	<td><h5 style='margin-left:50%'>BILL TO:</h5></td>
-                                    <!--<td><h5>SHIP TO:</h5></td>-->
+                            <col width='40%'/>
+                            <col width='60%'/>
+                            	<tr class='billToShipTo' style='padding-bottom: 0px;'>
+                                	<td style='text-align:center;'><b>BILL TO:</b></td>
+                                    <!--<td><b>SHIP TO:</b></td>-->
                                 </tr>
                             	<tr>
-                            	 <td style='border-bottom: 1px solid'>{!head[0].Billing_Company__c}</td>
+                            	 <td style='border-bottom: 1px solid;'>{!head[0].Billing_Company__c}</td>
                                  <td></td>
                             	</tr>
                             	<tr>
@@ -91,15 +88,15 @@
                         <table width='100%'>
                             <col width='16%'/><col width='16%'/><col width='16%'/>
                             <col width='16%'/><col width='16%'/><col width='16'/>
-                            <tr>
-                            	<td><b>Invoice Date</b></td>
+                            <tr class='topcellInvoiceInfo'>
+                                <td style="background-color:#DCDCDC; text-align: center; border: .5px solid black;"><b>Invoice Date</b></td>
                                 <td><b>Invoice #</b></td>
                                 <td><b>Due Date</b></td>
                                 <td><b>Ship Type</b></td>
                                 <td><b>PO #</b></td>
                                 <td><b>Customer #</b></td>
                             </tr>
-                            <tr>
+                            <tr class='bottomcellInvoiceInfo'>
                             	<td>
                                     <apex:outputText value="{0,date,MM-dd-yyyy}">
                    			  			<apex:param value="{!head[0].doc_date__c}" />
@@ -112,28 +109,12 @@
                         		 	</apex:outputText>
                                 </td>
                                 <td>{!head[0].Ship_Type__c}</td>
-                                <td >{!head[0].Cust_PO_Num__c}</td>
-                                <td>{!head[0].Customer__r.Customer__c</td>
+                                <td>{!head[0].Cust_PO_Num__c}</td>
+                                <td>{!head[0].Customer__r.Customer__c}</td>
                             </tr>
                         </table>
                     </div>
-<!--This is the secont that has due date and payment terms. I removed from prod doc kept copy for repo--> 
-			<!-- <ul style="list-style-type:none; ">
-                
-                <li>Doc Date: </li>
-                <li>Customer: </li>
-                <li>Sales Rep: {!head[0].Sales_Rep__r.name}</li>
-                <li>Payment Terms: {!head[0].Payment_Terms__c}</li>
-                <apex:outputText rendered="{!head[0].Payment_Terms__c != 'SEE SPLIT TERMS'}">
-                	<li>Due Date:</li>
-                </apex:outputText> 
-                <apex:outputText rendered="{!head[0].Payment_Terms__c == 'SEE SPLIT TERMS'}">
-                	<li>First Due Date:<apex:outputText value="{0,date,MM-dd-yyyy}">
-                        		 <apex:param value="{!head[0].Due_Date__c}" />
-                        		 </apex:outputText></li>
-                    <li>Number of Payments: {!head[0].Number_of_Payments__c}</li>
-                </apex:outputText> 
-                </ul>                 -->
+             
     </div> 
                
                         <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
@@ -184,3 +165,5 @@
         </h6>
          
 </c:dynapdfcomponent>
+
+</apex:page>
