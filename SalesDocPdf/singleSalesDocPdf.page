@@ -1,6 +1,6 @@
 <apex:page showHeader="false" standardStylesheets="false" renderAs="pdf"  standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
 	<apex:stylesheet value="{!$Resource.singleSalesDocStyle}"/>
-    <c:dynapdfcomponent type='header'>
+    <c:dynapdfcomponent type="header">
         <table width="100%" >
             <col width="30%"/>
             <col width="40%"/>
@@ -17,7 +17,7 @@
                   	   </ul>                      	
                   </td>
                   
-                  <td style="text-align:center">
+                  <td class='invoiceType'>
                      <apex:outputText rendered="{!head[0].doc_type__c == 'Invoice'}">
                          <h3>Invoice</h3>
     				 </apex:outputText>
@@ -45,7 +45,6 @@
           </apex:outputText>
     		<apex:outputText rendered="{!head[0].customer__r.S_Account__c == False}">
     	
-
  <!--This is the bill to ship section. Empty <td> ready for ship to info once we have it in SF--> 
                     <div class='billTo'>
                         <table width='100%'>
@@ -53,11 +52,11 @@
                             <col width='60%'/>
                             	<tr class='billToShipTo' style='padding-bottom: 0px;'>
                                 	<td class='billToCell'><b>BILL TO:</b></td>
-                                    <!--<td><b>SHIP TO:</b></td>-->
+                                    <td class='links'  controlsList='nodownload'><a href='{!feeLinkTotal}'>Click Here to Pay Your Bill Online with a 2% Convenience Fee via Credit Card</a></td>
                                 </tr>
                             	<tr>
                             	 <td class='company1'>{!head[0].Billing_Company__c}</td>
-                                 <td></td>
+                                 <td class='links' controlsList='nodownload'><a href='{!linkTotal}'>Click Here to Pay Your Bill Online Free of Charge via ACH</a></td>
                             	</tr>
                             	<tr>
                                     <td>{!head[0].Billing_Company__c}</td>
@@ -111,7 +110,7 @@
                             </tr>
                         </table>
                     </div>
-             
+                <br/>
                 <br/>
                
                         <table width='100%' class='unitTable'>
@@ -121,7 +120,7 @@
                             <col width='20%'/>
                             
                                     <tr class='unitTableHeader'>
-                                      <th>Descripton</th>
+                                      <th>Product</th>
                                       <th>Qty</th>
                                       <th>Unit Price</th>
                                       <th>Total Price</th>
@@ -134,21 +133,29 @@
                                     <td>${!p.Extended_Price__c}</td> 
                                  </tr>   
                                 </apex:repeat>
+                            <tr>
+                                <td colspan='2'></td>
+                                <td class='taxAndTotal'>Invoice Qty Total:</td>
+                                <td class='final'>{!q}</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'></td>
+                                <td class='taxAndTotal'>Freight:</td>
+                                <td class='final'> ${!head[0].Freight_Amount__c}</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'></td>
+                                <td class='taxAndTotal'>Tax</td>
+                                <td class='final'> ${!head[0].Tax_Amount__c}</td>
+                            </tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC; padding-top: 10px;">Invoice Qty Total:</td>
-                                <td style="text-align:center; border: 1px solid black;">{!q}</td></tr>
+                                <td class='taxAndTotal'>Product Total:</td>
+                                <td class='final'> ${!head[0].Line_Total__c}</td>
+                            </tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Freight:</td>
-                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Freight_Amount__c}</td></tr>
-                            <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Tax</td>
-                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Tax_Amount__c}</td></tr>
-                            <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Product Total:</td>
-                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Line_Total__c}</td></tr>
-                            <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Order Total:</td>
-                                <td style="text-align:center; border: 1px solid black;"> ${!head[0].Doc_Amount__c}</td></tr>
+                                <td class='taxAndTotal'>Order Total:</td>
+                                <td class='final'> ${!head[0].Doc_Amount__c}</td>
+                            </tr>
                            </table>
     </apex:outputText>
 <c:dynapdfcomponent type="footer">
