@@ -1,8 +1,5 @@
 <apex:page showHeader="false" standardStylesheets="false" renderAs="pdf"  standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
-
- 		<head>
-
-    </head>
+	<apex:stylesheet value="{!$Resource.singleSalesDocStyle}"/>
     <c:dynapdfcomponent type='header'>
         <table width="100%" >
             <col width="30%"/>
@@ -10,13 +7,13 @@
             <col width="30%"/>
               <tr>
                  <td class='companyInfo'>
-                     <ul style='list-style: none;'>
-                          <li style="font-size:15px; font-weight: bolder;">Advanced Turf Solutions</li>
-                          <li style="font-size:12px; font=weight: bold;">12955 Ford Drive</li>
-                          <li style="font-size:12px; font=weight: bold;">Fishers, IN 46038</li>
-                          <li style="font-size:12px; font=weight: bold;">Corp. Phone: (877)433-7037</li>
-                         <!-- <li style="font-size:12px; font=weight: bold;">Rep Mobile: {!head[0].sales_rep__r.mobile__c}</li>
-                          <li style="font-size:12px; font=weight: bold;">Rep Email: {!head[0].sales_rep__r.email__c}</li>-->
+                     <ul>
+                          <li id='ATS'>Advanced Turf Solutions</li>
+                          <li>12955 Ford Drive</li>
+                          <li>Fishers, IN 46038</li>
+                          <li>Corp. Phone: (877)433-7037</li>
+                         <!-- <li>Rep Mobile: {!head[0].sales_rep__r.mobile__c}</li>
+                          <li>Rep Email: {!head[0].sales_rep__r.email__c}</li>-->
                   	   </ul>                      	
                   </td>
                   
@@ -47,19 +44,19 @@
               </h5>
           </apex:outputText>
     		<apex:outputText rendered="{!head[0].customer__r.S_Account__c == False}">
-    		    <div class='info' style="padding-top:-100px;">
+    	
 
  <!--This is the bill to ship section. Empty <td> ready for ship to info once we have it in SF--> 
-                    <div class='billTo' style='margin-left: 5%; margin-bottom: 3%; margin-top:5%;'>
+                    <div class='billTo'>
                         <table width='100%'>
                             <col width='40%'/>
                             <col width='60%'/>
                             	<tr class='billToShipTo' style='padding-bottom: 0px;'>
-                                	<td style='text-align:center;'><b>BILL TO:</b></td>
+                                	<td class='billToCell'><b>BILL TO:</b></td>
                                     <!--<td><b>SHIP TO:</b></td>-->
                                 </tr>
                             	<tr>
-                            	 <td style='border-bottom: 1px solid;'>{!head[0].Billing_Company__c}</td>
+                            	 <td class='company1'>{!head[0].Billing_Company__c}</td>
                                  <td></td>
                             	</tr>
                             	<tr>
@@ -76,7 +73,7 @@
                             	</tr>
                         </table>
                     </div>
-                    
+                <br/>
                 	<!--
                     <apex:outputText rendered="{!head[0].Replaced_by_Credit_Rebill__c == False}">
     					<h5 style='background-color:yellow; text-align:Center;;'>
@@ -85,11 +82,11 @@
     				</apex:outputText>-->
 <!--Invoice Info Bar-->                    
                     <div class='invoiceInfo'>
-                        <table width='100%'>
+                        <table width='100%' class='invoiceInfo'>
                             <col width='16%'/><col width='16%'/><col width='16%'/>
-                            <col width='16%'/><col width='16%'/><col width='16'/>
+                            <col width='10%'/><col width='26%'/><col width='12%'/>
                             <tr class='topcellInvoiceInfo'>
-                                <td style="background-color:#DCDCDC; text-align: center; border: .5px solid black;"><b>Invoice Date</b></td>
+                                <td><b>Invoice Date</b></td>
                                 <td><b>Invoice #</b></td>
                                 <td><b>Due Date</b></td>
                                 <td><b>Ship Type</b></td>
@@ -109,49 +106,48 @@
                         		 	</apex:outputText>
                                 </td>
                                 <td>{!head[0].Ship_Type__c}</td>
-                                <td>{!head[0].Cust_PO_Num__c}</td>
+                                <td id='PO'>{!head[0].Cust_PO_Num__c}</td>
                                 <td>{!head[0].Customer__r.Customer__c}</td>
                             </tr>
                         </table>
                     </div>
              
-    </div> 
+                <br/>
                
-                        <table width='100%' style="border-collapse: collapse;border: 1px solid black;">
+                        <table width='100%' class='unitTable'>
                             <col width='40%'/>
                             <col width='20%'/>
                             <col width='20%'/>
                             <col width='20%'/>
                             
-                                    <tr>
-                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;">Descripton</th>
-                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;">Qty</th>
-                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;">Unit Price</th>
-                                      <th style="border: 1px solid black; text-align:center; background-color:#C8C8C8;" >Total Price</th>
+                                    <tr class='unitTableHeader'>
+                                      <th>Descripton</th>
+                                      <th>Qty</th>
+                                      <th>Unit Price</th>
+                                      <th>Total Price</th>
                                     </tr>	
                                   <apex:repeat value="{!detail}" var="p">
-                                  <tr> 
-                                    <td style="border: 1px solid black; text-align:center;">{!p.Product_Name__c}</td>
-                                    <td style="border: 1px solid black; text-align:center;">{!p.Qty__c}</td>
-                                    <td style="border: 1px solid black; text-align:center;">${!p.Unit_Price__c}</td> 
-                                    <td style="border: 1px solid black; text-align:center;">${!p.Extended_Price__c}</td> 
+                                  <tr class='unitTableOutput'> 
+                                    <td>{!p.Product_Name__c}</td>
+                                    <td>{!p.Qty__c}</td>
+                                    <td>${!p.Unit_Price__c}</td> 
+                                    <td>${!p.Extended_Price__c}</td> 
                                  </tr>   
                                 </apex:repeat>
- 
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8; padding-top: 10px;">Invoice Qty Total:</td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC; padding-top: 10px;">Invoice Qty Total:</td>
                                 <td style="text-align:center; border: 1px solid black;">{!q}</td></tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Freight:</td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Freight:</td>
                                 <td style="text-align:center; border: 1px solid black;"> ${!head[0].Freight_Amount__c}</td></tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Tax</td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Tax</td>
                                 <td style="text-align:center; border: 1px solid black;"> ${!head[0].Tax_Amount__c}</td></tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Product Total:</td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Product Total:</td>
                                 <td style="text-align:center; border: 1px solid black;"> ${!head[0].Line_Total__c}</td></tr>
                             <tr><td colspan='2'></td>
-                                <td style="border: 1px solid black; text-align:center; background-color:#C8C8C8;padding-top: 10px;">Order Total:</td>
+                                <td style="border: 1px solid black; text-align:center; background-color:#DCDCDC;padding-top: 10px;">Order Total:</td>
                                 <td style="text-align:center; border: 1px solid black;"> ${!head[0].Doc_Amount__c}</td></tr>
                            </table>
     </apex:outputText>
