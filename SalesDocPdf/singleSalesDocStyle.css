@@ -96,3 +96,37 @@
     text-align: left;
     font-size: 12px;
 }
+
+@page {
+    
+    @bottom-left {
+        content: element(footer);    
+        }
+    }
+    
+     
+  
+    
+    div.footer {
+    
+    display: block;
+    
+    padding: 5px;
+    
+    position: running(footer);
+    
+    }
+    
+     
+    
+    .pagenumber:before {
+    
+    content: counter(page);
+    
+    }
+    
+    .pagecount:before {
+    
+    content: counter(pages);
+    
+    }

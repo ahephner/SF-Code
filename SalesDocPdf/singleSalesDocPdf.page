@@ -1,6 +1,7 @@
 <apex:page showHeader="false" standardStylesheets="false" renderAs="pdf"  standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
 	<apex:stylesheet value="{!$Resource.singleSalesDocStyle}"/>
-    <c:dynapdfcomponent type="header">
+    
+    <div style="header">
         <table width="100%" >
             <col width="30%"/>
             <col width="40%"/>
@@ -30,8 +31,8 @@
               </tr>
         </table>
         <hr/>
-    </c:dynapdfcomponent>
-
+    </div>
+	
     	<apex:outputText rendered="{!head[0].customer__r.S_Account__c == True}">
     		<h3>
                 For S Accounts please contact Michelle Hancock or John Kavanaugh for a copy of an invoice. 
@@ -52,11 +53,11 @@
                             <col width='60%'/>
                             	<tr class='billToShipTo' style='padding-bottom: 0px;'>
                                 	<td class='billToCell'><b>BILL TO:</b></td>
-                                    <td class='links'  controlsList='nodownload'><a href='{!feeLinkTotal}'>Click Here to Pay Your Bill Online with a 2% Convenience Fee via Credit Card</a></td>
+                                    <!--<td></td>-->
                                 </tr>
                             	<tr>
                             	 <td class='company1'>{!head[0].Billing_Company__c}</td>
-                                 <td class='links' controlsList='nodownload'><a href='{!linkTotal}'>Click Here to Pay Your Bill Online Free of Charge via ACH</a></td>
+                                 <!--<td></td>-->
                             	</tr>
                             	<tr>
                                     <td>{!head[0].Billing_Company__c}</td>
@@ -157,16 +158,36 @@
                                 <td class='final'> ${!head[0].Doc_Amount__c}</td>
                             </tr>
                            </table>
-    </apex:outputText>
-<c:dynapdfcomponent type="footer">
-        <hr/>
+    
+               
+ <div class='footer'>
         <h6  style="font-size:8pt;word-break:break-all">
-            15% RESTOCKING FEE ON ALL RETURNS. NO RETURNS ON PRE-EMERGENT, ICE MELT, AGENCY OR SPECIAL-ORDER PRODUCTS.
-            PRODUCTS MUST BE NEW, CLEAN, UNOPENED IN ORIGINAL PACKAGING WITH LABEL, NOT DISCONTINUED, AND ABLE TO BE RESOLD.
-            A RECEIPT OR INVOICE MUST BE PROVIDED AT THE TIME OF RETURN.
-            A SERVICE CHARGE OF 1 1/2% PER MONTH, WHICH IS AN APR OF 18%, WILL BE ADDED TO ALL PAST DUE BALANCES
-        </h6>
-         
-</c:dynapdfcomponent>
-
+                    15% RESTOCKING FEE ON ALL RETURNS. NO RETURNS ON PRE-EMERGENT, ICE MELT, AGENCY OR SPECIAL-ORDER PRODUCTS.
+                    PRODUCTS MUST BE NEW, CLEAN, UNOPENED IN ORIGINAL PACKAGING WITH LABEL, NOT DISCONTINUED, AND ABLE TO BE RESOLD.
+                    A RECEIPT OR INVOICE MUST BE PROVIDED AT THE TIME OF RETURN.
+                    A SERVICE CHARGE OF 1 1/2% PER MONTH, WHICH IS AN APR OF 18%, WILL BE ADDED TO ALL PAST DUE BALANCES
+        </h6> 
+    <hr/>
+    	
+        <table width="100%" style="font-family:Arial, Arial Unicode MS; font-size:9px;" >
+            <col width="77%"/>
+            <col width="33%"/>
+            
+            <tbody>
+                <tr>
+                    <td >
+                        <ul class='links'>
+                            <li><a class='links' href='{!linkTotal}'>Click Here to Pay Your Bill Online Free of Charge via ACH</a></li>
+                            <li><a class='links' href='{!feeLinkTotal}'>Click Here to Pay Your Bill Online with a 2% Convenience Fee via Credit Card</a></li>
+                        </ul> 
+                    </td>
+                    <td align="right">
+                        <div>Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+    </div>
+</apex:outputText>
 </apex:page>
