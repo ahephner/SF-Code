@@ -1,14 +1,17 @@
 @isTest
 public class test_singleSalesDocPdf {
 static testMethod void test_singleSalesDocPdf(){
-        PageReference pref = Page.singleSalesDocPdf;         
-        Test.setCurrentPage(pref);
+
         //account
+       
         Account cust = new Account();
         cust.Name = 'Test123456';
         cust.RecordTypeId = '01241000001Dy64AAC';
         cust.Customer_Name__c = 'Test Customer 123456';
         	insert cust;
+    	//Sales Rep
+    	Sales_Rep__c sr = new Sales_Rep__c(Name='Rep', Sales_Rep_Num__c='12');
+    	insert sr; 
         //contact
         contact person = new contact(lastname = 'test', AccountId = cust.Id);
         insert person; 
@@ -17,9 +20,12 @@ static testMethod void test_singleSalesDocPdf(){
         Date startdate = Date.newInstance(2040, 1, 3);
         Id pricebookId = Test.getStandardPricebookId();
         //sales doc
-        Sales_Document__c head = new Sales_Document__c(name = 'test name', customer__c = cust.id, Doc_Type__c = 'Invoice', Sales_Doc_Num__c = '12345' );
+        Sales_Document__c head = new Sales_Document__c(name = 'test name', customer__c = cust.id, Doc_Type__c = 'Invoice', 
+                                                       Sales_Doc_Num__c = '12345',Sales_Rep__c= sr.Id,
+                                                       Doc_Date__c = myDate, Doc_Amount__c=1.00);
 	
         insert head;
+    system.debug(head); 
         //insert products 
         product__c p = new product__c(Name='xyz', Product_Name__c = 'product', Active__c=True);
         //product__c pr = new product__c(Name='jdt-12', ProductCode =  'xyz');
@@ -32,26 +38,31 @@ static testMethod void test_singleSalesDocPdf(){
 
 
        
-        
-         Test.startTest();
-
-         ApexPages.StandardController sc = new ApexPages.StandardController(head);
-
-        // create the controller
-        singleSalesDocController ext = new singleSalesDocController(sc);
-
-        list<Sales_Doc_Detail__c> product = ext.getdetail();   
-        
-        system.assertNotEquals(product, null);
-       		list<Sales_Document__c> c =  ext.gethead();
-        system.debug('here is con.getx  '+ c );
-        system.assertNotEquals(c, null);
-			object z = ext.getq();
-        
-        for(Sales_Doc_Detail__c x : product){
-        system.assertEquals(x.qty__c,0);
-            if(x.Product__r.name.startsWith('JDT')){
-            system.assertEquals(x.unit_price__c, x.Extended_Price__c);
-            }}   Test.stopTest();     
+        Test.startTest();
+			//set page and controllers
+	       	PageReference pref = Page.singleSalesDocPdf;         
+        	Test.setCurrentPage(pref);         
+			ApexPages.currentPage().getParameters().put('id', head.Id); 
+         	ApexPages.StandardController sc = new ApexPages.StandardController(head);
+        	singleSalesDocController ext = new singleSalesDocController(sc);
+    			//call methods and assert 
+        		list<Sales_Doc_Detail__c> product = ext.getdetail();   
+        		system.assertNotEquals(product, null);
+       			list<Sales_Document__c> c =  ext.gethead();
+        		system.debug('here is con.getx  '+ c );
+        		system.assertNotEquals(c, null);
+				object z = ext.getq();
+    			system.debug(z);
+          Test.stopTest();
+    	  Test.startTest();
+    		    //get null page to throw error;
+    		    PageReference pref2 = Page.singleSalesDocPdf;         
+        		Test.setCurrentPage(pref2);
+    			ApexPages.currentPage().getParameters().put('id', 'a0E2h0000008p2dEAD');
+    			ApexPages.StandardController bad = new ApexPages.StandardController(head);
+        		singleSalesDocController req = new singleSalesDocController(bad);
+    			list<Sales_Document__c> badReq = req.gethead();
+    			system.assertEquals(null, badReq); 
+    	  Test.stopTest();
     }
 }

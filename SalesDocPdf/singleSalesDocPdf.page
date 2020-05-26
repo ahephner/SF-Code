@@ -1,6 +1,6 @@
 <apex:page showHeader="false" standardStylesheets="false" renderAs="pdf"  standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
 	<apex:stylesheet value="{!$Resource.singleSalesDocStyle}"/>
-    
+    <apex:pageMessages id='error'></apex:pageMessages>
     <div style="header">
         <table width="100%" >
             <col width="30%"/>
@@ -44,6 +44,12 @@
                  Warning Replaced by another Invoice: {!head[0].Replaced_by_Credit_Rebill_Num__c}
               </h5>
           </apex:outputText>
+    <!--error page--> 
+    			<apex:outputText rendered="{!head[0].id == null}">
+    			 <p>
+                      Apologies it appears there was an issue retrieving this record. Please contact your sales rep with the sales doc #
+                    </p>
+    			</apex:outputText>
     		<apex:outputText rendered="{!head[0].customer__r.S_Account__c == False}">
     	
  <!--This is the bill to ship section. Empty <td> ready for ship to info once we have it in SF--> 
@@ -177,8 +183,8 @@
                 <tr>
                     <td >
                         <ul class='links'>
-                            <li><a class='links' href='{!linkTotal}'>Click Here to Pay Your Bill Online Free of Charge via ACH</a></li>
-                            <li><a class='links' href='{!feeLinkTotal}'>Click Here to Pay Your Bill Online with a 2% Convenience Fee via Credit Card</a></li>
+                            <li><a class='links' href='{!linkTotal}' target="_blank">Click Here to Pay Your Bill Online Free of Charge via ACH</a></li>
+                            <li><a class='links' href='{!feeLinkTotal}' target="_blank">Click Here to Pay Your Bill Online with a 2% Convenience Fee via Credit Card</a></li>
                         </ul> 
                     </td>
                     <td align="right">
