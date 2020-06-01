@@ -1,0 +1,131 @@
+.topcellInvoiceInfo td{
+    background-color:#DCDCDC; 
+    text-align: center; 
+    border: .5px solid black; 
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.bottomcellInvoiceInfo td{
+    text-align: center; 
+    border: .5px solid black;
+
+}
+
+.companyInfo ul{
+    list-style: none;
+}
+
+#ATS{
+    font-size:15px;
+    font-weight: bolder;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.companyInfo li{
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.companyInfo li{
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.invoiceType{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.billTo{
+    margin-left: 5%;
+    margin-top: 7%;
+    font-size:15px;
+}
+
+.billToCell{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.company1{
+    border-bottom: 1px solid;
+}
+
+.unitTable{
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.unitTableHeader th{
+    border: 1px solid black;
+    background-color: #DCDCDC;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.unitTableOutput td{
+    border: 1px solid black;
+    text-align: center;
+}
+
+.invoiceInfo{
+    border-collapse: collapse;
+    border: 1px solid black;
+   
+}
+
+#PO{
+    font-size: 15px;
+}
+
+.taxAndTotal{
+    border: 1px solid black;
+    text-align:center;
+    background-color:#DCDCDC;
+    padding-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.final{
+    text-align:center;
+    border: 1px solid black;
+}
+
+.links{
+    text-align: left;
+    font-size: 12px;
+    list-style: none;  
+}
+ 
+.footer{
+	position: absolute;
+	/*weird error if i put ; after block it messes with layout*/
+    display: block
+    width: 100%;
+    
+    position: running(footer);
+}  
+  
+     
+    
+    .pagenumber:before {
+    
+    content: counter(page);
+    
+    }
+    
+    .pagecount:before {
+    
+    content: counter(pages);
+    
+    }
+/*Declare styles for entire page also line up footers etc.*/
+/* https://salesforce.stackexchange.com/questions/82682/how-to-place-a-footer-correctly-on-visualforce-renderas-pdf */
+@page{
+    @bottom-center
+            {
+                content : element(footer);
+            }
+    margin-bottom: 20%;
+}
