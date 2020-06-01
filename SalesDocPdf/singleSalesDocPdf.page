@@ -1,6 +1,8 @@
+<!-- customer pdf copy on order Large orders 14+ items are breaking the totals weird look for comment above that table Rare order is ever
+that big. In meantime you can create a new sales doc and split the line items into it -->
 <apex:page showHeader="false" standardStylesheets="false" renderAs="pdf"  standardcontroller="Sales_Document__c" extensions="singleSalesDocController">
 	<apex:stylesheet value="{!$Resource.singleSalesDocStyle}"/>
-    <apex:pageMessages id='error'></apex:pageMessages>
+    <apex:pageMessages id="error"></apex:pageMessages>
     <div style="header">
         <table width="100%" >
             <col width="30%"/>
@@ -119,8 +121,9 @@
                     </div>
                 <br/>
                 <br/>
-               
-                        <table width='100%' class='unitTable'>
+<!--Add style='-fs-table-paginate: paginate;' to the table tag here to fix that weird breaking on larger orders. Warning it adds weird border styles to the entire table
+It will be a future fix--> 
+                        <table width='100%'  class='unitTable'>
                             <col width='40%'/>
                             <col width='20%'/>
                             <col width='20%'/>
@@ -173,8 +176,13 @@
                     A RECEIPT OR INVOICE MUST BE PROVIDED AT THE TIME OF RETURN.
                     A SERVICE CHARGE OF 1 1/2% PER MONTH, WHICH IS AN APR OF 18%, WILL BE ADDED TO ALL PAST DUE BALANCES
         </h6> 
-    <hr/>
-    	
+     <div class='stack'>
+        <div class='counter'>Invoice: {!head[0].name}</div> 
+    	<div class='counter'>Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+     </div>
+
+    <!--This is the table for the links that are set in the controller. We are hiding for now	
+	<hr/>
         <table width="100%" style="font-family:Arial, Arial Unicode MS; font-size:9px;" >
             <col width="77%"/>
             <col width="33%"/>
@@ -193,7 +201,7 @@
                 </tr>
             </tbody>
         </table>
-    
+    -->
     </div>
 </apex:outputText>
 </apex:page>

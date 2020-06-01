@@ -16,7 +16,7 @@
 }
 
 #ATS{
-    font-size:15px;
+    font-size:14px;
     font-weight: bolder;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -67,6 +67,7 @@
 .unitTableOutput td{
     border: 1px solid black;
     text-align: center;
+    -fs-table-paginate: paginate;
 }
 
 .invoiceInfo{
@@ -95,29 +96,25 @@
 .links{
     text-align: left;
     font-size: 12px;
+    list-style: none;  
 }
-
-@page {
-    
-    @bottom-left {
-        content: element(footer);    
-        }
-    }
-    
-     
-  
-    
-    div.footer {
-    
-    display: block;
-    
-    padding: 5px;
-    
+ /* display: is stopping a weird issue where teh display is smashed in the center tech an error but working! */
+.footer{
+    position: absolute;
+    /* display:  */
+    width: 100%;
     position: running(footer);
     
-    }
+}  
+.stack{
+    position: relative; 
+    float: right; 
+}  
+.counter{
     
-     
+    font-size: 11px;
+    font-weight: bold; 
+}
     
     .pagenumber:before {
     
@@ -130,3 +127,11 @@
     content: counter(pages);
     
     }
+/*Declare styles for entire page also line up footers etc.*/
+@page{
+    @bottom-center
+            {
+                content : element(footer);
+            }
+    margin-bottom: 20%;
+}

@@ -8,7 +8,7 @@ public class singleSalesDocController {
     public singleSalesDocController(ApexPages.StandardController controller ) {}
     //Used for testing. Grad an ID with products on it uncover/cover line below   
     	//ID id = 'a0E2h0000008p2dEAA'; 
-       String id = apexpages.currentpage().getparameters().get('id');
+        String id = apexpages.currentpage().getparameters().get('id');
         public list<Sales_Doc_Detail__c> getdetail(){ 
                     detail =   [select Product_Name__c, Qty__c, Unit_Price__c,Extended_Price__c,
                                 Product__r.name from Sales_Doc_Detail__c where Sales_Document__c = :id];

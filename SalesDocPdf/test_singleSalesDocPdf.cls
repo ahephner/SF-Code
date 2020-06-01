@@ -54,15 +54,6 @@ static testMethod void test_singleSalesDocPdf(){
 				object z = ext.getq();
     			system.debug(z);
           Test.stopTest();
-    	  Test.startTest();
-    		    //get null page to throw error;
-    		    PageReference pref2 = Page.singleSalesDocPdf;         
-        		Test.setCurrentPage(pref2);
-    			ApexPages.currentPage().getParameters().put('id', 'a0E2h0000008p2dEAD');
-    			ApexPages.StandardController bad = new ApexPages.StandardController(head);
-        		singleSalesDocController req = new singleSalesDocController(bad);
-    			list<Sales_Document__c> badReq = req.gethead();
-    			system.assertEquals(null, badReq); 
-    	  Test.stopTest();
+
     }
 }
