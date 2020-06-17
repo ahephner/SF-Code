@@ -5,7 +5,7 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
             ad.add(i.ATS_Asset__c);
         }
         
-        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c, Miscellaneous__c from ATS_Asset__c where id in :aD ];
+        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c, Miscellaneous__c, Tolls__c from ATS_Asset__c where id in :aD ];
         
         List<ATS_Asset__c> subLine = new List<Ats_Asset__c>();
         
@@ -26,7 +26,12 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                 Else if(d.Expense_Type__c == 'Miscellaneous'){
                     up.Miscellaneous__c -= d.Amount__c; 
                     subLine.add(up);
-                }Else{
+                }
+                Else if(d.Expense_Type__c == 'Tolls'){
+                    up.Tolls__c -= d.Amount__c; 
+                    subLine.add(up);
+                }
+                Else{
                     d.addError('something is wrong');
                 }
               }
@@ -39,7 +44,7 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
         }
         
         //query outside of the loop
-        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c,Miscellaneous__c from ATS_Asset__c where id in :assetID ];
+        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c,Miscellaneous__c, Tolls__c from ATS_Asset__c where id in :assetID ];
         
         //list to be updated
         List<ATS_Asset__c> assetToUpdate = new List<ATS_Asset__c>(); 
@@ -67,6 +72,11 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                         assetToUpdate.add(a);
                         
                     }
+                        Else if(exp.Expense_Type__c == 'Tolls'){
+                        a.Tolls__c += newValue;  
+                        assetToUpdate.add(a);
+                        
+                    }
                 }
               }else{
                   for(ATS_Asset__c a: asset){
@@ -90,6 +100,10 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                         a.Miscellaneous__c += newValue;  
                         assetToUpdate.add(a);
                     }
+                      Else if(exp.Expense_Type__c == 'Tolls'){
+                        a.Tolls__c += newValue;  
+                        assetToUpdate.add(a);
+                    }
                 }
               }
             } update assetToUpdate;}else{
@@ -99,7 +113,7 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
         }
         
         //query outside of the loop
-        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c,Miscellaneous__c from ATS_Asset__c where id in :assetID ];
+        List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c,Miscellaneous__c, Tolls__c from ATS_Asset__c where id in :assetID ];
         Map<Id, ATS_Asset__c> mapAsset = new Map<Id, ATS_Asset__c>(asset); 
         //list to be updated
         
@@ -119,6 +133,10 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                 }
                 Else if(mapAsset.get(a.id) != null && exp.Expense_Type__c == 'Miscellaneous'){
                     mapAsset.get(a.id).Miscellaneous__c += exp.Amount__c; 
+                    //assetToUpdate.add(a);
+                }
+                Else if(mapAsset.get(a.id) != null && exp.Expense_Type__c == 'Tolls'){
+                    mapAsset.get(a.id).Tolls__c += exp.Amount__c; 
                     //assetToUpdate.add(a);
                 }
             }
