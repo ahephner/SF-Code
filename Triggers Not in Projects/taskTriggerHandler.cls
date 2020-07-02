@@ -8,8 +8,10 @@ public class TaskTriggerHandler {
         List<Task> newTasks = new List<Task>();
         
         for(task x: followUp){
+            system.debug(x);
             //limit here instead
-            if((x.Subject.contains('Quote') || x.Subject.contains('quote'))&& x.Subject.startsWith('Email:')){
+            if( x.Subject.startsWith('Email:') && x.Subject != null && x.Description !=null&&
+               (x.Subject.contains('Quote') || x.Subject.contains('quote')||x.Description.contains('quote')||x.Description.contains('Quote'))){
                 Task nt = new Task(
                     Subject = 'Follow up '+ x.subject,
                     IsReminderSet = True,
@@ -23,7 +25,7 @@ public class TaskTriggerHandler {
 				);
             
                 newTasks.add(nt);
-            }     
+               }     
         }
         try{
             insert newTasks;
