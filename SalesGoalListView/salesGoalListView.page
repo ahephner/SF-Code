@@ -1,0 +1,30 @@
+<apex:page standardController="Sales_Goal__c" extensions="salesGoalListViewExt"  recordSetVar="sales_goals"  tabStyle="Sales_Goal__c" lightningStylesheets="true" >
+    <apex:form rendered="{!render=='account'}">
+      <apex:pageBlock title="Edit Budget Amount" mode="edit">
+         <apex:pageMessages />
+         <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+         </apex:pageBlockButtons>
+         <apex:pageBlockTable value="{!selected}" var="goal">
+            <apex:column headerValue="Customer" value="{!goal.Customer_Name__c}"/>
+            <apex:outputLink value="{!goal.Customer__r.ID}" >
+               <apex:outputText value="{!goal.Customer_Name__c}"/>
+            </apex:outputLink>
+             <apex:column headerValue="July 2020" value="{!goal.Prev_Month_Rep_Forecast__c	}"/>
+            <apex:column headerValue="Aug 2019 Sales" value="{!goal.Current_Month_Prev_Year__c}"/>
+            <apex:column headerValue="Your Forecast">
+               <apex:inputField value="{!goal.Forecast_Amount__c}"/>
+            </apex:column>
+            <apex:column headerValue="Comment">
+               <apex:inputField value="{!goal.Updates__c}"/>
+            </apex:column>
+         </apex:pageBlockTable>
+      </apex:pageBlock>
+   </apex:form>
+    <apex:form rendered="{!render == 'product'}">
+    	<p>
+             products 
+        </p>
+    </apex:form>
+</apex:page>
