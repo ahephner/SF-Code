@@ -1,3 +1,5 @@
+//This extension causes the vf page salesgoallistview to decide which page to show to allow mass editing of budgets
+//to add another mass edit page add another else if !!be sure to use the break or it will keep evaluating through the for loop and you will get else everytime!
 public class salesGoalListViewExt {
 	public ApexPages.StandardSetController ctl {get; set;}
     //public list<selectoption> lvn {get; set;}  
@@ -12,8 +14,12 @@ public class salesGoalListViewExt {
         for(selectoption x : so){
             if(lvn == x.getValue() && x.getLabel() == 'My Active Goals - By Customer' ){
                 render = 'account';
-            }else if(lvn == x.getValue() && x.getLabel() == 'My May Monthly Goals'){
+                break; 
+            }else if(lvn == x.getValue() && x.getLabel() == 'My Product Forecast'){
                 render = 'product'; 
+                break; 
+            }else{
+                render = 'none'; 
             }
             }
         }

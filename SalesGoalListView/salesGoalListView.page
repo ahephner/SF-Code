@@ -23,8 +23,34 @@
       </apex:pageBlock>
    </apex:form>
     <apex:form rendered="{!render == 'product'}">
-    	<p>
-             products 
+      <apex:pageBlock title="Edit Forecast Amount" mode="edit">
+         <apex:pageMessages />
+         <apex:pageBlockButtons location="top">
+            <apex:commandButton value="Save" action="{!save}"/>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+         </apex:pageBlockButtons>
+         <apex:pageBlockTable value="{!selected}" var="goal">
+            <apex:column headerValue="Product" value="{!goal.Product_Name__c}"/>
+            <apex:outputLink value="{!goal.Product__r.ID}" >
+               <apex:outputText value="{!goal.Product_Name__c}"/>
+            </apex:outputLink>
+             <apex:column headerValue="Prev Amount" value="{!goal.Actual_Amount__c}"/>
+            <apex:column headerValue="Prev Qty" value="{!goal.Prev_Qty__c}"/>
+            <apex:column headerValue="Forecast Dollars">
+               <apex:inputField value="{!goal.Forecast_Amount__c}"/>
+            </apex:column>
+             <apex:column headerValue="Forecast Qty">
+                 <apex:inputField value="{!goal.Qty_Forecast__c}"/>	
+             </apex:column>
+            <apex:column headerValue="Comment">
+               <apex:inputField value="{!goal.Updates__c}"/>
+            </apex:column>
+         </apex:pageBlockTable>
+      </apex:pageBlock>
+    </apex:form>
+    <apex:form rendered="{!render == 'none'}">
+    <p>
+        feature not enabled for this page type
         </p>
     </apex:form>
 </apex:page>
