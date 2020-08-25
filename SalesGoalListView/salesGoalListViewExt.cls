@@ -12,7 +12,7 @@ public class salesGoalListViewExt {
         system.debug('id ' +lvn);
         list<selectoption> so = ctl.getListViewOptions(); 
         for(selectoption x : so){
-            if(lvn == x.getValue() && x.getLabel() == 'My Active Goals - By Customer' ){
+            if(lvn == x.getValue() && x.getLabel() == 'My August Forecast - By Customer' ){
                 render = 'account';
                 break; 
             }else if(lvn == x.getValue() && x.getLabel() == 'My Product Forecast'){
