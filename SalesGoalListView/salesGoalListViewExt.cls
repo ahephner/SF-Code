@@ -12,7 +12,7 @@ public class salesGoalListViewExt {
         list<selectoption> so = ctl.getListViewOptions(); 
         for(selectoption x : so){
            // system.debug(so);
-            if(lvn == x.getValue() && x.getLabel() == 'My August Forecast - By Customer' ){
+            if(lvn == x.getValue() && x.getLabel() == 'My October Forecast - By Customer' ){
                 render = 'account';
                 orderByCustomerName();
                 break; 
@@ -31,9 +31,9 @@ public class salesGoalListViewExt {
         for(Sales_Goal__c sg: (List<Sales_Goal__c>) ctl.getSelected()){
            selectedIds.add(sg.Id); 
         } 
-        sgList = [select id, customer__r.id, customer_name__c, Prev_Month_Rep_Forecast__c,
+        sgList = [select id, customer__r.id, customer_name__c, Prev_Month_Rep_Forecast__c,Open_Order_T_M__c,
                  Current_Month_Prev_Year__c, Forecast_Amount__c,Updates__c, Product_Name__c,
-                 Product__r.ID, Actual_Amount__c, Prev_Qty__c,Qty_Forecast__c from
+                 Product__r.ID, Actual_Amount__c, Prev_Qty__c,Qty_Forecast__c, Date__c, End_Date__c from
                  sales_goal__c where id IN :selectedIds ORDER BY customer_name__c nulls last]; 
         return sgList;
     }
@@ -46,45 +46,18 @@ public class salesGoalListViewExt {
            selectedIds.add(sg.Id); 
         } 
         
-        sgList = [select id, customer__r.id, customer_name__c, Prev_Month_Rep_Forecast__c,
+        sgList = [select id, customer__r.id, customer_name__c, Prev_Month_Rep_Forecast__c,Open_Order_T_M__c,
                  Current_Month_Prev_Year__c, Forecast_Amount__c,Updates__c, Product_Name__c,
-                 Product__r.ID, Actual_Amount__c, Prev_Qty__c,Qty_Forecast__c from
-                 sales_goal__c where id IN :selectedIds ORDER BY Prev_Qty__c nulls last]; 
+                 Product__r.ID, Actual_Amount__c, Prev_Qty__c,Qty_Forecast__c, Date__c, End_Date__c from
+                 sales_goal__c where id IN :selectedIds ORDER BY Prev_Qty__c DESC nulls last]; 
         return sgList; 
     }
     
     public pagereference updateRecord(){
         update sgList; 
-        return new pageReference('https://advancedturf--ppchange.lightning.force.com/lightning/o/Sales_Goal__c/list?filterName='+lvn); 
+        return new pageReference('https://advancedturf.lightning.force.com/lightning/o/Sales_Goal__c/list?filterName='+lvn); 
     }
         
      
 
 }
-
-//ROLL BACK REMEMBER TO CHANGE THE SAVE FUNCTION TO SAVE AND <apex:pageBlockTable value="{!sgList}" TO <apex:pageBlockTable value="{!selected}"
-// public class salesGoalListViewExt {
-// 	public ApexPages.StandardSetController ctl {get; set;}
-//     //public list<selectoption> lvn {get; set;}  
-//     public string render {get;set;} 
-    
-//     public salesGoalListViewExt( ApexPages.StandardSetController controller ) {
-//          this.ctl = controller; 
-//          //lvn = ctl.getListViewOptions();
-// 		string lvn = ctl.getFilterId();
-//         system.debug('id ' +lvn);
-//         list<selectoption> so = ctl.getListViewOptions(); 
-//         for(selectoption x : so){
-//             if(lvn == x.getValue() && x.getLabel() == 'My August Forecast - By Customer' ){
-//                 render = 'account';
-//                 break; 
-//             }else if(lvn == x.getValue() && x.getLabel() == 'My Product Forecast'){
-//                 render = 'product'; 
-//                 break; 
-//             }else{
-//                 render = 'none'; 
-//             }
-//             }
-//         }
-        
-// }
