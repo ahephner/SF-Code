@@ -12,13 +12,17 @@ public class salesGoalListViewExt {
         list<selectoption> so = ctl.getListViewOptions(); 
         for(selectoption x : so){
            // system.debug(so);
-            if(lvn == x.getValue() && x.getLabel() == 'My October Forecast - By Customer' ){
+            if(lvn == x.getValue() && x.getLabel() == 'My November Forecast - By Customer' ){
                 render = 'account';
                 orderByCustomerName();
                 break; 
             }else if(lvn == x.getValue() && x.getLabel() == 'My Product Forecast'){
                 render = 'product'; 
                 orderByProduct(); 
+                break; 
+            }else if(lvn == x.getValue() && x.getLabel() == 'My Annual Account Forecast'){
+                render = 'annualaccount';
+                orderByCustomerName();
                 break; 
             }else{
                 render = 'none'; 
@@ -33,7 +37,7 @@ public class salesGoalListViewExt {
         } 
         sgList = [select id, customer__r.id, customer_name__c, Prev_Month_Rep_Forecast__c,Open_Order_T_M__c,
                  Current_Month_Prev_Year__c, Forecast_Amount__c,Updates__c, Product_Name__c,
-                 Product__r.ID, Actual_Amount__c, Prev_Qty__c,Qty_Forecast__c, Date__c, End_Date__c from
+                 Product__r.ID, Actual_Amount__c, Prev_Qty__c,Qty_Forecast__c, Date__c, End_Date__c, Prev_Forecast__c from
                  sales_goal__c where id IN :selectedIds ORDER BY customer_name__c nulls last]; 
         return sgList;
     }
