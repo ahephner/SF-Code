@@ -46,35 +46,27 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
         //query outside of the loop
         List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c,Miscellaneous__c, Tolls__c from ATS_Asset__c where id in :assetID ];
         
-        //list to be updated
-        List<ATS_Asset__c> assetToUpdate = new List<ATS_Asset__c>(); 
+        Map<Id, ATS_Asset__c> mapAsset = new Map<Id, ATS_Asset__c>(asset);
+        
             for(Expense__c exp: trigger.new){
                 if(exp.Amount__c != trigger.oldMap.get(exp.id).amount__c && exp.Amount__c >trigger.oldMap.get(exp.id).amount__c){
                     for(ATS_Asset__c a: asset){
                     decimal newValue = exp.Amount__c - trigger.oldMap.get(exp.id).amount__c; 
                     if(exp.Expense_Type__c == 'Tires'){
-                        a.Tires__c += newValue; 
-                        assetToUpdate.add(a);
-                        system.debug('asset '+ a.Tires__c + ' exp ' + exp.amount__c);
+                        mapAsset.get(a.id).Tires__c += newValue; 
                     }
                     Else if(exp.Expense_Type__c == 'PM'){
-                        a.P_M__c += newValue; 
-                        assetToUpdate.add(a);
-                        system.debug('asset '+ a.P_M__c + ' exp ' + exp.amount__c);
+                        mapAsset.get(a.id).P_M__c += newValue; 
                     }
                     Else if(exp.Expense_Type__c == 'Repair'){
-                        a.Repair__c += newValue;  
-                        assetToUpdate.add(a);
-                        system.debug('asset '+ a.repair__c + ' exp ' + exp.amount__c);
+                        mapAsset.get(a.id).Repair__c += newValue; 
                     }
                     Else if(exp.Expense_Type__c == 'Miscellaneous'){
-                        a.Miscellaneous__c += newValue;  
-                        assetToUpdate.add(a);
+                        mapAsset.get(a.id).Miscellaneous__c += exp.Amount__c; 
                         
                     }
                         Else if(exp.Expense_Type__c == 'Tolls'){
-                        a.Tolls__c += newValue;  
-                        assetToUpdate.add(a);
+                         mapAsset.get(a.id).Tolls__c += exp.Amount__c; 
                         
                     }
                 }
@@ -82,35 +74,28 @@ trigger expenseToAsset on Expense__c (before insert, before update, before delet
                   for(ATS_Asset__c a: asset){
                     decimal newValue = exp.Amount__c - trigger.oldMap.get(exp.id).amount__c; 
                     if(exp.Expense_Type__c == 'Tires'){
-                        a.Tires__c -= newValue; 
-                        assetToUpdate.add(a);
-                        system.debug('asset '+ a.Tires__c + ' exp ' + exp.amount__c);
+                        mapAsset.get(a.id).Tires__c += newValue; 
                     }
                     Else if(exp.Expense_Type__c == 'PM'){
-                        a.P_M__c += newValue; 
-                        assetToUpdate.add(a);
-                        system.debug('asset '+ a.P_M__c + ' exp ' + exp.amount__c);
+                        mapAsset.get(a.id).P_M__c += newValue; 
                     }
                     Else if(exp.Expense_Type__c == 'Repair'){
-                        a.Repair__c += newValue;  
-                        assetToUpdate.add(a);
-                        system.debug('asset '+ a.repair__c + ' exp ' + exp.amount__c);
+                        mapAsset.get(a.id).Repair__c += newValue;
                     }
                     Else if(exp.Expense_Type__c == 'Miscellaneous'){
-                        a.Miscellaneous__c += newValue;  
-                        assetToUpdate.add(a);
+                        mapAsset.get(a.id).Miscellaneous__c += exp.Amount__c; 
                     }
                       Else if(exp.Expense_Type__c == 'Tolls'){
-                        a.Tolls__c += newValue;  
-                        assetToUpdate.add(a);
+                        mapAsset.get(a.id).Tolls__c += exp.Amount__c; 
                     }
                 }
               }
-            } update assetToUpdate;}else{
+            } update mapAsset.values();
+    		}else{
                 Set<Id> assetID = new Set<Id>();
-        for(Expense__c x : trigger.new){
-            assetId.add(x.ATS_Asset__c);
-        }
+        		for(Expense__c x : trigger.new){
+            		assetId.add(x.ATS_Asset__c);
+     			}
         
         //query outside of the loop
         List<ATS_Asset__c> asset = [Select id, Tires__c, Repair__c, P_M__c,Miscellaneous__c, Tolls__c from ATS_Asset__c where id in :assetID ];
