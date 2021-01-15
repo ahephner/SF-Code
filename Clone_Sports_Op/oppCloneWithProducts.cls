@@ -36,15 +36,14 @@ public class oppCloneWithProducts {
          //   newOp.CloseDate = cd;  
             insert newOp; 
             system.debug('here new opp -> ' +newOp);
- 
-            List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity,
+ //get opportunity line items that are still have active pricebook entries
+            List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity, 
                                                    rate__c, listprice, Description, Per_1_000__c, Per_Acre__c
-                                                   from opportunitylineitem where opportunityid = :opp.Id];
+                                                   from opportunitylineitem where opportunityid = :opp.Id and PBE_Active__c = true];
             for(OpportunityLineItem x : lineItems){
                 opportunitylineitem oppLine = x.clone(false);
                 oppLine.OpportunityId = newOp.Id;
                 opli.add(oppLine);
-                
             }
             system.debug(opli);
             if(!opli.isempty()){
