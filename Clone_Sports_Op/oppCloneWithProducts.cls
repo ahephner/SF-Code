@@ -6,7 +6,7 @@ public class oppCloneWithProducts {
     //private Product2 prods {get; set;}
     //set the id of the record that is created --Only used by Test Class
     public ID newOppID {get; set;}
-    
+    private string nonActiveItem = ''; 
     //start the controller
     public oppCloneWithProducts(ApexPages.StandardController controller){
         
@@ -25,7 +25,7 @@ public class oppCloneWithProducts {
        // Date cd = System.today() + 30; 
          
         try{
-         opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName,
+         opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName,  Sales_Rep__r.OwnerId, 
                 RecordType.Id, Contact__c, pricebook2.id,Type, Target_Area__c,
                 Target_Start_Date__c, description FROM Opportunity where id = :opp.Id]; 
   
@@ -36,22 +36,36 @@ public class oppCloneWithProducts {
          //   newOp.CloseDate = cd;  
             insert newOp; 
             system.debug('here new opp -> ' +newOp);
- 
-            List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity,
+           //test
+            newOppID = newOp.Id;
+ //get opportunity line items that are still have active pricebook entries
+            List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity, 
                                                    rate__c, listprice, Description, Per_1_000__c, Per_Acre__c
-                                                   from opportunitylineitem where opportunityid = :opp.Id];
+                                                   from opportunitylineitem where opportunityid = :opp.Id and PriceBookEntry.IsActive = true];
+            
+  //loop over and clone valid entries then insert them into the system
             for(OpportunityLineItem x : lineItems){
                 opportunitylineitem oppLine = x.clone(false);
                 oppLine.OpportunityId = newOp.Id;
                 opli.add(oppLine);
-                
             }
-            system.debug(opli);
+            //system.debug(opli);
             if(!opli.isempty()){
                 insert opli; 
             }
-            //test
-            newOppID = newOp.Id;
+//Look and see if there are any non active items from the old quote            
+            List<Opportunitylineitem> nonActiveItems = [SELECT product2.name, unitprice, quantity, 
+                                                   		rate__c, listprice, Description, Per_1_000__c, Per_Acre__c
+                                                   		from opportunitylineitem where opportunityid = :opp.Id and PriceBookEntry.IsActive = false]; 
+//Turned the @mention to just show Sean due to his request. To turn to a rep see --> {'+opp.Sales_Rep__r.OwnerId+'}             
+            if(nonactiveItems.size()>0){
+                for(Opportunitylineitem i: nonActiveItems){
+                   // system.debug(nonActiveItem);
+                    nonActiveItem +='* '+ i.product2.name + '  UNIT PRICE:  $'+ i.UnitPrice +'  QTY: '+ i.Quantity + '\n' +'\n'; 
+                }
+                ConnectApiHelper.postFeedItemWithMentions(Network.getNetworkId(), newOp.id, '{00541000007ALGeAAO} these products are no longer active and were on the old quote '+'\n'+nonActiveItem );
+            }
+            
         }catch(exception i){
             Database.rollback(sp);
             ApexPages.addMessages(i); 
