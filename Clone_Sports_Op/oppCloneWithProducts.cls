@@ -36,7 +36,7 @@ public class oppCloneWithProducts {
          //   newOp.CloseDate = cd;  
             insert newOp; 
             system.debug('here new opp -> ' +newOp);
-           //test
+           //test new data
             newOppID = newOp.Id;
  //get opportunity line items that are still have active pricebook entries
             List<OpportunityLineItem> lineItems = [SELECT opportunityid, product2id, unitprice, quantity, 
