@@ -1,0 +1,64 @@
+.center {
+	text-align: center;
+  	padding: 10px;
+    margin-bottom: 0%;
+    margin-top: -10%; 
+}
+.contact{
+    margin-top: -20px;
+    margin-bottom: -3px;
+    text-align: center; 
+}
+.about{
+	font-size:small;
+}
+.skill h3{
+    font-weight:bold;
+    margin: 0; 
+}
+.firstRow{
+    margin-top:1%;
+}
+.exp{
+	margin-left: 0%;
+    margin-bottom: 0%;
+}
+.exp h3{
+	font-weight: bold;
+    margin: 0;
+}
+.exp ul{
+    list-style-type: none;
+ 	margin: 0, 0, 3px, 0;
+  	padding-top: 1px;
+}
+.role{
+	color:#00ab47
+}
+.title{
+    font-family:"Calibri (Body)";
+    font-weight: bold;
+    font-size:medium;
+}
+.ats{
+    margin-top: 1%;
+}
+.secondJob{
+    margin-top: 1.5%; 
+}
+.thirdJob{
+    margin-top: 1.5%;
+}
+.fourthJob{
+    margin-top:1.5%;
+}
+.snote{
+	list-style-type: none;
+ 	margin: 0;
+  	padding: 0;
+    font-size:small;
+    font-style: italic;
+}
+.schools{
+    margin-top: 1%;
+}

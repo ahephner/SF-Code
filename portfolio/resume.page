@@ -1,0 +1,110 @@
+<apex:page standardController="Contact" renderAs="pdf"  showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" >
+    <apex:stylesheet value="{!$Resource.resumeStyle}"/>
+    
+       <div style="header">
+    	<div class='center'>
+            <h3>
+                AJ Hephner
+            </h3>
+         </div>
+            <p class='contact'>
+                (937)546-9676 || ajhephner178@gmail.com || linkedin.com/in/aj-hephner-25943a6b
+            </p>
+        
+       <hr/>
+  </div>
+        <p class='about'>
+            Strong self-starter who enjoys trying to solve complex business problems using the Salesforce Platform. Adapt at researching and self-teaching to quickly learn and deploy new skills sets as needed. My background in sales helps me understand customer needs. Ability to be highly effective working remotely or in a team setting.  
+        </p>
+       <div class='skill'>
+        	<h3>Skills:</h3>
+           <div class='skillTable'>
+               <table width='100%'>
+               	<col width='40%'/>
+               	<col width='30%'/>
+               	<col width='30%'/>
+                	<tr class='firstRow'>
+                   		<td>Certified Platform Developer I</td>
+                        <td>Lightning Web Component</td>
+                        <td>Multi-Tasker and Self-Starter</td>
+                   </tr>
+                   <tr>
+                   		<td>Trailhead Ranger</td>
+                        <td>Apex, Visualforce SOQL</td>
+                        <td>Problem Solving</td>
+                   </tr>
+                   <tr>
+                   		<td>Automation &#38; LWC Superbadge</td>
+                        <td>Python SQL</td>
+                        <td>Strong Soft Skills</td>
+                   </tr>
+               </table>
+           </div>
+      </div>
+       <div class='exp'>
+           <h3>Experience:</h3>
+           <div class='ats'>
+               <div class='title'>
+                   <span class='role'>SALESFORCE DEVELOPER</span><span class='company'>, Advanced Turf Solutions</span><span class='year'>   Nov 2019 - Present</span>
+               </div>
+               <ul>
+                   <li>-Work directly with business leaders to expand business use cases for Salesforce Platform.</li>
+                   <li>-Created custom Lightning Web Component Application that allows end-users to plan and price custom applications with in house products</li>
+                   <li>-Created custom monthly account forecasts that allows reps and management to forecast by account and view sales in realtime.</li>
+                   <li>-Lightning Community for internal employees. Allows company to have non licenced and licened employees to complete daily health screen. Escalates warnings as needed</li>
+                   <li>-Technical lead on Quip integration. Converted Operations quoting and work order tracking to Quip docs</li>
+                   <li>-Lead in house developer for custom Apex, Visualforce, Lightning Web Components, declarative process/flows and unit testing</li>
+               </ul>
+           </div>
+           <div class='secondJob'>
+              <div class='title'>
+                   <span class='role'>IT BUSINESS ANALYST</span><span class='company'>, Advanced Turf Solutions</span><span class='year'>   May 2018 - Nov 2019</span>
+               </div>
+               <ul>
+                   <li>-Salesforce Administrator. Create reports and dashboards to track KPI's. On board users to the platform</li>
+                   <li>-Salesforce declarative tools to improve business process</li>
+                   <li>-On boarding ops team to Field Service Lighting</li>
+                   <li>-Maintain GP database. Maintain legacy GP reports other data analysis as needed. Use SQL and python for data manipulation</li>
+               </ul>
+           </div>
+           <div class='thirdJob'>
+               <div class='title'>
+                   <span class='role'>BUSINESS PROCESS COORDINATOR</span><span class='company'>, City of Fishers</span><span class='year'>   Jan 2018 - May 2018</span>
+               </div>
+               <ul>
+                   <li>-Data analysis for Public Works Dept. Main tools used SQL , Python and Infor Asset Management</li>
+                   <li>-Prepared reports that interpert city asset useage across multiple departments.</li>
+               </ul>
+           </div>
+           <div class='fourthJob'>
+               <div class='title'>
+                   <span class='role'>MARKET SPECIALIST</span><span class='company'>, FMC Corp</span><span class='year'>   May 2011 - Aug 2017</span>
+               </div>
+               <ul>
+                   <li>-Provide technical product support to end-users and distributors in the turfgrass industry.</li>
+                   <li>-B2B and B2C sales. Manged two different sales territorys with 16 total states</li>
+                   <li>-Key Account Management. Create and drive sales plan for multiple distributors. Never missed a target in 6 seasons.</li>
+                   <li>-Create techinal marketing materails based on A.I. and market conditions.</li>
+               </ul>
+       </div>
+    <div class='education'>
+        <h3>Education:</h3>
+        	<div class='schools'>    
+        
+               <div class='title'>
+                   <span class='role'>MASTERS OF SCIENCE - CROP SCIENCE</span><span class='city'>, TEXAS TECH</span><span class='year'>   Aug 2005 - May 2009</span>
+               </div>
+        			<ul class='snote'>
+                    	<li>National Horticultural Honor Society</li>    
+        			</ul>
+               <div class='title'>
+                   <span class='role'>BACHELORS OF SCIENCE - AGRONOMY</span><span class='city'>, WILMINGTON COLLEGE</span><span class='year'>   May 2009 - May 2011</span>
+               </div>
+        			<ul class='snote'>
+                        <li>Cum Laude. Class of 2009 Top Agricultural Student</li>
+        			</ul>
+            </div>
+    </div>
+    
+</div>
+</apex:page>
