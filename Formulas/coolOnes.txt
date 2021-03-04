@@ -51,3 +51,7 @@ select Product__c, product__r.product_name__c, sum(Units_Required__c), sum(Total
 IF(DueDate - EarliestStartTime > 1,
 ((DueDate - EarliestStartTime) *24) - (ROUND((DueDate - EarliestStartTime),0) * 12),
 (DueDate - EarliestStartTime)*24)
+
+//Shows if a sales document is in the previous fy but 1 month ahead of current month. 
+//so if its 2/2/2021 and the doc date is 3/1/2020 = false but 10/1/2019 = true
+IF( Fiscal_Year__c = 'FY 20' && Doc_Date__c <= Date(Year(Today())-1,Month(today())+1,1)-1 , True, False)
