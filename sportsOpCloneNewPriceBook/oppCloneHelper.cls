@@ -21,7 +21,7 @@ public class oppCloneHelper {
       //  system.debug('pbe Map '+pbeMap);
        List<opportunitylineitem> newLines = new List<opportunitylineitem>();
         
-        Integer count = 0; 
+        //Integer count = 0; 
         for(opportunitylineitem ol: lineItems){
             
             system.debug('loop '+ ol.Product2Id + ' qty '+ol.Quantity);	
