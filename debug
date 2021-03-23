@@ -1,0 +1,41 @@
+[SELECT Id, Name, Phase__c, Assigned_Agent_Email__c, Assigned_Escrow_Agent_Email__c, Assigned_Loan_Officer_Email__c,
+        RegisteredMemberEmail__c,Registered_Member_Full_Name__c,Apply_Rebate_As__c,OwnerId FROM Opportunity WHERE Id=:oid LIMIT 1];
+        
+Related_Contact__c escrow = [SELECT Id, ContactId__c, OpportunityId__c, Role__c FROM Related_Contact__c 
+                            WHERE OpportunityId__c =:opp.Id AND Role__c = 'Escrow Agent' LIMIT 1];
+
+ContentDocumentLink wkshtLink = [SELECT ContentDocumentId,ContentDocument.Title 
+                                FROM ContentDocumentLink WHERE LinkedEntityId =:oid AND ContentDocument.Title LIKE '%worksheet%' LIMIT 1];
+
+ContentDocument wksht = [SELECT Id, Title FROM ContentDocument WHERE Id=:wkshtLink.ContentDocumentId LIMIT 1];
+
+ContentVersion wkshtDta = [SELECT Id, Title, FileType, VersionData, isLatest, ContentDocumentId 
+                           FROM ContentVersion WHERE isLatest = true AND ContentDocumentId=:wkshtLink.ContentDocumentId LIMIT 1];
+
+ Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+               attachment.setBody(wkshtDta.VersionData);
+               attachment.setFileName(wkshtDta.Title);
+               attachment.setInline(false);
+               
+               string emailTemplateId='00X80000001MYDCEA4';
+
+               List<string> toAddress = new List<string>();
+               toAddress.add(opp.Assigned_Escrow_Agent_Email__c);
+               List<string> ccAddress = new List<string>();
+               ccAddress.add(opp.Assigned_Agent_Email__c);
+               ccAddress.add(opp.Assigned_Loan_Officer_Email__c);
+               List<string> bccAddress = new List<string>();
+               bccAddress.add([SELECT Email FROM User WHERE Id = :opp.OwnerId LIMIT 1].Email);
+               
+               Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+               email.setTemplateId(emailTemplateId);
+               email.setToAddresses(toAddress);
+               email.setCcAddresses(ccAddress);
+               email.setBccAddresses(bccAddress);
+               email.setTargetObjectId(escrow.ContactId__c);
+               email.setWhatId(opp.Id);
+               email.setSaveAsActivity(false);
+               email.setFileAttachments(new Messaging.EmailFileAttachment[]{attachment});
+               email.setReplyTo([SELECT Email FROM User WHERE Id = :opp.OwnerId LIMIT 1].Email);
+
+               Messaging.sendEmail(new Messaging.SingleEmailMessage[]{email});
