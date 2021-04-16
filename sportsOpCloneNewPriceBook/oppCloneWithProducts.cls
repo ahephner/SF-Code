@@ -31,7 +31,7 @@ public class oppCloneWithProducts {
          
         try{
          opp = [SELECT Id, Name, AccountId, CloseDate, Job_Type__c, StageName,  Sales_Rep__r.OwnerId, 
-                RecordType.Id, Contact__c, pricebook2.id,Type, Target_Area__c,
+                RecordType.Id, Contact__c, Service_Address__c,pricebook2.id,Type, Target_Area__c,
                 Target_Start_Date__c, description FROM Opportunity where id = :opp.Id]; 
   
             newOp = opp.clone(false);

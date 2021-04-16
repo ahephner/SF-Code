@@ -36,7 +36,7 @@ public  with sharing class multiquoteController {
 				      where AccountId in (select accountid from opportunity where id =:id[0].opportunityid)
                      order by start_date__c asc nulls last]) 
         		     wrapQuoteList.add(new wrapQuote(i)); 
-                      }
+    }
 
 
 
