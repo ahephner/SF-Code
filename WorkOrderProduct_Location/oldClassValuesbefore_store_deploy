@@ -1,0 +1,187 @@
+public class workOrderProductsToLocation {
+//need an extension
+    private ApexPages.StandardController controller{get;set;}
+    public workorder wo {get;set;}
+    
+    public workOrderProductsToLocation(ApexPages.StandardController controller){
+        this.controller = controller; 
+        
+        wo = (WorkOrder)controller.getRecord();
+        //query fields
+        if(wo != null){
+            wo = [select id, accountid, Add_Product_to_Location__c from workorder
+                 where id =:wo.Id]; 
+        }
+    }
+    
+    public PageReference send(){
+        //Rollback point
+        Savepoint sp = Database.setSavepoint();
+        //system.debug(wo.Add_Product_to_Location__c);
+        wo.Add_Product_to_Location__c = True;
+        //system.debug('after ' +wo.Add_Product_to_Location__c);
+        ID nID = [Select Id from location where Parent_Account_ID__c = :wo.AccountId].id;
+        List<WorkOrderLineItem> wop = [SELECT Account__c, Product2Id, Quantity, WorkOrder.AccountId FROM WorkOrderLineItem where  WorkOrderId = :wo.Id ];
+        list<ProductItem> pi = [Select ID, Account_Name__c,LocationId,Product2Id,QuantityOnHand from productitem 
+                        where account_name__c = :wo.AccountId];
+        system.debug('product items ' +pi);
+   		//set to maps 
+        map<string, ProductItem> prodList = new map<string, ProductItem>(); 
+        //list for upserting or inserting
+        List<productitem> newProduct = new List<productitem>(); 
+        List<productitem> upProduct = new List<productitem>(); 
+        id locationID; 
+        for(productitem x:pi){
+            prodList.put(x.Product2Id, x);
+            locationId = x.LocationId; 
+           
+        }
+        
+                for(WorkOrderLineItem i: wop){
+            if(prodlist.get(i.Product2Id) != null){
+                productitem prod = new productitem(
+                Id = prodlist.get(i.Product2Id).Id, 
+               	Account_Name__c = i.Account__c,
+                QuantityOnHand = prodlist.get(i.Product2Id).QuantityOnHand + i.Quantity,
+                locationID = locationID,
+                Product2Id = i.Product2Id
+       );
+                system.debug('here is prod ' + prod);
+                upProduct.add(prod); 
+                //system.debug(prod);
+                //system.debug('current product id ' +prodlist.get(i.Product2Id).Id);
+            }else{
+                productitem np = new productitem();
+                np.Account_Name__c = i.Account__c;
+                np.QuantityOnHand = i.Quantity;
+                np.Product2Id = i.Product2Id;
+                np.LocationId = nID;
+                //system.debug(locationID);
+                newProduct.add(np);
+                //system.debug(newProduct);
+            }
+         }
+        //insert or upsert 
+        try{
+            if(upProduct.size()>0 || newproduct.size()>0){
+                //system.debug(upProduct.size());
+                //system.debug('newPrdouct '+ newproduct.size());
+           		update upProduct; 
+           		insert newproduct;
+            	update wo; 
+                
+            }
+ 
+        }catch(exception e){
+            Database.rollback(sp);
+            ApexPages.addMessages(e);
+            return null; 
+        }
+ 
+        return new PageReference('/lightning/r/WorkOrder/'+wo.id+'/view');
+    }
+}
+
+//test
+@isTest
+private class test_WorkOrderProduct_To_Location {
+    @isTest
+    Static void insertUser(){
+                //create user
+        UserRole r = new UserRole(DeveloperName = 'MyCustomRole', Name = 'My Role');
+		insert r;
+ 
+ 		User u = new User(
+         ProfileId = [SELECT Id FROM Profile WHERE Name = 'System Administrator'].Id,
+         LastName = 'last',
+         Email = 'puser000@amamama.com',
+         Username = 'puser000@amamama.com' + System.currentTimeMillis(),
+         CompanyName = 'TEST',
+         Title = 'title',
+         Alias = 'alias',
+         TimeZoneSidKey = 'America/Los_Angeles',
+         EmailEncodingKey = 'UTF-8',
+         LanguageLocaleKey = 'en_US',
+         LocaleSidKey = 'en_US',
+         UserRoleId = r.Id
+    );
+        insert u; 
+    }
+    @isTest(SeeAllData=true)
+    static void test_WorkOrderProduct_To_Location(){
+	//pricebook
+	Id pricebookId = Test.getStandardPricebookId();
+    //sports turf pricebook
+    Id stPriceBook = '01s17000003ccClAAI'; 
+	//product
+	product2 prod = new product2(name ='product', IsActive= True); 
+        insert prod;
+    product2 prod2 = new product2(name ='current', IsActive= True); 
+        insert prod2;
+	//pricebook entry
+	PricebookEntry pbe = new PricebookEntry(Pricebook2Id = pricebookId, Product2Id=prod.id,
+                                                 unitprice=4, IsActive = True, UseStandardPrice=False);
+    PricebookEntry pbe2 = new PricebookEntry(Pricebook2Id = pricebookId, Product2Id=prod2.id,
+                                                 unitprice=5, IsActive = True, UseStandardPrice=False); 
+        insert pbe;
+        insert pbe2;
+   //insert sports turf pricebook entry
+   PricebookEntry spPbe = pbe.clone(false);
+        spPbe.Pricebook2Id = stPriceBook;
+   PricebookEntry spPbe2 = pbe2.clone(false);
+        spPbe2.Pricebook2Id = stPriceBook;
+        id x = [select id from pricebook2 where name like 'Sports Turf%'].id;
+        system.debug('x '+x);
+        insert spPbe;
+        insert spPbe2; 
+     //Account 
+        Account cust = new Account();
+        cust.Name = 'Test123456';
+        cust.Type = 'Customer';
+        cust.Customer_Name__c = 'Test Customer 123456';
+        	insert cust;
+    //user -> area manager on w.o. 
+    User u1 = [SELECT Id FROM User WHERE Lastname like 'Hephner%'];
+
+	//contact
+	Contact c = new Contact(lastname= 'something', AccountId = cust.id );
+        insert c;
+    //location holds inventory = true,
+	Schema.location l =new Schema.location(name='testLocation', locationType='Site', isInventoryLocation=True);
+        insert l; 
+         
+	//productitems
+	productitem pi = new productitem(Product2Id= prod2.id, QuantityOnHand=1 , locationID=l.id);
+        insert pi;
+        productitem pi1 = new productitem(Product2Id= prod.id, QuantityOnHand=1 , locationID=l.id);
+        insert pi1;
+    //map
+    map<string, ProductItem> prodList = new map<string, ProductItem>();
+         
+	//workorder
+	 WorkOrder wo = new WorkOrder(ContactId = c.id, Area_Manager__c = u1.id, Pricebook2Id = stPriceBook); 
+        insert wo;
+	//workorderline items
+	WorkOrderLineItem wop = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = spPbe.id, Quantity=1, Product_Code__c = '123', Account__c = cust.Id);
+    WorkOrderLineItem wop1 = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = spPbe2.id,  Quantity=1, Product_Code__c = '321', Account__c = cust.Id);
+        //here is the issue
+        insert wop;
+        insert wop1; 
+
+    //standard controller
+   ApexPages.StandardController con = new ApexPages.StandardController(wo); 
+   //extension controller
+    workOrderProductsToLocation ext = new workOrderProductsToLocation(con);
+system.debug('product 2 ' +wop1);
+        system.debug('item ' +pi);
+   //start test
+  Test.startTest();
+        PageReference ref = ext.send(); 
+        List<productitem> k = [select id,QuantityOnHand, Product2Id,Account_Name__c  from productitem ];
+        List<workorderlineitem> w = [select id, product2id, quantity from workorderlineitem];
+        System.assertNotEquals(k, null);
+        system.debug('customer stuff ' +k);
+        system.debug('wop '+w);
+  Test.stopTest();
+    }
+}

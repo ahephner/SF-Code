@@ -21,10 +21,9 @@ private class test_WorkOrderProduct_To_Location {
          UserRoleId = r.Id
     );
         insert u; 
-    }
-    @isTest
-    static void test_WorkOrderProduct_To_Location(){
-	//pricebook
+        
+        system.runAs(u){
+            //pricebook
 	Id pricebookId = Test.getStandardPricebookId();
 	//product
 	product2 productOne = new product2(name ='product', IsActive= True); 
@@ -45,7 +44,7 @@ private class test_WorkOrderProduct_To_Location {
         cust.Customer_Name__c = 'Test Customer 123456';
         	insert cust;
     //user -> area manager on w.o. 
-    User u1 = [SELECT Id FROM User WHERE Lastname like 'Test%'];
+    //User u1 = [SELECT Id FROM User WHERE Lastname = 'last'];
 
 	//contact
 	Contact c = new Contact(lastname= 'something', AccountId = cust.id );
@@ -64,7 +63,7 @@ private class test_WorkOrderProduct_To_Location {
     map<string, ProductItem> prodList = new map<string, ProductItem>();
          
 	//workorder
-	 WorkOrder wo = new WorkOrder(ContactId = c.id, Area_Manager__c = u1.id, Pricebook2Id = pricebookID); 
+	 WorkOrder wo = new WorkOrder(ContactId = c.id, Area_Manager__c = u.id, Pricebook2Id = pricebookID); 
         insert wo;
 	//workorderline items
 	WorkOrderLineItem wopOne = new WorkOrderLineItem(WorkOrderId = wo.id, PricebookEntryId = pbeOne.id, Quantity=1, Product_Code__c = '123', Account__c = cust.Id);
@@ -86,5 +85,8 @@ private class test_WorkOrderProduct_To_Location {
         System.assertNotEquals(k, null);
 
   Test.stopTest();
+        }
     }
+
+    
 }
