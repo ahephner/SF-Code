@@ -6,7 +6,8 @@ public class ATSAssetMileageCheck {
         
         List<ats_asset__c> assetCall = [select id, sales_rep__c from ats_asset__c 
                                         where Last_Mileage_Entry_Date__c <=:lateDate and Asset_Type__c = 'Sales Rep Pickup (SRPU)'
-                                       and sold__c = false and sales_rep__r.active__c = true];
+                                       and sold__c = false and sales_rep__r.active__c = true and (NOT sales_rep__r.name Like '%(FM)%')
+                                       and (NOT sales_rep__r.name Like '(RM)%')];
         system.debug('assetCall Size '+assetCall.size());
         if(assetCall.size() > 0){
             for(ats_asset__c x: assetCall){
@@ -36,7 +37,9 @@ public class ATSAssetMileageCheck {
             String emailBody = 'Hello '+ rep.Name + ', <br/><br/>'+
                 			    'Your vehicles last mileage entry was on '+ prettyDate +
         						'. Please enter a new mileage at the link below. <br/> <br/>'+
-                				'Link: https://advancedturf.lightning.force.com/lightning/n/My_Vehicle';
+                				'Link: https://advancedturf.lightning.force.com/lightning/n/My_Vehicle'+' <br/><br/>'+
+                				'If you need a reminder of how to enter mileage please see the short video below: <br/><br/>'+
+                				'https://www.youtube.com/watch?v=ed2bzeh0ly0';
             mail.setHtmlBody(emailBody);
             emailList.add(mail);
         }
