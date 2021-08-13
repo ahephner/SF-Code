@@ -39,7 +39,7 @@ public class ATSAssetMileageCheck {
         						'. Please enter a new mileage at the link below. <br/> <br/>'+
                 				'Link: https://advancedturf.lightning.force.com/lightning/n/My_Vehicle'+' <br/><br/>'+
                 				'If you need a reminder of how to enter mileage please see the short video below: <br/><br/>'+
-                				'https://www.youtube.com/watch?v=ed2bzeh0ly0';
+                				'https://www.youtube.com/watch?v=ed2bzeh0ly0<br/><br/>'+'<b>This is an automated message</b>';
             mail.setHtmlBody(emailBody);
             emailList.add(mail);
         }
@@ -51,3 +51,5 @@ public class ATSAssetMileageCheck {
         }
     }	
 }
+
+
