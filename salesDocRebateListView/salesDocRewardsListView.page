@@ -1,0 +1,7 @@
+<apex:page standardController="Sales_Document__c" extensions="rewardsListView" lightningStylesheets="true" recordSetVar="CS">
+    <!--This is how we call the Flow with a input paramater. Here CasesSelectedRecs is the input variable of the Flow-->
+   <flow:interview name="Rewards_List_View" buttonLocation="bottom" buttonStyle="color:#050; background-color:#fed; border:1px solid;" finishLocation="{!URLFOR('/lightning/o/Sales_Document__c/list?')}">
+        <apex:param name="vSelectedDocs" value="{!LstSelectedDocs}" />
+       <apex:param name="vAccountId" value="{!accountId}" />
+    </flow:interview>
+</apex:page>
