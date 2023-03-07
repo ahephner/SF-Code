@@ -23,7 +23,7 @@ private class CommunityControllerTest {
         //query contact to assign to user
         Id cId = [select id from contact where lastname = 'Test'].id; 
         
-        //create user
+        //create 
  		//get a user profile that is a community member so we can set the user to have access 
         Profile proId = [SELECT Id FROM Profile WHERE Name = 'ATS Connect - Customer Community Login User'];
         

@@ -12,7 +12,7 @@ public class customerSearchDocController {
     
     public customerSearchDocController(ApexPages.StandardController ctl){
         this.ctl = ctl; 
-        this.dOne = date.newInstance(2017, 10, 01);
+        this.dOne = date.newInstance(2022, 10, 01);
         this.dTwo = date.today().addDays(-365); 
         acct = (account)ctl.getRecord(); 
         if(acct.id != null){
